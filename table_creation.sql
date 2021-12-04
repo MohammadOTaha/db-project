@@ -1,3 +1,6 @@
+-- TODO: Needs revision against our schema,
+-- because the relation schema posted is not entirely correct! 
+
 -- Entities:
 CREATE TABLE GUCianStudent(
     id              INT PRIMARY KEY IDENTITY,
