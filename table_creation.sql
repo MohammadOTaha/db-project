@@ -5,7 +5,7 @@
 -- Entities:
 
 CREATE DATABASE FINAl
-drop DATABASE FINAl
+
 CREATE TABLE PostGradUser(
     id              INT PRIMARY KEY IDENTITY,
     email           VARCHAR(255),
@@ -48,7 +48,6 @@ CREATE TABLE Supervisor(
     faculty         VARCHAR(10),
     FOREIGN KEY(id) REFERENCES PostGradUser(id)
 )
-drop table Supervisor
 
 CREATE TABLE Course(
     id              INT PRIMARY KEY IDENTITY,
