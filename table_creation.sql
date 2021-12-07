@@ -9,12 +9,12 @@ CREATE DATABASE FINAl
 CREATE TABLE PostGradUser(
     id              INT PRIMARY KEY IDENTITY,
     email           VARCHAR(255),
-    password       VARCHAR (255)
+    password        VARCHAR (255)
 
 )
 
 CREATE TABLE Admin(
-    id             INT PRIMARY KEY IDENTITY,
+    id              INT PRIMARY KEY IDENTITY,
     FOREIGN KEY(id) REFERENCES PostGradUser(id)
 )
 
@@ -28,6 +28,7 @@ CREATE TABLE GUCianStudent(
     address         VARCHAR(50),
     GPA             FLOAT(2),
     underGradID     INT,
+    
     FOREIGN KEY (id) REFERENCES PostGradUser(id)
 )
 
@@ -39,13 +40,15 @@ CREATE TABLE NonGUCianStudent(
     faculty         VARCHAR(10),
     address         VARCHAR(50),
     GPA             FLOAT(2),
-     FOREIGN KEY (id) REFERENCES PostGradUser(id)
+    
+    FOREIGN KEY (id) REFERENCES PostGradUser(id)
 )
 
 CREATE TABLE Supervisor(
     id              INT PRIMARY KEY IDENTITY,
     name            VARCHAR(20),
     faculty         VARCHAR(10),
+    
     FOREIGN KEY(id) REFERENCES PostGradUser(id)
 )
 
@@ -86,6 +89,7 @@ CREATE TABLE Thesis(
     grade           FLOAT(2),
     payment_id      INT,
     noExtension     INT,
+    
     FOREIGN KEY (payment_id) REFERENCES Payment(id)
 )
 
@@ -97,7 +101,7 @@ CREATE TABLE Publication(
     title           VARCHAR(50),
     date            DATE,
     place           VARCHAR(50),
-    accepted        VARCHAR(20),
+    isAccepted      BIT,
     host            VARCHAR(50),
 )
 
@@ -111,7 +115,7 @@ CREATE TABLE GUCianProgressReport(
     thesis_id       INT,
     supervisor_id   INT,
     
-    PRIMARY KEY(student_id,progressReportNumber),
+    PRIMARY KEY (student_id,progressReportNumber),
     FOREIGN KEY (student_id) REFERENCES GUCianStudent(id),
     FOREIGN KEY (thesis_id) REFERENCES Thesis(serialNumber),
     FOREIGN KEY (supervisor_id) REFERENCES Supervisor(id)
@@ -137,6 +141,7 @@ CREATE TABLE Examiner(
     name            VARCHAR(60),
     fieldOfWork     VARCHAR(50),
     isNational      BIT,
+
     FOREIGN KEY(id) REFERENCES PostGradUser(id)
 )
 CREATE TABLE Defense(
@@ -144,6 +149,7 @@ CREATE TABLE Defense(
     date            DATE,
     location        VARCHAR(50),
     grade           FLOAT(2),
+
     PRIMARY KEY (thesis_id, date),
     FOREIGN KEY (thesis_id) REFERENCES Thesis(serialNumber)
 )
@@ -155,6 +161,7 @@ CREATE TABLE Defense(
 CREATE TABLE GUCStudentPhoneNumber(
     GUCianID        INT,
     phoneNumber     VARCHAR(20),
+
     PRIMARY KEY (GUCianID , phoneNumber),
     FOREIGN KEY (GUCianID) REFERENCES GUCianStudent(id)
 )
@@ -162,6 +169,7 @@ CREATE TABLE GUCStudentPhoneNumber(
 CREATE TABLE NonGUCianPhoneNumber(
     NonGUCianID     INT,
     phoneNumber     VARCHAR(20),
+
     PRIMARY KEY(NonGUCianID , phoneNumber),
     FOREIGN KEY (NonGUCianID) REFERENCES NonGUCianStudent(id)
 )
@@ -190,10 +198,11 @@ CREATE TABLE NonGUCianTakeCourse(
 )
 
 CREATE TABLE NonGUCianRegisterThesis(
-    NonGUCianID        INT,
+    NonGUCianID     INT,
     supervisor_id   INT,
     thesis_id       INT,
     thesisNumber    VARCHAR(20),
+
     PRIMARY KEY (NonGUCianID, thesis_id,supervisor_id,thesisNumber),
     FOREIGN KEY (NonGUCianID) REFERENCES NonGUCianStudent(id),
     FOREIGN KEY (thesis_id) REFERENCES Thesis(serialNumber),
@@ -204,7 +213,8 @@ CREATE TABLE GUCianRegisterThesis(
     GUCianID        INT,
     supervisor_id   INT,
     thesis_id       INT,
-     thesisNumber    VARCHAR(20),
+    thesisNumber    VARCHAR(20),
+
     PRIMARY KEY (GUCianID, thesis_id, supervisor_id,thesisNumber),
     FOREIGN KEY (GUCianID) REFERENCES GUCianStudent(id),
     FOREIGN KEY (supervisor_id) REFERENCES Supervisor(id),
@@ -215,6 +225,7 @@ CREATE TABLE GUCianRegisterThesis(
 CREATE TABLE Thesis_Publication(
     thesis_id       INT,
     publication_id  INT,
+
     PRIMARY KEY (thesis_id, publication_id),
     FOREIGN KEY (thesis_id) REFERENCES Thesis(serialNumber),
     FOREIGN KEY (publication_id) REFERENCES Publication(id)
@@ -224,13 +235,9 @@ CREATE TABLE ExaminerEvaluateDefense(
     thesis_id       INT,
     examiner_id     INT,
     comment         VARCHAR(255),
+
     PRIMARY KEY (date, thesis_id, examiner_id),
     FOREIGN KEY (examiner_id) REFERENCES Examiner(id),
     FOREIGN KEY(thesis_id,date) REFERENCES Defense(thesis_id,date)
 )
-
-
-
-
-
 --------------------- END OF RELATIONS ---------------------
