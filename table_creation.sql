@@ -4,7 +4,8 @@
 
 -- Entities:
 
-CREATE TABLE Users(
+CREATE DATABASE FINAl
+CREATE TABLE PostGradUser(
     id              INT PRIMARY KEY IDENTITY,
     email           VARCHAR(255),
     password       VARCHAR (255)
@@ -13,60 +14,40 @@ CREATE TABLE Users(
 
 CREATE TABLE Admin(
     id             INT PRIMARY KEY IDENTITY,
-    email           VARCHAR(255),
-    passwword       VARCHAR (255)
-    FOREIGN KEY(id) REFERENCES Users(id)
-)
-
-CReate table Student(
-     id             INT PRIMARY KEY IDENTITY,
-    firstName       VARCHAR(10),
-    lastName        VARCHAR(10),
-    email           VARCHAR(255),
-    password        VARCHAR(255),
-    type            VARCHAR(50) DEFAULT 'student',
-    faculty         VARCHAR(10),
-    address         VARCHAR(50),
-    GPA             FLOAT(2),
-    FOREIGN KEY (id) REFERENCES Users(id)
-
-    
-
+    FOREIGN KEY(id) REFERENCES PostGradUser(id)
 )
 
 
 CREATE TABLE GUCianStudent(
     id              INT PRIMARY KEY IDENTITY,
-    firstName       VARCHAR(10),
-    lastName        VARCHAR(10),
-    email           VARCHAR(255),
+    firstName       VARCHAR(20),
+    lastName        VARCHAR(20),
     type            VARCHAR(50) DEFAULT 'student',
     faculty         VARCHAR(10),
     address         VARCHAR(50),
     GPA             FLOAT(2),
     underGradID     INT,
-    FOREIGN KEY (id) REFERENCES Users(id)
+    FOREIGN KEY (id) REFERENCES PostGradUser(id)
 )
 
 CREATE TABLE NonGUCianStudent(
     id              INT PRIMARY KEY IDENTITY,
-    firstName       VARCHAR(10),
-    lastName        VARCHAR(10),
-    email           VARCHAR(255),
+    firstName       VARCHAR(20),
+    lastName        VARCHAR(20),
     type            VARCHAR(50) DEFAULT 'student',
     faculty         VARCHAR(10),
     address         VARCHAR(50),
     GPA             FLOAT(2),
-     FOREIGN KEY (id) REFERENCES Users(id)
+     FOREIGN KEY (id) REFERENCES PostGradUser(id)
 )
 
 CREATE TABLE Supervisor(
     id              INT PRIMARY KEY IDENTITY,
-    name       VARCHAR(10),
-    email           VARCHAR(255),
-    password        VARCHAR (255),
+    name            VARCHAR(20),
     faculty         VARCHAR(10),
+    FOREIGN KEY(id) REFERENCES PostGradUser(id)
 )
+drop table Supervisor
 
 CREATE TABLE Course(
     id              INT PRIMARY KEY IDENTITY,
@@ -104,6 +85,7 @@ CREATE TABLE Thesis(
     years           AS DATEDIFF(YEAR, startDate, endDate),
     grade           FLOAT(2),
     payment_id      INT,
+    noExtension     INT,
     FOREIGN KEY (payment_id) REFERENCES Payment(id)
 )
 
@@ -153,10 +135,9 @@ CREATE TABLE NonGUCianProgressReport(
 CREATE TABLE Examiner(
     id              INT PRIMARY KEY IDENTITY,
     name            VARCHAR(60),
-    email           VARCHAR(255),
-     password        VARCHAR(50),
     fieldOfWork     VARCHAR(50),
     isNational      BIT,
+    FOREIGN KEY(id) REFERENCES PostGradUser(id)
 )
 CREATE TABLE Defense(
     thesis_id       INT,
