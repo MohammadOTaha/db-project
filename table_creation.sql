@@ -5,6 +5,7 @@
 -- Entities:
 
 CREATE DATABASE FINAl
+drop DATABASE FINAl
 CREATE TABLE PostGradUser(
     id              INT PRIMARY KEY IDENTITY,
     email           VARCHAR(255),
@@ -22,7 +23,7 @@ CREATE TABLE GUCianStudent(
     id              INT PRIMARY KEY IDENTITY,
     firstName       VARCHAR(20),
     lastName        VARCHAR(20),
-    type            VARCHAR(50) DEFAULT 'student',
+    type            BIT,
     faculty         VARCHAR(10),
     address         VARCHAR(50),
     GPA             FLOAT(2),
@@ -34,7 +35,7 @@ CREATE TABLE NonGUCianStudent(
     id              INT PRIMARY KEY IDENTITY,
     firstName       VARCHAR(20),
     lastName        VARCHAR(20),
-    type            VARCHAR(50) DEFAULT 'student',
+    type            BIT,
     faculty         VARCHAR(10),
     address         VARCHAR(50),
     GPA             FLOAT(2),
