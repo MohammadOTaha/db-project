@@ -1,7 +1,5 @@
--- NOT THE FINAL VERSION
-
 INSERT INTO
-    PostGradUser (email, password)
+    PostGradUser (email, PASSWORD)
 VALUES
     ('mark@example.com', '1234'),
     ('tony@example.com', '1234'),
@@ -33,7 +31,7 @@ INSERT INTO
         id,
         firstName,
         lastName,
-        type,
+        TYPE,
         faculty,
         address,
         GPA,
@@ -102,7 +100,7 @@ INSERT INTO
         id,
         firstName,
         lastName,
-        type,
+        TYPE,
         faculty,
         address,
         GPA
@@ -196,7 +194,7 @@ VALUES
 
 INSERT INTO
     Thesis (
-        type,
+        TYPE,
         field,
         title,
         startDate,
@@ -302,7 +300,7 @@ VALUES
         'host5'
     );
 
-insert into
+INSERT INTO
     GUCianProgressReport (
         student_id,
         progressReportNumber,
@@ -319,7 +317,7 @@ VALUES
     (4, 4, '2019-12-11', 'good', 6, 4, 14),
     (5, 5, '2018-02-10', 'great', 1, 5, 15);
 
-insert into
+INSERT INTO
     NonGUCianProgressReport (
         student_id,
         progressReportNumber,
@@ -336,10 +334,10 @@ VALUES
     (9, 9, '2019-12-01', 'good', 6, 9, 14),
     (10, 10, '2015-02-11', 'great', 1, 10, 15);
 
-set
+SET
     identity_insert Examiner ON;
 
-insert into
+INSERT INTO
     Examiner (id, name, fieldOfWork, isNational)
 VALUES
     (11, 'examiner1', 'CS', 1),
@@ -351,9 +349,9 @@ VALUES
 SET
     IDENTITY_INSERT Examiner OFF;
 
-insert into
+INSERT INTO
     Defense (thesis_id, date, location, grade)
-values
+VALUES
     (1, '2019-05-07', 'Cairo', 60.4),
     (2, '2009-02-01', 'New York', 80),
     (3, '2012-12-05', 'Paris', 75),
@@ -361,68 +359,71 @@ values
     (5, '2018-02-10', 'Tokyo', 90);
 
 --------------------- END OF ENTITIES ---------------------
-
 -- Relations:
-insert into 
+INSERT INTO
     GUCStudentPhoneNumber (GUCianID, phoneNumber)
-values
+VALUES
     (1, '0123456345'),
     (2, '0123456145'),
     (3, '0123426345'),
     (4, '0123556345'),
     (5, '0223436345');
 
-INSERT into 
+INSERT INTO
     NonGUCianPhoneNumber (NonGUCianID, phoneNumber)
-values
+VALUES
     (6, '0123456345'),
     (7, '0123456145'),
     (8, '0123426345'),
     (9, '0123556345'),
     (10, '0223436345');
 
-INSERT into 
+INSERT INTO
     NonGUCianPayCourse (NonGUCianID, course_id, payment_id)
-values
+VALUES
     (6, 1, 1),
     (7, 2, 2),
     (8, 3, 3),
     (9, 4, 4),
     (10, 5, 5);
 
-insert into 
+INSERT INTO
     NonGUCianTakeCourse (NonGUCianID, course_id, grade)
-values
+VALUES
     (6, 1, 3.5),
     (7, 2, 3.1),
     (8, 3, 3.2),
     (9, 4, 3.3),
     (10, 5, 3.4);
 
-insert into 
-    NonGUCianRegisterThesis (NonGUCianID, supervisor_id, thesis_id, thesisNumber)
-values
+INSERT INTO
+    NonGUCianRegisterThesis (
+        NonGUCianID,
+        supervisor_id,
+        thesis_id,
+        thesisNumber
+    )
+VALUES
     (6, 11, 1, 1),
     (7, 12, 2, 2),
     (8, 13, 3, 3),
     (9, 14, 4, 4),
     (10, 15, 5, 5);
 
-insert into 
+INSERT INTO
     GUCianRegisterThesis (GUCianID, supervisor_id, thesis_id, thesisNumber)
-values
+VALUES
     (1, 11, 1, 1),
     (2, 12, 2, 2),
     (3, 13, 3, 3),
     (4, 14, 4, 4),
     (5, 15, 5, 5);
 
-INSERT into 
+INSERT INTO
     Thesis_Publication (thesis_id, publication_id)
-values
+VALUES
     (1, 1),
     (2, 2),
     (3, 3),
     (4, 4),
     (5, 5);
-    
