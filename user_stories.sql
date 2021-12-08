@@ -78,9 +78,9 @@ from Thesis;
 
 GO
 CREATE PROC AdminViewOnGoingTheses
-@ThesisCount SMALLINT Output
+    @ThesisCount SMALLINT Output
 AS
-select @ThesisCount = Count(*) 
+select @ThesisCount = Count(*)
 from Thesis T
 
 
@@ -106,12 +106,12 @@ UNION
 
 GO
 CREATE PROC AdminListNonGucianCourse
-@courseID Int
+    @courseID Int
 AS
-Select NG.firstName , NG.lastName, C.code, NonGUCianTakeCourse.grade 
+Select NG.firstName , NG.lastName, C.code, NonGUCianTakeCourse.grade
 FRom NonGUCianTakeCourse
-INNER JOIN NonGUCianStudent NG ON NG.id = NonGUCianTakeCourse.NonGUCianID
-INNER JOIN Course C ON C.id = NonGUCianTakeCourse.course_id
+    INNER JOIN NonGUCianStudent NG ON NG.id = NonGUCianTakeCourse.NonGUCianID
+    INNER JOIN Course C ON C.id = NonGUCianTakeCourse.course_id
 
 GO
 CREATE PROC AdminUpdateExtension
@@ -124,12 +124,12 @@ Where  Thesis.noExtension = @ThesisSerial
 
 -- 3)h) wait to understand
 
-GO 
+GO
 CREATE PROC AdminIssueThesisPayment
-@ThesisSerial INT,
-@amount DECIMAL,
-@noOfInstallments INT,
-@fundPrecentage Decimal
+    @ThesisSerial INT,
+    @amount DECIMAL,
+    @noOfInstallments INT,
+    @fundPrecentage Decimal
 AS
 Declare @getIdOfThesis SMALLINT
 
@@ -162,7 +162,7 @@ Declare @getIdOfThesis SMALLINT
 
 
 
-
+GO
 CREATE PROC StudentRegister
     @first_name varchar(20),
     @last_name varchar(20),
@@ -190,13 +190,17 @@ VALUES
 GO
 
 CREATE PROC SupervisorRegister
-@name varchar(20),
-@password varchar(20),
-@faculty varchar(20),
-@email varchar(50)
+    @name varchar(20),
+    @password varchar(20),
+    @faculty varchar(20),
+    @email varchar(50)
 AS
-INSERT INTO PostGradUser(email,password) values(@email, @password)
-Insert INTO Supervisor(name,faculty) values(@name , @faculty)
+INSERT INTO PostGradUser
+    (email,password)
+values(@email, @password)
+Insert INTO Supervisor
+    (name,faculty)
+values(@name , @faculty)
 
 
 
@@ -241,9 +245,9 @@ from Thesis;
 
 GO
 CREATE PROC AdminViewOnGoingTheses
-@ThesisCount SMALLINT Output
+    @ThesisCount SMALLINT Output
 AS
-select @ThesisCount = Count(*) 
+select @ThesisCount = Count(*)
 from Thesis T
 
 
@@ -269,12 +273,12 @@ UNION
 
 GO
 CREATE PROC AdminListNonGucianCourse
-@courseID Int
+    @courseID Int
 AS
-Select NG.firstName , NG.lastName, C.code, NonGUCianTakeCourse.grade 
+Select NG.firstName , NG.lastName, C.code, NonGUCianTakeCourse.grade
 FRom NonGUCianTakeCourse
-INNER JOIN NonGUCianStudent NG ON NG.id = NonGUCianTakeCourse.NonGUCianID
-INNER JOIN Course C ON C.id = NonGUCianTakeCourse.course_id
+    INNER JOIN NonGUCianStudent NG ON NG.id = NonGUCianTakeCourse.NonGUCianID
+    INNER JOIN Course C ON C.id = NonGUCianTakeCourse.course_id
 
 GO
 CREATE PROC AdminUpdateExtension
@@ -287,17 +291,107 @@ Where  Thesis.noExtension = @ThesisSerial
 
 -- 3)h) wait to understand
 
-GO 
+GO
 CREATE PROC AdminIssueThesisPayment
-@ThesisSerial INT,
-@amount DECIMAL,
-@noOfInstallments INT,
-@fundPrecentage Decimal
+    @ThesisSerial INT,
+    @amount DECIMAL,
+    @noOfInstallments INT,
+    @fundPrecentage Decimal
 AS
 Declare @getIdOfThesis SMALLINT
 
 
---3)i) wait to understand
+
+
+GO
+CREATE PROC AdminViewStudentProfile
+@sid INT
+AS
+If EXISTS (Select * From GUCianStudent where GUCianStudent.id = @sid)
+begin
+select * from GUCianStudent;
+end
+else 
+begin
+select * from NonGUCianStudent;
+end
+
+
+
+--3)j) wait to undrstand
+
+
+
+
+--We have to check it again--
+GO
+CREATE PROC AdminListAcceptPublication
+AS
+select P.title
+from Thesis_Publication
+    INNER JOIN Publication P ON P.id = Thesis_Publication.publication_id
+Where P.isAccepted = '1';
+
+
+GO
+CREATE PROC AddCourse
+    @coursecode varchar(10),
+    @creditHrs INT,
+    @fees DECIMAL
+AS
+INSERT INTO Course
+    (code , creditHours , fees)
+VALUES
+    (@coursecode, @creditHrs , @fees)
+
+
+
+
+GO
+CREATE PROC linkCourseStudent
+    @courseID INT,
+    @studentID INT
+AS
+INSERT INTO NonGUCianTakeCourse
+    (course_id ,NonGUCianID)
+VALUES(@courseID, @studentID)
+
+
+-- UPDATE OR INSERT ?
+GO 
+CREATE PROC AddStudentCourseGrade
+@courseID INT,
+@studentID INT,
+@grade DECIMAL
+AS
+UPDATE NonGUCianTakeCourse
+SET grade = @grade
+where NonGUCianTakeCourse.NonGUCianID =@studentID AND NonGUCianTakeCourse.course_id = @courseID;
+
+
+
+-- Which student so I can choose the supervisor of him
+GO 
+CREATE PROC ViewExamSupDefense
+@defenseDate DATETIME
+AS
+select E.name , S.name
+From ExaminerEvaluateDefense
+INNER JOIN Examiner E ON E.id = ExaminerEvaluateDefense.examiner_id
+INNER JOIN GUCianRegisterThesis ON ExaminerEvaluateDefense.thesis_id = GUCianRegisterThesis.thesis_id
+INNER JOIN Supervisor S ON S.id = GUCianRegisterThesis.supervisor_id
+UNION
+select E.name , S.name
+From ExaminerEvaluateDefense
+INNER JOIN Examiner E ON E.id = ExaminerEvaluateDefense.examiner_id
+INNER JOIN NonGUCianRegisterThesis ON ExaminerEvaluateDefense.thesis_id = NonGUCianRegisterThesis.thesis_id
+INNER JOIN Supervisor S ON S.id = NonGUCianRegisterThesis.supervisor_id
+
+
+
+
+
+
 
 
 
