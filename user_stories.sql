@@ -163,17 +163,18 @@ SET Thesis.noExtension = Thesis.noExtension+1
 Where  Thesis.noExtension = @ThesisSerial
 
 
--- 3)h) hassan did it
-
 GO
-CREATE PROC AdminIssueThesisPayment
-    @ThesisSerial INT,
-    @amount DECIMAL,
-    @noOfInstallments INT,
-    @fundPrecentage Decimal
+create PROC AdminIssueThesisPayment
+    @ThesisSerial INT, @amount DECIMAL, @noOfInstallments INT, @fundPrecentage Decimal
 AS
-Declare @getIdOfThesis SMALLINT
-
+Declare @pay_id SMALLINT
+select @pay_id =payment_id
+from Thesis
+where serialNumber=@ThesisSerial
+INSERT into Payment
+(id, amount, installmentsCnt, fundPercentage)
+VALUES
+(@pay_id, @amount, @noOfInstallments, @fundPrecentage)
 
 
 
@@ -320,3 +321,111 @@ Select * from NonGUCianTakeCourse
 -- Testing some stuff --
 */
 
+
+
+
+--Hassan Solutions
+GO
+CREATE PROC AddDefenseGrade
+	@ThesisSerialNo int , @DefenseDate Datetime , @grade decimal
+AS
+UPDATE defense
+    grade=@grade
+where thesis_id=@ThesisSerialNo and date=@DefenseDate
+
+GO
+CREATE PROC AddCommentsGrade
+	@ThesisSerialNo int , @DefenseDate Datetime , @comments varchar(300)
+AS
+INSERT into ExaminerEvaluateDefense
+(thesis_id, date, comment)
+VALUES
+(@ThesisSerialNo, @DefenseDate, @comments)
+
+GO
+CREATE PROC viewMyProfile
+	@studentId int
+AS
+select *
+from GUCianStudent,NonGUCianStudent
+where @studentId=NonGUCianStudent.id OR @studentId=GUCianStudent;
+
+
+GO
+CREATE PROC editMyProfile
+	@studentID int, @firstName varchar(10), @lastName varchar(10), @password varchar(10), @email varchar(10), @address varchar(10), @type varchar(10)
+AS
+IF EXISTS ( Select * from GUCianStudent WHERE GUCianStudent.ID = @studentID)
+UPDATE GUCianStudent
+set firstName = @firstName, lastName=@lastName, password=@password, email=@email, address=@address, type=@type
+where id=@studentID
+ELSE
+UPDATE GUCianStudent
+set firstName = @firstName, lastName=@lastName, password=@password, email=@email, address=@address, type=@type
+where id=@studentID
+
+
+GO
+CREATE PROC addUndergradID
+	 @studentID int, @undergradID varchar(10)
+AS
+UPDATE GUCIANSTUDENT
+set underGradID=@undergradID
+
+
+GO
+CREATE PROC ViewCoursesGrades
+	@studentID int
+AS
+SELECT NonGUCianTakeCourse.grade
+from NonGUCianTakeCourse
+where @studentID=NonGUCianTakeCourse.NonGUCianID;
+
+
+GO
+CREATE PROC ViewCoursePaymentsInstall
+	@studentID int
+AS
+select Payment,Installment
+from Payment p, Installment i
+inner JOIN NonGUCianPayCourse ng on ng.payment_id=payment.payment_id
+INNER JOIN NonGUCianPayCourse ng on ng.payment_id=installment.payment_id
+WHERE @studentID =ng.id
+
+
+--Waiting to solve E)2,3,4
+
+--Waiting to solve F
+
+GO
+CREATE PROC ViewEvalProgressReport
+	 @thesisSerialNo int, @progressReportNo int
+AS
+IF EXISTS ( Select * from GUCianProgressReport WHERE GUCianProgressReport.thesis_id=@thesisSerialNo and GUCianProgressReport.progressReportNumber=@progressReportNo )
+select g.evaluation
+from GUCianProgressReport g
+WHERE g.thesis_id=@thesisSerialNo and g.progressReportNumber=@progressReportNumber
+ELSE
+select g.evaluation
+from NonGUCianProgressReport g
+WHERE g.thesis_id=@thesisSerialNo and g.progressReportNumber=@progressReportNumber
+
+
+
+GO
+CREATE PROC addPublication
+	@title varchar(50), @pubDate datetime, @host varchar(50), @place varchar(50), @accepted bit
+    AS
+insert into Publication
+(title, date, host, place, isAccepted)
+VALUES
+(@title, @pubDate, @host, @place, @accepted)
+
+GO
+create PROC linkPubThesis
+	@PubID int, @thesisSerialNo int
+AS
+insert into Thesis_Publication
+(thesis_id, publication_id)
+VALUES
+(@thesisSerialNo, @PubID)
