@@ -18,12 +18,12 @@ if @GucianBit =1
   INSERT INTO GUCianStudent
     (id,firstName,lastName,faculty,type,address)
 VALUES
-    (@id,@first_name, @last_name, @faculty, @GucianBit, @address)
+    (@id, @first_name, @last_name, @faculty, @GucianBit, @address)
   else 
    INSERT INTO NonGUCianStudent
     (id,firstName,lastName,faculty,type,address)
 VALUES
-    (@id,@first_name, @last_name, @faculty, @GucianBit, @address)
+    (@id, @first_name, @last_name, @faculty, @GucianBit, @address)
 
 GO
 CREATE PROC SupervisorRegister
@@ -41,7 +41,7 @@ declare @id int  = scope_iDentity();
 INSERT INTO Supervisor
     (id,name,faculty)
 VALUES
-    (@id,@name, @faculty)
+    (@id, @name, @faculty)
 
 
 
@@ -52,14 +52,16 @@ CREATE PROC userLogin
     @paswword varchar(20),
     @Success bit OUTPUT
 AS
-if exists(select * from PostGradUser where PostGradUser.id = @id)
+if exists(select *
+from PostGradUser
+where PostGradUser.id = @id)
 BEGIN
     set @Success = 1
 
 end 
 else 
 BEGIN
-set @Success = 0;
+    set @Success = 0;
 END
 /*
 we have to test it
@@ -72,16 +74,23 @@ print @success
 
 GO
 CREATE PROC addMobile
-@ID int,
-@mobile_number varchar(20)
+    @ID int,
+    @mobile_number varchar(20)
 AS
-IF EXISTS (select * from GUCStudentPhoneNumber where GUCStudentPhoneNumber.GUCianID = @ID )
+IF EXISTS (select *
+from GUCStudentPhoneNumber
+where GUCStudentPhoneNumber.GUCianID = @ID )
 BEGIN
-insert into GUCStudentPhoneNumber(GUCianID , phoneNumber) VALUES (@id, @mobile_number);
+    insert into GUCStudentPhoneNumber
+        (GUCianID , phoneNumber)
+    VALUES
+        (@id, @mobile_number);
 END
 ELSE
 BEGIN
-insert into NonGUCianPhoneNumber(NonGUCianID,phoneNumber)VALUES(@id,@mobile_number);
+    insert into NonGUCianPhoneNumber
+        (NonGUCianID,phoneNumber)
+    VALUES(@id, @mobile_number);
 end;
 
 
@@ -91,7 +100,7 @@ CREATE PROC AdminListUp
 AS
 select *
 from Supervisor
-INNER JOIN PostGradUser ON PostGradUser.id = Supervisor.id;
+    INNER JOIN PostGradUser ON PostGradUser.id = Supervisor.id;
 
 GO
 CREATE PROC AdminViewSupervisorProfile
@@ -99,7 +108,7 @@ CREATE PROC AdminViewSupervisorProfile
 AS
 select *
 from Supervisor
-INNER JOIN PostGradUser on PostGradUser.id = Supervisor.id
+    INNER JOIN PostGradUser on PostGradUser.id = Supervisor.id
 Where Supervisor.id = @supID;
 
 
@@ -170,15 +179,21 @@ Declare @getIdOfThesis SMALLINT
 
 GO
 CREATE PROC AdminViewStudentProfile
-@sid INT
+    @sid INT
 AS
-If EXISTS (Select * From GUCianStudent where GUCianStudent.id = @sid)
+If EXISTS (Select *
+From GUCianStudent
+where GUCianStudent.id = @sid)
 begin
-select * from GUCianStudent INNER JOIN PostGradUser ON PostGradUser.id = GUCianStudent.id WHERE GUCianStudent.id = @sid
+    select *
+    from GUCianStudent INNER JOIN PostGradUser ON PostGradUser.id = GUCianStudent.id
+    WHERE GUCianStudent.id = @sid
 end
 else 
 begin
-select * from NonGUCianStudent INNER JOIN PostGradUser ON PostGradUser.id = NonGUCianStudent.id WHERE NonGUCianStudent.id = @sid;
+    select *
+    from NonGUCianStudent INNER JOIN PostGradUser ON PostGradUser.id = NonGUCianStudent.id
+    WHERE NonGUCianStudent.id = @sid;
 end
 
 
@@ -216,24 +231,28 @@ CREATE PROC linkCourseStudent
     @courseID INT,
     @studentID INT
 AS
-IF EXISTS (select * from NonGUCianTakeCourse where NonGUCianTakeCourse.NonGUCianID = @studentID)
+IF EXISTS (select *
+from NonGUCianTakeCourse
+where NonGUCianTakeCourse.NonGUCianID = @studentID)
 BEGIN
-INSERT INTO NonGUCianTakeCourse
-    (course_id ,NonGUCianID)
-VALUES(@courseID, @studentID)
+    INSERT INTO NonGUCianTakeCourse
+        (course_id ,NonGUCianID)
+    VALUES(@courseID, @studentID)
 end
 
 
 -- UPDATE OR INSERT ?
-GO 
+GO
 CREATE PROC AddStudentCourseGrade
-@courseID INT,
-@studentID INT,
-@grade DECIMAL
+    @courseID INT,
+    @studentID INT,
+    @grade DECIMAL
 AS
-IF EXISTS (select * from NonGUCianTakeCourse where NonGUCianTakeCourse.NonGUCianID = @studentID)
+IF EXISTS (select *
+from NonGUCianTakeCourse
+where NonGUCianTakeCourse.NonGUCianID = @studentID)
 BEGIN
-UPDATE NonGUCianTakeCourse
+    UPDATE NonGUCianTakeCourse
 SET grade = @grade
 where NonGUCianTakeCourse.NonGUCianID =@studentID AND NonGUCianTakeCourse.course_id = @courseID;
 END
@@ -241,18 +260,63 @@ END
 
 
 -- Which student so I can choose the supervisor of him
-GO 
+GO
 CREATE PROC ViewExamSupDefense
-@defenseDate DATETIME
+    @defenseDate DATETIME
 AS
-select E.name , S.name
-From ExaminerEvaluateDefense
-INNER JOIN Examiner E ON E.id = ExaminerEvaluateDefense.examiner_id
-INNER JOIN GUCianRegisterThesis ON ExaminerEvaluateDefense.thesis_id = GUCianRegisterThesis.thesis_id
-INNER JOIN Supervisor S ON S.id = GUCianRegisterThesis.supervisor_id
+    select E.name , S.name
+    From ExaminerEvaluateDefense
+        INNER JOIN Examiner E ON E.id = ExaminerEvaluateDefense.examiner_id
+        INNER JOIN GUCianRegisterThesis ON ExaminerEvaluateDefense.thesis_id = GUCianRegisterThesis.thesis_id
+        INNER JOIN Supervisor S ON S.id = GUCianRegisterThesis.supervisor_id
 UNION
-select E.name , S.name
-From ExaminerEvaluateDefense
-INNER JOIN Examiner E ON E.id = ExaminerEvaluateDefense.examiner_id
-INNER JOIN NonGUCianRegisterThesis ON ExaminerEvaluateDefense.thesis_id = NonGUCianRegisterThesis.thesis_id
-INNER JOIN Supervisor S ON S.id = NonGUCianRegisterThesis.supervisor_id
+    select E.name , S.name
+    From ExaminerEvaluateDefense
+        INNER JOIN Examiner E ON E.id = ExaminerEvaluateDefense.examiner_id
+        INNER JOIN NonGUCianRegisterThesis ON ExaminerEvaluateDefense.thesis_id = NonGUCianRegisterThesis.thesis_id
+        INNER JOIN Supervisor S ON S.id = NonGUCianRegisterThesis.supervisor_id
+
+
+
+
+
+--4)e)--
+
+go
+create proc AddDefenseNonGucian
+    @ThesisSerialNo int ,
+    @DefenseDate Datetime ,
+    @DefenseLocation varchar(15)
+as
+IF @ThesisSerialNo is null or @DefenseDate is null or @DefenseLocation is null
+BEGIN
+    print 'hello'
+END
+else 
+BEGIN
+    declare @id int
+    select @id = NonGUCianRegisterThesis.NonGUCianID
+    from NonGUCianRegisterThesis 
+    where NonGUCianRegisterThesis.thesis_id = @ThesisSerialNo
+    if @id IN ( select id
+        from NonGUCianStudent
+    EXCEPT
+        select s.id
+        from NonGUCianStudent S, Course C , NonGUCianTakeCourse X
+        where S.id = X.NonGUCianID and C.id = X.NonGUCianID and X.grade <= 50)
+        insert into Defense
+        (thesis_id, date, location)
+    values
+        (@ThesisSerialNo, @DefenseDate, @DefenseLocation)
+END
+
+/*
+drop proc AddDefenseNonGucian
+exec AddDefenseNonGucian 1, '2022-05-07', 'KOKO';
+select *
+from Defense;
+select * from NonGUCianStudent
+Select * from NonGUCianTakeCourse
+-- Testing some stuff --
+*/
+

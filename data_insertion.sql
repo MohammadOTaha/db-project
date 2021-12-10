@@ -390,7 +390,7 @@ VALUES
 INSERT INTO
     NonGUCianTakeCourse (NonGUCianID, course_id, grade)
 VALUES
-    (6, 1, 3.5),
+    (6, 1, 55),
     (7, 2, 3.1),
     (8, 3, 3.2),
     (9, 4, 3.3),
