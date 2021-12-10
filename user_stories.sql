@@ -1,3 +1,4 @@
+
 CREATE PROC StudentRegister
     @first_name varchar(20),
     @last_name varchar(20),
@@ -120,7 +121,7 @@ from Thesis T
 GO
 CREATE PROC AdminViewStudentThesisBySupervisor
 AS
-    Select S1.name, T1.title, GUCianStudent.firstName , GUCianStudent.lastName
+    Select S1.name as Supervisor, T1.title as Thesis , GUCianStudent.firstName as First_name , GUCianStudent.lastName as Last_name
     From GUCianRegisterThesis
         INNER JOIN Supervisor S1 On S1.id = GUCianRegisterThesis.supervisor_id
         INNER join Thesis T1 on T1.serialNumber = GUCianRegisterThesis.thesis_id
@@ -131,7 +132,6 @@ UNION
         INNER JOIN Supervisor S2 On S2.id = NonGUCianRegisterThesis.supervisor_id
         INNER join Thesis T2 on T2.serialNumber = NonGUCianRegisterThesis.thesis_id
         INNER JOIn NonGUCianStudent ON NonGUCianStudent.id = NonGUCianRegisterThesis.NonGUCianID
-
 
 
 
@@ -174,13 +174,12 @@ CREATE PROC AdminViewStudentProfile
 AS
 If EXISTS (Select * From GUCianStudent where GUCianStudent.id = @sid)
 begin
-select * from GUCianStudent INNER JOIN PostGradUser ON PostGradUser.id = GUCianStudent.id;
+select * from GUCianStudent INNER JOIN PostGradUser ON PostGradUser.id = GUCianStudent.id WHERE GUCianStudent.id = @sid
 end
 else 
 begin
-select * from NonGUCianStudent INNER JOIN PostGradUser ON PostGradUser.id = NonGUCianStudent.id;
+select * from NonGUCianStudent INNER JOIN PostGradUser ON PostGradUser.id = NonGUCianStudent.id WHERE NonGUCianStudent.id = @sid;
 end
-
 
 
 --3)j) wait to undrstand
