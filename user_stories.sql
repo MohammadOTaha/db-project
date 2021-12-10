@@ -216,9 +216,12 @@ CREATE PROC linkCourseStudent
     @courseID INT,
     @studentID INT
 AS
+IF EXISTS (select * from NonGUCianTakeCourse where NonGUCianTakeCourse.NonGUCianID = @studentID)
+BEGIN
 INSERT INTO NonGUCianTakeCourse
     (course_id ,NonGUCianID)
 VALUES(@courseID, @studentID)
+end
 
 
 -- UPDATE OR INSERT ?
@@ -228,9 +231,12 @@ CREATE PROC AddStudentCourseGrade
 @studentID INT,
 @grade DECIMAL
 AS
+IF EXISTS (select * from NonGUCianTakeCourse where NonGUCianTakeCourse.NonGUCianID = @studentID)
+BEGIN
 UPDATE NonGUCianTakeCourse
 SET grade = @grade
 where NonGUCianTakeCourse.NonGUCianID =@studentID AND NonGUCianTakeCourse.course_id = @courseID;
+END
 
 
 
