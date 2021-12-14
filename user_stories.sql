@@ -134,13 +134,13 @@ AS
     Select S1.name as Supervisor, T1.title as Thesis , GUCianStudent.firstName as First_name , GUCianStudent.lastName as Last_name
     From GUCianRegisterThesis
         INNER JOIN Supervisor S1 On S1.id = GUCianRegisterThesis.supervisor_id
-        INNER join Thesis T1 on T1.serialNumber = GUCianRegisterThesis.thesis_id
+        INNER join Thesis T1 on T1.serialNumber = GUCianRegisterThesis.thesisSerialNumber
         INNER JOIn GUCianStudent ON GUCianStudent.id = GUCianRegisterThesis.GUCianID
 UNION
     Select S2.name, T2.title, NonGUCianStudent.firstName , NonGUCianStudent.lastName
     From NonGUCianRegisterThesis
         INNER JOIN Supervisor S2 On S2.id = NonGUCianRegisterThesis.supervisor_id
-        INNER join Thesis T2 on T2.serialNumber = NonGUCianRegisterThesis.thesis_id
+        INNER join Thesis T2 on T2.serialNumber = NonGUCianRegisterThesis.thesisSerialNumber
         INNER JOIn NonGUCianStudent ON NonGUCianStudent.id = NonGUCianRegisterThesis.NonGUCianID
 
 
@@ -320,7 +320,7 @@ AS
     select E.name , S.name
     From ExaminerEvaluateDefense
         INNER JOIN Examiner E ON E.id = ExaminerEvaluateDefense.examiner_id
-        INNER JOIN GUCianRegisterThesis ON ExaminerEvaluateDefense.thesis_id = GUCianRegisterThesis.thesis_id
+        INNER JOIN GUCianRegisterThesis ON ExaminerEvaluateDefense.thesisSerialNumber = GUCianRegisterThesis.thesisSerialNumber
         INNER JOIN Supervisor S ON S.id = GUCianRegisterThesis.supervisor_id
         WHEre ExaminerEvaluateDefense.[date] = @defenseDate
     --Connecting The defenseData with Date given
@@ -328,16 +328,12 @@ UNION
     select E.name , S.name
     From ExaminerEvaluateDefense
         INNER JOIN Examiner E ON E.id = ExaminerEvaluateDefense.examiner_id
-        INNER JOIN NonGUCianRegisterThesis ON ExaminerEvaluateDefense.thesis_id = NonGUCianRegisterThesis.thesis_id
+        INNER JOIN NonGUCianRegisterThesis ON ExaminerEvaluateDefense.thesisSerialNumber = NonGUCianRegisterThesis.thesisSerialNumber
         INNER JOIN Supervisor S ON S.id = NonGUCianRegisterThesis.supervisor_id
         WHEre ExaminerEvaluateDefense.[date] = @defenseDate
 
 
-
-
-
 --4)e)--
-
 go
 create proc AddDefenseNonGucian
     @ThesisSerialNo int ,
@@ -353,7 +349,7 @@ BEGIN
     declare @id int
     select @id = NonGUCianRegisterThesis.NonGUCianID
     from NonGUCianRegisterThesis
-    where NonGUCianRegisterThesis.thesis_id = @ThesisSerialNo
+    where NonGUCianRegisterThesis.thesisSerialNumber = @ThesisSerialNo
     if @id IN (                 select id
         from NonGUCianStudent
     EXCEPT
@@ -361,7 +357,7 @@ BEGIN
         from NonGUCianStudent S, Course C , NonGUCianTakeCourse X
         where S.id = X.NonGUCianID and C.id = X.NonGUCianID and X.grade <= 50)
         insert into Defense
-        (thesis_id, date, location)
+        (thesisSerialNumber, date, location)
     values
         (@ThesisSerialNo, @DefenseDate, @DefenseLocation)
 END
@@ -388,7 +384,7 @@ CREATE PROC AddDefenseGrade
 AS
 UPDATE defense
     grade=@grade
-where thesis_id=@ThesisSerialNo and date=@DefenseDate
+where thesisSerialNumber=@ThesisSerialNo and date=@DefenseDate
 
 GO
 CREATE PROC AddCommentsGrade
@@ -397,7 +393,7 @@ CREATE PROC AddCommentsGrade
     @comments varchar(300)
 AS
 INSERT into ExaminerEvaluateDefense
-    (thesis_id, date, comment)
+    (thesisSerialNumber, date, comment)
 VALUES
     (@ThesisSerialNo, @DefenseDate, @comments)
 
@@ -472,14 +468,14 @@ CREATE PROC ViewEvalProgressReport
 AS
 IF EXISTS ( Select *
 from GUCianProgressReport
-WHERE GUCianProgressReport.thesis_id=@thesisSerialNo and GUCianProgressReport.progressReportNumber=@progressReportNo )
+WHERE GUCianProgressReport.thesisSerialNumber=@thesisSerialNo and GUCianProgressReport.progressReportNumber=@progressReportNo )
 select g.evaluation
 from GUCianProgressReport g
-WHERE g.thesis_id=@thesisSerialNo and g.progressReportNumber=@progressReportNo
+WHERE g.thesisSerialNumber=@thesisSerialNo and g.progressReportNumber=@progressReportNo
 ELSE
 select g.evaluation
 from NonGUCianProgressReport g
-WHERE g.thesis_id=@thesisSerialNo and g.progressReportNumber=@progressReportNo
+WHERE g.thesisSerialNumber=@thesisSerialNo and g.progressReportNumber=@progressReportNo
 
 
 
@@ -502,6 +498,6 @@ create PROC linkPubThesis
     @thesisSerialNo int
 AS
 insert into Thesis_Publication
-    (thesis_id, publication_id)
+    (thesisSerialNumber, publication_id)
 VALUES
     (@thesisSerialNo, @PubID)
