@@ -220,7 +220,6 @@ CREATE TABLE NonGUCianRegisterThesis(
     NonGUCianID     INT,
     supervisor_id   INT,
     thesisSerialNumber INT,
-    thesisNumber    VARCHAR(20),
 
     PRIMARY KEY (NonGUCianID, thesisSerialNumber,supervisor_id,thesisNumber),
 
@@ -234,7 +233,6 @@ CREATE TABLE GUCianRegisterThesis(
     GUCianID        INT,
     supervisor_id   INT,
     thesisSerialNumber INT,
-    thesisNumber    VARCHAR(20),
 
     PRIMARY KEY (GUCianID, thesisSerialNumber, supervisor_id,thesisNumber),
 
