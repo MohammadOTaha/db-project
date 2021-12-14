@@ -221,7 +221,7 @@ CREATE TABLE NonGUCianRegisterThesis(
     supervisor_id   INT,
     thesisSerialNumber INT,
 
-    PRIMARY KEY (NonGUCianID, thesisSerialNumber,supervisor_id,thesisNumber),
+    PRIMARY KEY (NonGUCianID, thesisSerialNumber,supervisor_id),
 
     FOREIGN KEY (NonGUCianID) REFERENCES NonGUCianStudent(id),
     FOREIGN KEY (thesisSerialNumber) REFERENCES Thesis(serialNumber),
@@ -234,7 +234,7 @@ CREATE TABLE GUCianRegisterThesis(
     supervisor_id   INT,
     thesisSerialNumber INT,
 
-    PRIMARY KEY (GUCianID, thesisSerialNumber, supervisor_id,thesisNumber),
+    PRIMARY KEY (GUCianID, thesisSerialNumber, supervisor_id),
 
     FOREIGN KEY (GUCianID) REFERENCES GUCianStudent(id),
     FOREIGN KEY (supervisor_id) REFERENCES Supervisor(id),
