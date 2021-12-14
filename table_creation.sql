@@ -29,7 +29,7 @@ CREATE TABLE GUCianStudent(
     type            BIT,
     faculty         VARCHAR(10),
     address         VARCHAR(50),
-    GPA             FLOAT(2),
+    GPA             DECIMAL,
     underGradID     INT,
     
     FOREIGN KEY (id) REFERENCES PostGradUser(id)
@@ -43,7 +43,7 @@ CREATE TABLE NonGUCianStudent(
     type            BIT,
     faculty         VARCHAR(10),
     address         VARCHAR(50),
-    GPA             FLOAT(2),
+    GPA             DECIMAL,
     
     FOREIGN KEY (id) REFERENCES PostGradUser(id)
 )
@@ -70,7 +70,7 @@ CREATE TABLE Payment(
     id              INT PRIMARY KEY IDENTITY,
     amount          INT,
     installmentsCnt INT,
-    fundPercentage  FLOAT(2),
+    fundPercentage  DECIMAL,
 )
 
 
@@ -95,7 +95,7 @@ CREATE TABLE Thesis(
     endDate         DATETIME,
     defenseDate     DATETIME,
     years           AS DATETIMEDIFF(YEAR, startDate, endDate),
-    grade           FLOAT(2),
+    grade           DECIMAL,
     payment_id      INT,
     noExtension     INT,
     
@@ -161,7 +161,7 @@ CREATE TABLE Defense(
     thesisSerialNumber INT,
     date            DATETIME,
     location        VARCHAR(50),
-    grade           FLOAT(2),
+    grade           DECIMAL,
 
     PRIMARY KEY (thesisSerialNumber, date),
 
@@ -207,7 +207,7 @@ CREATE TABLE NonGUCianPayCourse(
 CREATE TABLE NonGUCianTakeCourse(
     NonGUCianID     INT,
     course_id       INT,
-    grade           FLOAT(2),
+    grade           DECIMAL,
 
     PRIMARY KEY (NonGUCianID, course_id),
 
