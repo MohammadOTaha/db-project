@@ -5,6 +5,9 @@
 CREATE DATABASE PostGradSystem;
 
 -- Entities:
+
+
+
 CREATE TABLE PostGradUser(
     id              INT PRIMARY KEY IDENTITY,
     email           VARCHAR(255),
@@ -41,7 +44,7 @@ CREATE TABLE NonGUCianStudent(
     faculty         VARCHAR(10),
     address         VARCHAR(50),
     GPA             FLOAT(2),
-    
+    a
     FOREIGN KEY (id) REFERENCES PostGradUser(id)
 )
 

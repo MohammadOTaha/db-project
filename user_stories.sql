@@ -1,4 +1,5 @@
 
+GO
 CREATE PROC StudentRegister
     @first_name varchar(20),
     @last_name varchar(20),
@@ -126,7 +127,7 @@ select @ThesisCount = Count(*)
 from Thesis T
 
 
-
+--We need to ask about it
 GO
 CREATE PROC AdminViewStudentThesisBySupervisor
 AS
@@ -165,17 +166,30 @@ Where  Thesis.noExtension = @ThesisSerial
 
 GO
 create PROC AdminIssueThesisPayment
-    @ThesisSerial INT, @amount DECIMAL, @noOfInstallments INT, @fundPrecentage Decimal
+    @ThesisSerial INT,
+    @amount DECIMAL,
+    @noOfInstallments INT,
+    @fundPrecentage Decimal ,
+    @success bit OUTPUT
 AS
 Declare @pay_id SMALLINT
-select @pay_id =payment_id
+if exists ( select *
 from Thesis
-where serialNumber=@ThesisSerial
-INSERT into Payment
-(id, amount, installmentsCnt, fundPercentage)
-VALUES
-(@pay_id, @amount, @noOfInstallments, @fundPrecentage)
-
+where Thesis.serialNumber = @ThesisSerial)
+BEGIN
+    set @success = 1;
+    select @pay_id =payment_id
+    from Thesis
+    where serialNumber=@ThesisSerial
+    INSERT into Payment
+        (id, amount, installmentsCnt, fundPercentage)
+    VALUES
+        (@pay_id, @amount, @noOfInstallments, @fundPrecentage)
+END
+ELSE
+BEGIN
+    set @success = 0;
+END;
 
 
 GO
@@ -199,8 +213,46 @@ end
 
 
 --3)j) wait to undrstand
+-- GO
+--  declare @dateInform DATE 
 
+--   select @dateInform = DATEADD(month, 2, '2017/08/25');
+--   print(@dateInform)
 
+GO
+CREATE PROC AdminIssueInstallPayment
+    @paymentID int,
+    @installStartDate DATE
+AS
+declare @paymentIdFound INT
+declare @numberOfInstallments INT
+declare @dateAdded DATE
+declare @totalPaymentAmount INT
+declare @amountOfInstallment INT
+select @paymentIdFound = Payment.id
+From Payment
+Where Payment.id = @paymentID
+-- Now I got the ID of the payment
+Select @numberOfInstallments = Payment.installmentsCnt
+From Payment
+where Payment.id = @paymentID
+-- getting number of installemnts
+select @totalPaymentAmount = Payment.amount
+From Payment
+where Payment.id = @paymentID
+--getting the amount of payment
+set @dateAdded = @installStartDate
+set @amountOfInstallment = @totalPaymentAmount/@numberOfInstallments
+while( @numberOfInstallments >0)
+BEGIN
+    INSERT INTo Installment
+        (date,paymentID,amount,isPaid)
+    VALUES
+        (@dateAdded, @paymentIdFound, @amountOfInstallment, 1)
+set @dateAdded = DATEADD(month, 6, @dateAdded);
+set @numberOfInstallments = @numberOfInstallments-1
+END
+--Doing the insertion
 
 
 --We have to check it again--
@@ -270,12 +322,15 @@ AS
         INNER JOIN Examiner E ON E.id = ExaminerEvaluateDefense.examiner_id
         INNER JOIN GUCianRegisterThesis ON ExaminerEvaluateDefense.thesis_id = GUCianRegisterThesis.thesis_id
         INNER JOIN Supervisor S ON S.id = GUCianRegisterThesis.supervisor_id
+        WHEre ExaminerEvaluateDefense.[date] = @defenseDate
+    --Connecting The defenseData with Date given
 UNION
     select E.name , S.name
     From ExaminerEvaluateDefense
         INNER JOIN Examiner E ON E.id = ExaminerEvaluateDefense.examiner_id
         INNER JOIN NonGUCianRegisterThesis ON ExaminerEvaluateDefense.thesis_id = NonGUCianRegisterThesis.thesis_id
         INNER JOIN Supervisor S ON S.id = NonGUCianRegisterThesis.supervisor_id
+        WHEre ExaminerEvaluateDefense.[date] = @defenseDate
 
 
 
@@ -297,9 +352,9 @@ else
 BEGIN
     declare @id int
     select @id = NonGUCianRegisterThesis.NonGUCianID
-    from NonGUCianRegisterThesis 
+    from NonGUCianRegisterThesis
     where NonGUCianRegisterThesis.thesis_id = @ThesisSerialNo
-    if @id IN ( select id
+    if @id IN (                 select id
         from NonGUCianStudent
     EXCEPT
         select s.id
@@ -327,7 +382,9 @@ Select * from NonGUCianTakeCourse
 --Hassan Solutions
 GO
 CREATE PROC AddDefenseGrade
-	@ThesisSerialNo int , @DefenseDate Datetime , @grade decimal
+    @ThesisSerialNo int ,
+    @DefenseDate Datetime ,
+    @grade decimal
 AS
 UPDATE defense
     grade=@grade
@@ -335,27 +392,37 @@ where thesis_id=@ThesisSerialNo and date=@DefenseDate
 
 GO
 CREATE PROC AddCommentsGrade
-	@ThesisSerialNo int , @DefenseDate Datetime , @comments varchar(300)
+    @ThesisSerialNo int ,
+    @DefenseDate Datetime ,
+    @comments varchar(300)
 AS
 INSERT into ExaminerEvaluateDefense
-(thesis_id, date, comment)
+    (thesis_id, date, comment)
 VALUES
-(@ThesisSerialNo, @DefenseDate, @comments)
+    (@ThesisSerialNo, @DefenseDate, @comments)
 
 GO
 CREATE PROC viewMyProfile
-	@studentId int
+    @studentId int
 AS
 select *
-from GUCianStudent,NonGUCianStudent
+from GUCianStudent, NonGUCianStudent
 where @studentId=NonGUCianStudent.id OR @studentId=GUCianStudent;
 
 
 GO
 CREATE PROC editMyProfile
-	@studentID int, @firstName varchar(10), @lastName varchar(10), @password varchar(10), @email varchar(10), @address varchar(10), @type varchar(10)
+    @studentID int,
+    @firstName varchar(10),
+    @lastName varchar(10),
+    @password varchar(10),
+    @email varchar(10),
+    @address varchar(10),
+    @type varchar(10)
 AS
-IF EXISTS ( Select * from GUCianStudent WHERE GUCianStudent.ID = @studentID)
+IF EXISTS ( Select *
+from GUCianStudent
+WHERE GUCianStudent.ID = @studentID)
 UPDATE GUCianStudent
 set firstName = @firstName, lastName=@lastName, password=@password, email=@email, address=@address, type=@type
 where id=@studentID
@@ -367,7 +434,8 @@ where id=@studentID
 
 GO
 CREATE PROC addUndergradID
-	 @studentID int, @undergradID varchar(10)
+    @studentID int,
+    @undergradID varchar(10)
 AS
 UPDATE GUCIANSTUDENT
 set underGradID=@undergradID
@@ -375,7 +443,7 @@ set underGradID=@undergradID
 
 GO
 CREATE PROC ViewCoursesGrades
-	@studentID int
+    @studentID int
 AS
 SELECT NonGUCianTakeCourse.grade
 from NonGUCianTakeCourse
@@ -384,12 +452,12 @@ where @studentID=NonGUCianTakeCourse.NonGUCianID;
 
 GO
 CREATE PROC ViewCoursePaymentsInstall
-	@studentID int
+    @studentID int
 AS
-select Payment,Installment
+select Payment.*, Installment.*
 from Payment p, Installment i
-inner JOIN NonGUCianPayCourse ng on ng.payment_id=payment.payment_id
-INNER JOIN NonGUCianPayCourse ng on ng.payment_id=installment.payment_id
+    inner JOIN NonGUCianPayCourse ng on ng.payment_id=payment.payment_id
+    INNER JOIN NonGUCianPayCourse ng on ng.payment_id=installment.payment_id
 WHERE @studentID =ng.id
 
 
@@ -399,33 +467,41 @@ WHERE @studentID =ng.id
 
 GO
 CREATE PROC ViewEvalProgressReport
-	 @thesisSerialNo int, @progressReportNo int
+    @thesisSerialNo int,
+    @progressReportNo int
 AS
-IF EXISTS ( Select * from GUCianProgressReport WHERE GUCianProgressReport.thesis_id=@thesisSerialNo and GUCianProgressReport.progressReportNumber=@progressReportNo )
+IF EXISTS ( Select *
+from GUCianProgressReport
+WHERE GUCianProgressReport.thesis_id=@thesisSerialNo and GUCianProgressReport.progressReportNumber=@progressReportNo )
 select g.evaluation
 from GUCianProgressReport g
-WHERE g.thesis_id=@thesisSerialNo and g.progressReportNumber=@progressReportNumber
+WHERE g.thesis_id=@thesisSerialNo and g.progressReportNumber=@progressReportNo
 ELSE
 select g.evaluation
 from NonGUCianProgressReport g
-WHERE g.thesis_id=@thesisSerialNo and g.progressReportNumber=@progressReportNumber
+WHERE g.thesis_id=@thesisSerialNo and g.progressReportNumber=@progressReportNo
 
 
 
 GO
 CREATE PROC addPublication
-	@title varchar(50), @pubDate datetime, @host varchar(50), @place varchar(50), @accepted bit
-    AS
+    @title varchar(50),
+    @pubDate datetime,
+    @host varchar(50),
+    @place varchar(50),
+    @accepted bit
+AS
 insert into Publication
-(title, date, host, place, isAccepted)
+    (title, date, host, place, isAccepted)
 VALUES
-(@title, @pubDate, @host, @place, @accepted)
+    (@title, @pubDate, @host, @place, @accepted)
 
 GO
 create PROC linkPubThesis
-	@PubID int, @thesisSerialNo int
+    @PubID int,
+    @thesisSerialNo int
 AS
 insert into Thesis_Publication
-(thesis_id, publication_id)
+    (thesis_id, publication_id)
 VALUES
-(@thesisSerialNo, @PubID)
+    (@thesisSerialNo, @PubID)
