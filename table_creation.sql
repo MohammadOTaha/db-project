@@ -52,7 +52,7 @@ CREATE TABLE NonGUCianStudent(
 CREATE TABLE Supervisor(
     id              INT PRIMARY KEY IDENTITY,
     name            VARCHAR(20),
-    faculty         VARCHAR(10),
+    faculty         VARCHAR(20),
     
     FOREIGN KEY(id) REFERENCES PostGradUser(id)
 )
