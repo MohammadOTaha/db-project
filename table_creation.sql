@@ -75,7 +75,7 @@ CREATE TABLE Payment(
 
 
 CREATE TABLE Installment(
-    date            DATE,
+    date            DATETIME,
     paymentID       INT,
     amount          INT,
     isPaid          BIT,
@@ -91,10 +91,10 @@ CREATE TABLE Thesis(
     type            VARCHAR(50),
     field           VARCHAR(50),
     title           VARCHAR(50),
-    startDate       DATE,
-    endDate         DATE,
-    defenseDate     DATE,
-    years           AS DATEDIFF(YEAR, startDate, endDate),
+    startDate       DATETIME,
+    endDate         DATETIME,
+    defenseDate     DATETIME,
+    years           AS DATETIMEDIFF(YEAR, startDate, endDate),
     grade           FLOAT(2),
     payment_id      INT,
     noExtension     INT,
@@ -106,7 +106,7 @@ CREATE TABLE Thesis(
 CREATE TABLE Publication(
     id              INT PRIMARY KEY IDENTITY,
     title           VARCHAR(50),
-    date            DATE,
+    date            DATETIME,
     place           VARCHAR(50),
     isAccepted      BIT,
     host            VARCHAR(50),
@@ -116,7 +116,7 @@ CREATE TABLE Publication(
 CREATE TABLE GUCianProgressReport(
     student_id      INT,
     progressReportNumber INT,
-    date            DATE,
+    date            DATETIME,
     evaluation      INT,
     state           INT,
     thesisSerialNumber INT,
@@ -133,7 +133,7 @@ CREATE TABLE GUCianProgressReport(
 CREATE TABLE NonGUCianProgressReport(
     student_id      INT,
     progressReportNumber INT,
-    date            DATE,
+    date            DATETIME,
     evaluation      INT,
     state           INT,
     thesisSerialNumber INT,
@@ -159,7 +159,7 @@ CREATE TABLE Examiner(
 
 CREATE TABLE Defense(
     thesisSerialNumber INT,
-    date            DATE,
+    date            DATETIME,
     location        VARCHAR(50),
     grade           FLOAT(2),
 
@@ -254,7 +254,7 @@ CREATE TABLE Thesis_Publication(
 
 
 CREATE TABLE ExaminerEvaluateDefense(
-    date            DATE,
+    date            DATETIME,
     thesisSerialNumber INT,
     examiner_id     INT,
     comment         VARCHAR(255),
