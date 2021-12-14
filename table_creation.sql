@@ -44,7 +44,7 @@ CREATE TABLE NonGUCianStudent(
     faculty         VARCHAR(10),
     address         VARCHAR(50),
     GPA             FLOAT(2),
-    a
+    
     FOREIGN KEY (id) REFERENCES PostGradUser(id)
 )
 
