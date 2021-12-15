@@ -23,7 +23,7 @@ CREATE TABLE Admin(
 
 
 CREATE TABLE GUCianStudent(
-    id              INT PRIMARY KEY IDENTITY,
+    id              INT PRIMARY KEY,
     firstName       VARCHAR(20),
     lastName        VARCHAR(20),
     type            BIT,
@@ -37,7 +37,7 @@ CREATE TABLE GUCianStudent(
 
 
 CREATE TABLE NonGUCianStudent(
-    id              INT PRIMARY KEY IDENTITY,
+    id              INT PRIMARY KEY,
     firstName       VARCHAR(20),
     lastName        VARCHAR(20),
     type            BIT,
@@ -50,7 +50,7 @@ CREATE TABLE NonGUCianStudent(
 
 
 CREATE TABLE Supervisor(
-    id              INT PRIMARY KEY IDENTITY,
+    id              INT PRIMARY KEY,
     name            VARCHAR(20),
     faculty         VARCHAR(20),
     
@@ -115,7 +115,7 @@ CREATE TABLE Publication(
 
 CREATE TABLE GUCianProgressReport(
     student_id      INT,
-    progressReportNumber INT,
+    progressReportNumber INT IDENTITY,
     date            DATETIME,
     description     VARCHAR(200),
     evaluation      INT,
@@ -133,7 +133,7 @@ CREATE TABLE GUCianProgressReport(
 
 CREATE TABLE NonGUCianProgressReport(
     student_id      INT,
-    progressReportNumber INT,
+    progressReportNumber INT IDENTITY,
     date            DATETIME,
     description     VARCHAR(200),
     evaluation      INT,
