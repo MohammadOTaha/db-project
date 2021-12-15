@@ -1,68 +1,82 @@
+------------------- (1) Unregistered User's Features -------------------
+-- 1.a:  Register to the website.
 GO
 CREATE PROC StudentRegister
-    @first_name varchar(20),
-    @last_name varchar(20),
-    @password varchar(20),
-    @faculty varchar(20),
-    @GucianBit BIT,
-    @email varchar(50),
-    @address varchar(20)
+    @first_name VARCHAR(20),
+    @last_name VARCHAR(20),
+    @password VARCHAR(20),
+    @faculty VARCHAR(20),
+    @Gucian BIT,
+    @email VARCHAR(50),
+    @address VARCHAR(20)
 AS
-INSERT INTO PostGradUser
-    (email,password)
-VALUES
-    (@email, @password)
-declare @id int = SCOPE_IDENTITY();
+BEGIN
+    INSERT INTO PostGradUser 
+        (email, password)
+    VALUES
+        (@email, @password);
 
-if @GucianBit =1 
-  INSERT INTO GUCianStudent
-    (id,firstName,lastName,faculty,type,address)
-VALUES
-    (@id, @first_name, @last_name, @faculty, @GucianBit, @address)
-  else 
-   INSERT INTO NonGUCianStudent
-    (id,firstName,lastName,faculty,type,address)
-VALUES
-    (@id, @first_name, @last_name, @faculty, @GucianBit, @address)
+    DECLARE @student_id INT = SCOPE_IDENTITY();
+
+    IF @Gucian = 1
+        BEGIN
+            INSERT INTO GUCianStudent
+                (id, firstName, lastName, type, faculty, address)
+            VALUES
+                (@student_id, @first_name, @last_name, @Gucian, @faculty, @address);
+        END
+    ELSE
+        BEGIN
+            INSERT INTO NonGUCianStudent
+                (id, firstName, lastName, type, faculty, address, GPA)
+            VALUES
+                (@student_id, @first_name, @last_name, @Gucian, @faculty, @address);
+        END
+END
 
 GO
 CREATE PROC SupervisorRegister
-    @name varchar(20),
-    @password varchar(20),
-    @faculty varchar(20),
-    @email varchar(20)
+    @name VARCHAR(20),
+    @password VARCHAR(20),
+    @faculty VARCHAR(20),
+    @email VARCHAR(20)
 AS
-INSERT INTO PostGradUser
-    (email,password)
-VALUES
-    (@email, @password)
-declare @id int  = scope_iDentity();
+BEGIN
+    INSERT INTO PostGradUser
+        (email, password)
+    VALUES
+        (@email, @password);
 
-INSERT INTO Supervisor
-    (id,name,faculty)
-VALUES
-    (@id, @name, @faculty)
+    DECLARE @supervisor_id INT = SCOPE_IDENTITY();
 
+    INSERT INTO Supervisor
+        (id, name, faculty)
+    VALUES
+        (@supervisor_id, @name, @faculty);
+END
 
-
---We have to ask for it--
+------------------- (2) Registered User's Features -------------------
+-- 2.a: login using my username and password.
 GO
 CREATE PROC userLogin
-    @ID int,
-    @paswword varchar(20),
-    @Success bit OUTPUT
+    @ID INT,
+    @password VARCHAR(20),
+    @Success BIT OUTPUT
 AS
-if exists(select *
-from PostGradUser
-where PostGradUser.id = @id)
 BEGIN
-    set @Success = 1
-
-end 
-else 
-BEGIN
-    set @Success = 0;
+    IF EXISTS (
+        SELECT * FROM PostGradUser 
+        WHERE id = @ID AND password = @password
+    )
+        BEGIN
+            SET @Success = 1;
+        END
+    ELSE
+        BEGIN
+            SET @Success = 0;
+        END
 END
+
 /*
 we have to test it
 declare @success bit
@@ -70,29 +84,31 @@ exe userlogin 18,'123',@success output
 print @success
 */
 
-
-
+-- 2.b: add my mobile number(s).
 GO
 CREATE PROC addMobile
-    @ID int,
-    @mobile_number varchar(20)
+    @ID INT,
+    @mobile_number VARCHAR(20)
 AS
-IF EXISTS (select *
-from GUCStudentPhoneNumber
-where GUCStudentPhoneNumber.GUCianID = @ID )
 BEGIN
-    insert into GUCStudentPhoneNumber
-        (GUCianID , phoneNumber)
-    VALUES
-        (@id, @mobile_number);
+    IF EXISTS (
+        SELECT * FROM GUCianStudent
+        WHERE id = @ID
+    )
+        BEGIN
+            INSERT INTO GUCStudentPhoneNumber
+                (GUCianID, phoneNumber)
+            VALUES
+                (@ID, @mobile_number);
+        END
+    ELSE
+        BEGIN
+            INSERT INTO NonGUCianPhoneNumber
+                (NonGUCianID, phoneNumber)
+            VALUES
+                (@ID, @mobile_number);
+        END
 END
-ELSE
-BEGIN
-    insert into NonGUCianPhoneNumber
-        (NonGUCianID,phoneNumber)
-    VALUES(@id, @mobile_number);
-end;
-
 
 
 GO
