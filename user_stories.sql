@@ -217,12 +217,14 @@ where GUCianStudent.id = @sid)
 begin
     select *
     from GUCianStudent INNER JOIN PostGradUser ON PostGradUser.id = GUCianStudent.id
+    INNER JOIN GUCStudentPhoneNumber GP ON GP.GUCianID = GUCianStudent.id
     WHERE GUCianStudent.id = @sid
 end
 else 
 begin
     select *
     from NonGUCianStudent INNER JOIN PostGradUser ON PostGradUser.id = NonGUCianStudent.id
+     INNER JOIN NonGUCianPhoneNumber GP ON GP.NonGUCianID = NonGUCianStudent.id
     WHERE NonGUCianStudent.id = @sid;
 end
 
