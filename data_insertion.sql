@@ -1,3 +1,10 @@
+-- set identity_insert off for all tables
+-- select 'set identity_insert ['+s.name+'].['+o.name+'] off'
+-- from sys.objects o
+-- inner join sys.schemas s on s.schema_id=o.schema_id
+-- where o.[type]='U'
+-- and exists(select 1 from sys.columns where object_id=o.object_id and is_identity=1)
+
 INSERT INTO
     PostGradUser (email, PASSWORD)
 VALUES
@@ -32,8 +39,6 @@ VALUES
     ('admin4@example.com', '1234'),
     ('admin5@example.com', '1234');
 
--- TODO: inserting into Admin?
-SET IDENTITY_INSERT GUCianStudent ON;
 
 INSERT INTO
     GUCianStudent (
@@ -98,10 +103,6 @@ VALUES
         5
     );
 
-SET IDENTITY_INSERT GUCianStudent OFF;
-
-SET IDENTITY_INSERT NonGUCianStudent ON;
-
 INSERT INTO
     NonGUCianStudent (
         id,
@@ -159,9 +160,6 @@ VALUES
         1.3
     );
 
-SET IDENTITY_INSERT NonGUCianStudent OFF;
-
-SET IDENTITY_INSERT Supervisor ON;
 
 INSERT INTO
     Supervisor (id, name, faculty)
@@ -172,9 +170,6 @@ VALUES
     (14, 'Sup4', 'Law'),
     (15, 'Sup5', 'Bio');
 
-SET IDENTITY_INSERT Supervisor OFF;
-
-SET IDENTITY_INSERT Examiner ON;
 INSERT INTO
     Examiner (id, name, fieldOfWork, isNational)
 VALUES
@@ -183,9 +178,7 @@ VALUES
     (13, 'examiner3', 'Medical', 1),
     (14, 'examiner4', 'Law', 0),
     (15, 'examiner5', 'Bio', 1);
-SET IDENTITY_INSERT Examiner OFF;
 
-SET IDENTITY_INSERT Admin ON;
 INSERT INTO Admin (id)
 VALUES
     (16),
@@ -193,7 +186,6 @@ VALUES
     (18),
     (19),
     (20);
-SET IDENTITY_INSERT Admin OFF;
 
 INSERT INTO
     Course (fees, creditHours, code)
@@ -216,6 +208,7 @@ VALUES
     (5000, 2, 0.15),
     (200000, 2, 0.10),
     (5000, 1, 0.40);
+
 
 INSERT INTO 
     Installment (
@@ -481,13 +474,12 @@ VALUES
     ('The sixteenth paper', '2005-04-01', 'New York', 0, 'host16'),
     ('The seventeenth paper', '2004-05-01', 'Cairo', 1, 'host17'),
     ('The eighteenth paper', '2003-06-01', 'Paris', 0, 'host18'),
-    ('The nineteenth paper', '2002-07-01', 'London', 1, 'host19'),
-    ('The twentieth paper', '2001-08-01', 'Tokyo', 0, 'host20');
+    ('The nineteenth paper', '2002-07-01', 'London', 1, 'host19');
+
 
 INSERT INTO
     GUCianProgressReport (
         student_id,
-        progressReportNumber,
         date,
         evaluation,
         state,
@@ -495,16 +487,15 @@ INSERT INTO
         supervisor_id
     )
 VALUES
-    (1, 1, '2019-05-07', 60, 2, 1, 11),
-    (2, 2, '2009-02-01', 75, 1, 2, 12),
-    (3, 3, '2012-12-05', 90, 5, 3, 13),
-    (4, 4, '2019-12-11', 10, 6, 4, 14),
-    (5, 5, '2018-02-10', 0, 1, 5, 15);
+    (1, '2019-05-07', 60, 2, 1, 11),
+    (2, '2009-02-01', 75, 1, 2, 12),
+    (3, '2012-12-05', 90, 5, 3, 13),
+    (4, '2019-12-11', 10, 6, 4, 14),
+    (5, '2018-02-10', 0, 1, 5, 15);
 
 INSERT INTO
     NonGUCianProgressReport (
         student_id,
-        progressReportNumber,
         date,
         evaluation,
         state,
@@ -512,11 +503,11 @@ INSERT INTO
         supervisor_id
     )
 VALUES
-    (6, 6, '2020-05-07', 15, 4, 6, 11),
-    (7, 7, '2001-07-02', 25, 3, 7, 12),
-    (8, 8, '2019-10-05', 35, 5, 8, 13),
-    (9, 9, '2019-12-01', 50, 6, 9, 14),
-    (10, 10, '2015-02-11', 70, 1, 10, 15);
+    (6, '2020-05-07', 15, 4, 6, 11),
+    (7, '2001-07-02', 25, 3, 7, 12),
+    (8, '2019-10-05', 35, 5, 8, 13),
+    (9, '2019-12-01', 50, 6, 9, 14),
+    (10, '2015-02-11', 70, 1, 10, 15);
 
 INSERT INTO
     Defense (thesisSerialNumber, date, location, grade)
@@ -539,10 +530,7 @@ VALUES
     (16, '2010-02-01', 'Munich', 100),
     (17, '2019-12-11', 'Madrid', 50),
     (18, '2019-02-01', 'Chicago', 75),
-    (19, '2021-02-01', 'London', 25),
-    (20, '2021-05-07', 'Tokyo', 90);
-
-
+    (19, '2021-02-01', 'London', 25);
 --------------------- END OF ENTITIES ---------------------
 -- Relations:
 INSERT INTO
@@ -588,11 +576,11 @@ INSERT INTO
         thesisSerialNumber
     )
 VALUES
-    (6, 11, 1, 1),
-    (7, 12, 2, 2),
-    (8, 13, 3, 3),
-    (9, 14, 4, 4),
-    (10, 15, 5, 5);
+    (6, 11, 1),
+    (7, 12, 2),
+    (8, 13, 3),
+    (9, 14, 4),
+    (10, 15, 5);
 
 INSERT INTO
     GUCianRegisterThesis (
@@ -601,11 +589,11 @@ INSERT INTO
         thesisSerialNumber
     )
 VALUES
-    (1, 11, 1, 6),
-    (2, 12, 2, 7),
-    (3, 13, 3, 8),
-    (4, 14, 4, 9),
-    (5, 15, 5, 10);
+    (1, 11, 1),
+    (2, 12, 2),
+    (3, 13, 3),
+    (4, 14, 4),
+    (5, 15, 5);
 
 INSERT INTO
     Thesis_Publication (thesisSerialNumber, publication_id)
@@ -628,8 +616,7 @@ VALUES
     (16, 16),
     (17, 17),
     (18, 18),
-    (19, 19),
-    (20, 20);
+    (19, 19);
 
 INSERT INTO
     ExaminerEvaluateDefense (
@@ -657,5 +644,4 @@ VALUES
     ('2010-02-01', 16, 11, 'examiner1 comment4'),
     ('2019-12-11', 17, 12, 'examiner2 comment4'),
     ('2019-02-01', 18, 13, 'examiner3 comment4'),
-    ('2021-02-01', 19, 14, 'examiner4 comment4'),
-    ('2021-05-07', 20, 15, 'examiner5 comment4');
+    ('2021-02-01', 19, 14, 'examiner4 comment4');

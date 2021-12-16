@@ -5,9 +5,6 @@
 CREATE DATABASE PostGradSystem;
 
 -- Entities:
-
-
-
 CREATE TABLE PostGradUser(
     id              INT PRIMARY KEY IDENTITY,
     email           VARCHAR(255),
@@ -16,7 +13,7 @@ CREATE TABLE PostGradUser(
 
 
 CREATE TABLE Admin(
-    id              INT PRIMARY KEY IDENTITY,
+    id              INT PRIMARY KEY,
     
     FOREIGN KEY(id) REFERENCES PostGradUser(id)
 )
@@ -94,7 +91,7 @@ CREATE TABLE Thesis(
     startDate       DATETIME,
     endDate         DATETIME,
     defenseDate     DATETIME,
-    years           AS DATETIMEDIFF(YEAR, startDate, endDate),
+    years           AS DATEDIFF(YEAR, startDate, endDate),
     grade           DECIMAL,
     payment_id      INT,
     noExtension     INT,
@@ -150,7 +147,7 @@ CREATE TABLE NonGUCianProgressReport(
 
 
 CREATE TABLE Examiner(
-    id              INT PRIMARY KEY IDENTITY,
+    id              INT PRIMARY KEY,
     name            VARCHAR(60),
     fieldOfWork     VARCHAR(50),
     isNational      BIT,

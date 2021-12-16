@@ -28,7 +28,7 @@ BEGIN
     ELSE
         BEGIN
         INSERT INTO NonGUCianStudent
-            (id, firstName, lastName, type, faculty, address, GPA)
+            (id, firstName, lastName, type, faculty, address)
         VALUES
             (@student_id, @first_name, @last_name, @Gucian, @faculty, @address);
     END
