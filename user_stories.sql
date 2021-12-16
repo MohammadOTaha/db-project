@@ -11,7 +11,7 @@ CREATE PROC StudentRegister
     @address VARCHAR(20)
 AS
 BEGIN
-    INSERT INTO PostGradUser 
+    INSERT INTO PostGradUser
         (email, password)
     VALUES
         (@email, @password);
@@ -20,18 +20,18 @@ BEGIN
 
     IF @Gucian = 1
         BEGIN
-            INSERT INTO GUCianStudent
-                (id, firstName, lastName, type, faculty, address)
-            VALUES
-                (@student_id, @first_name, @last_name, @Gucian, @faculty, @address);
-        END
+        INSERT INTO GUCianStudent
+            (id, firstName, lastName, type, faculty, address)
+        VALUES
+            (@student_id, @first_name, @last_name, @Gucian, @faculty, @address);
+    END
     ELSE
         BEGIN
-            INSERT INTO NonGUCianStudent
-                (id, firstName, lastName, type, faculty, address, GPA)
-            VALUES
-                (@student_id, @first_name, @last_name, @Gucian, @faculty, @address);
-        END
+        INSERT INTO NonGUCianStudent
+            (id, firstName, lastName, type, faculty, address, GPA)
+        VALUES
+            (@student_id, @first_name, @last_name, @Gucian, @faculty, @address);
+    END
 END
 
 GO
@@ -65,16 +65,17 @@ CREATE PROC userLogin
 AS
 BEGIN
     IF EXISTS (
-        SELECT * FROM PostGradUser 
-        WHERE id = @ID AND password = @password
+        SELECT *
+    FROM PostGradUser
+    WHERE id = @ID AND password = @password
     )
         BEGIN
-            SET @Success = 1;
-        END
+        SET @Success = 1;
+    END
     ELSE
         BEGIN
-            SET @Success = 0;
-        END
+        SET @Success = 0;
+    END
 END
 
 /*
@@ -92,22 +93,23 @@ CREATE PROC addMobile
 AS
 BEGIN
     IF EXISTS (
-        SELECT * FROM GUCianStudent
-        WHERE id = @ID
+        SELECT *
+    FROM GUCianStudent
+    WHERE id = @ID
     )
         BEGIN
-            INSERT INTO GUCStudentPhoneNumber
-                (GUCianID, phoneNumber)
-            VALUES
-                (@ID, @mobile_number);
-        END
+        INSERT INTO GUCStudentPhoneNumber
+            (GUCianID, phoneNumber)
+        VALUES
+            (@ID, @mobile_number);
+    END
     ELSE
         BEGIN
-            INSERT INTO NonGUCianPhoneNumber
-                (NonGUCianID, phoneNumber)
-            VALUES
-                (@ID, @mobile_number);
-        END
+        INSERT INTO NonGUCianPhoneNumber
+            (NonGUCianID, phoneNumber)
+        VALUES
+            (@ID, @mobile_number);
+    END
 END
 
 
@@ -217,14 +219,14 @@ where GUCianStudent.id = @sid)
 begin
     select *
     from GUCianStudent INNER JOIN PostGradUser ON PostGradUser.id = GUCianStudent.id
-    INNER JOIN GUCStudentPhoneNumber GP ON GP.GUCianID = GUCianStudent.id
+        INNER JOIN GUCStudentPhoneNumber GP ON GP.GUCianID = GUCianStudent.id
     WHERE GUCianStudent.id = @sid
 end
 else 
 begin
     select *
     from NonGUCianStudent INNER JOIN PostGradUser ON PostGradUser.id = NonGUCianStudent.id
-     INNER JOIN NonGUCianPhoneNumber GP ON GP.NonGUCianID = NonGUCianStudent.id
+        INNER JOIN NonGUCianPhoneNumber GP ON GP.NonGUCianID = NonGUCianStudent.id
     WHERE NonGUCianStudent.id = @sid;
 end
 
@@ -266,8 +268,8 @@ BEGIN
         (date,paymentID,amount,isPaid)
     VALUES
         (@dateAdded, @paymentIdFound, @amountOfInstallment, 1)
-set @dateAdded = DATEADD(month, 6, @dateAdded);
-set @numberOfInstallments = @numberOfInstallments-1
+    set @dateAdded = DATEADD(month, 6, @dateAdded);
+    set @numberOfInstallments = @numberOfInstallments-1
 END
 --Doing the insertion
 
@@ -339,7 +341,7 @@ AS
         INNER JOIN Examiner E ON E.id = ExaminerEvaluateDefense.examiner_id
         INNER JOIN GUCianRegisterThesis ON ExaminerEvaluateDefense.thesisSerialNumber = GUCianRegisterThesis.thesisSerialNumber
         INNER JOIN Supervisor S ON S.id = GUCianRegisterThesis.supervisor_id
-        WHEre ExaminerEvaluateDefense.[date] = @defenseDate
+    WHEre ExaminerEvaluateDefense.[date] = @defenseDate
     --Connecting The defenseData with Date given
 UNION
     select E.name , S.name
@@ -347,7 +349,7 @@ UNION
         INNER JOIN Examiner E ON E.id = ExaminerEvaluateDefense.examiner_id
         INNER JOIN NonGUCianRegisterThesis ON ExaminerEvaluateDefense.thesisSerialNumber = NonGUCianRegisterThesis.thesisSerialNumber
         INNER JOIN Supervisor S ON S.id = NonGUCianRegisterThesis.supervisor_id
-        WHEre ExaminerEvaluateDefense.[date] = @defenseDate
+    WHEre ExaminerEvaluateDefense.[date] = @defenseDate
 
 
 ------------------- (4) Supservisor's Features -------------------
@@ -361,17 +363,18 @@ CREATE PROC EvaluateProgressReport
     @evaluation INT
 AS
 IF EXISTS (
-    SELECT * FROM GUCianProgressReport PR
-    WHERE 
-        PR.thesisSerialNumber = @thesisSerialNo AND 
-        PR.progressReportNumber = @progressReportNo AND
-        PR.supervisor_id = @supervisorID
+    SELECT *
+FROM GUCianProgressReport PR
+WHERE 
+        PR.thesisSerialNumber = @thesisSerialNo AND
+    PR.progressReportNumber = @progressReportNo AND
+    PR.supervisor_id = @supervisorID
 )
 BEGIN
     UPDATE GUCianProgressReport
     SET evaluation = @evaluation
     WHERE 
-        GUCianProgressReport.thesisSerialNumber = @thesisSerialNo AND 
+        GUCianProgressReport.thesisSerialNumber = @thesisSerialNo AND
         GUCianProgressReport.progressReportNumber = @progressReportNo AND
         GUCianProgressReport.supervisor_id = @supervisorID
 END
@@ -380,7 +383,7 @@ BEGIN
     UPDATE NonGUCianProgressReport
     SET evaluation = @evaluation
     WHERE 
-        NonGUCianProgressReport.thesisSerialNumber = @thesisSerialNo AND 
+        NonGUCianProgressReport.thesisSerialNumber = @thesisSerialNo AND
         NonGUCianProgressReport.progressReportNumber = @progressReportNo AND
         NonGUCianProgressReport.supervisor_id = @supervisorID
 END
@@ -391,17 +394,17 @@ CREATE PROC ViewSupStudentsYears
     @supervisorID INT
 AS
 BEGIN
-    SELECT GUCianStudent.firstName, GUCianStudent.lastName, T1.years
-    FROM GUCianRegisterThesis GUCianThesis
-    INNER JOIN GUCianStudent GUCianStudent ON GUCianStudent.id = GUCianThesis.GUCianID
-    INNER JOIN Thesis T1 ON T1.serialNumber = GUCianThesis.thesisSerialNumber
-    WHERE GUCianThesis.supervisor_id = @supervisorID
+            SELECT GUCianStudent.firstName, GUCianStudent.lastName, T1.years
+        FROM GUCianRegisterThesis GUCianThesis
+            INNER JOIN GUCianStudent GUCianStudent ON GUCianStudent.id = GUCianThesis.GUCianID
+            INNER JOIN Thesis T1 ON T1.serialNumber = GUCianThesis.thesisSerialNumber
+        WHERE GUCianThesis.supervisor_id = @supervisorID
     UNION
-    SELECT NonGUCianStudent.firstName, NonGUCianStudent.lastName, T2.years
-    FROM NonGUCianRegisterThesis NonGUCianThesis
-    INNER JOIN NonGUCianStudent NonGUCianStudent ON NonGUCianStudent.id = NonGUCianThesis.NonGUCianID
-    INNER JOIN Thesis T2 ON T2.serialNumber = NonGUCianThesis.thesisSerialNumber
-    WHERE NonGUCianThesis.supervisor_id = @supervisorID
+        SELECT NonGUCianStudent.firstName, NonGUCianStudent.lastName, T2.years
+        FROM NonGUCianRegisterThesis NonGUCianThesis
+            INNER JOIN NonGUCianStudent NonGUCianStudent ON NonGUCianStudent.id = NonGUCianThesis.NonGUCianID
+            INNER JOIN Thesis T2 ON T2.serialNumber = NonGUCianThesis.thesisSerialNumber
+        WHERE NonGUCianThesis.supervisor_id = @supervisorID
 END
 
 -- 4.c: View my profile and update my personal information.
@@ -410,7 +413,8 @@ CREATE PROC SupViewProfile
     @supervisorID INT
 AS
 BEGIN
-    SELECT * FROM Supervisor
+    SELECT *
+    FROM Supervisor
     WHERE Supervisor.id = @supervisorID
 END
 
@@ -433,24 +437,25 @@ CREATE PROC ViewAStudentPublications
 AS
 BEGIN
     IF EXISTS (
-        SELECT * FROM GUCianStudent
-        WHERE GUCianStudent.id = @studentID
+        SELECT *
+    FROM GUCianStudent
+    WHERE GUCianStudent.id = @studentID
     )
     BEGIN
         SELECT P.title
         FROM GUCianStudent GUCianStudent
-        INNER JOIN GUCianRegisterThesis GUCianRegisterThesis ON GUCianRegisterThesis.GUCianID = GUCianStudent.id
-        INNER JOIN Thesis_Publication T_P ON T_P.thesisSerialNumber = GUCianRegisterThesis.thesisSerialNumber
-        INNER JOIN Publication P ON P.id = T_P.publication_id
+            INNER JOIN GUCianRegisterThesis GUCianRegisterThesis ON GUCianRegisterThesis.GUCianID = GUCianStudent.id
+            INNER JOIN Thesis_Publication T_P ON T_P.thesisSerialNumber = GUCianRegisterThesis.thesisSerialNumber
+            INNER JOIN Publication P ON P.id = T_P.publication_id
         WHERE GUCianStudent.id = @studentID
     END
     ELSE
     BEGIN
         SELECT P.title
         FROM NonGUCianStudent NonGUCianStudent
-        INNER JOIN NonGUCianRegisterThesis NonGUCianRegisterThesis ON NonGUCianRegisterThesis.NonGUCianID = NonGUCianStudent.id
-        INNER JOIN Thesis_Publication T_P ON T_P.thesisSerialNumber = NonGUCianRegisterThesis.thesisSerialNumber
-        INNER JOIN Publication P ON P.id = T_P.publication_id
+            INNER JOIN NonGUCianRegisterThesis NonGUCianRegisterThesis ON NonGUCianRegisterThesis.NonGUCianID = NonGUCianStudent.id
+            INNER JOIN Thesis_Publication T_P ON T_P.thesisSerialNumber = NonGUCianRegisterThesis.thesisSerialNumber
+            INNER JOIN Publication P ON P.id = T_P.publication_id
         WHERE NonGUCianStudent.id = @studentID
     END
 END
@@ -461,11 +466,14 @@ GO
 CREATE PROC AddDefenseGucian
     @thesisSerialNo INT,
     @defenseDate DATETIME,
-    @defenseLocation VARCHAR(15) -- TODO: Shall we change the length to 15 in table_creations too? 
+    @defenseLocation VARCHAR(15)
+-- TODO: Shall we change the length to 15 in table_creations too? 
 AS
 BEGIN
-    INSERT INTO Defense (thesisSerialNumber, date, location)
-    VALUES (@thesisSerialNo, @defenseDate, @defenseLocation)
+    INSERT INTO Defense
+        (thesisSerialNumber, date, location)
+    VALUES
+        (@thesisSerialNo, @defenseDate, @defenseLocation)
 
     UPDATE Thesis
     SET defenseDate = @defenseDate
@@ -476,7 +484,8 @@ GO
 CREATE PROC AddDefenseNonGucian
     @thesisSerialNo INT,
     @defenseDate DATETIME,
-    @defenseLocation VARCHAR(15) -- TODO: Shall we change the length to 15 in table_creations too?
+    @defenseLocation VARCHAR(15)
+-- TODO: Shall we change the length to 15 in table_creations too?
 AS
 BEGIN
     -- get NonGUCianID
@@ -487,12 +496,15 @@ BEGIN
 
     -- check if all student's grades are greater than 50 percent
     IF NOT EXISTS (
-        SELECT * FROM NonGUCianTakeCourse C
-        WHERE C.NonGUCianID = @NonGUCianID AND C.grade <= 50
+        SELECT *
+    FROM NonGUCianTakeCourse C
+    WHERE C.NonGUCianID = @NonGUCianID AND C.grade <= 50
     )
     BEGIN
-        INSERT INTO Defense (thesisSerialNumber, date, location)
-        VALUES (@thesisSerialNo, @defenseDate, @defenseLocation)
+        INSERT INTO Defense
+            (thesisSerialNumber, date, location)
+        VALUES
+            (@thesisSerialNo, @defenseDate, @defenseLocation)
 
         UPDATE Thesis
         SET defenseDate = @defenseDate
@@ -510,12 +522,16 @@ CREATE PROC AddExaminer
     @fieldOfWork VARCHAR(20)
 AS
 BEGIN
-    INSERT INTO Examiner(name, isNational, fieldOfWork)
-    VALUES (@ExaminerName, @National, @fieldOfWork)
-    
+    INSERT INTO Examiner
+        (name, isNational, fieldOfWork)
+    VALUES
+        (@ExaminerName, @National, @fieldOfWork)
+
     DECLARE @ExaminerID INT = SCOPE_IDENTITY()
-    INSERT INTO ExaminerEvaluateDefense(thesisSerialNumber, examiner_id, date)
-    VALUES (@thesisSerialNo, @ExaminerID, @DefenseDate)
+    INSERT INTO ExaminerEvaluateDefense
+        (thesisSerialNumber, examiner_id, date)
+    VALUES
+        (@thesisSerialNo, @ExaminerID, @DefenseDate)
 END
 
 -- 4.g: Cancel a Thesis if the evaluation of the last progress report is zero.
@@ -526,12 +542,15 @@ AS
 BEGIN
     IF ( 
         EXISTS (
-            SELECT * FROM GUCianProgressReport PR
-            WHERE PR.thesisSerialNumber = @thesisSerialNo
+            SELECT *
+        FROM GUCianProgressReport PR
+        WHERE PR.thesisSerialNumber = @thesisSerialNo
         ) AND (
-            SELECT TOP 1 evaluation FROM GUCianProgressReport PR
-            WHERE PR.thesisSerialNumber = @thesisSerialNo
-            ORDER BY PR.date DESC
+            SELECT TOP 1
+            evaluation
+        FROM GUCianProgressReport PR
+        WHERE PR.thesisSerialNumber = @thesisSerialNo
+        ORDER BY PR.date DESC
         ) = 0
     )
     BEGIN
@@ -540,12 +559,15 @@ BEGIN
     END
     ELSE IF (
         EXISTS (
-            SELECT * FROM NonGUCianProgressReport PR
-            WHERE PR.thesisSerialNumber = @thesisSerialNo
+            SELECT *
+        FROM NonGUCianProgressReport PR
+        WHERE PR.thesisSerialNumber = @thesisSerialNo
         ) AND (
-            SELECT TOP 1 evaluation FROM NonGUCianProgressReport PR
-            WHERE PR.thesisSerialNumber = @thesisSerialNo
-            ORDER BY PR.date DESC
+            SELECT TOP 1
+            evaluation
+        FROM NonGUCianProgressReport PR
+        WHERE PR.thesisSerialNumber = @thesisSerialNo
+        ORDER BY PR.date DESC
         ) = 0
     )
     BEGIN
@@ -604,18 +626,21 @@ CREATE PROC viewMyProfile
 AS
 BEGIN
     IF EXISTS (
-        SELECT * FROM GUCianStudent
-        WHERE GUCianStudent.id = @studentId
+        SELECT *
+    FROM GUCianStudent
+    WHERE GUCianStudent.id = @studentId
     )
         BEGIN
-            SELECT * FROM GUCianStudent
-            WHERE GUCianStudent.id = @studentId
-        END
+        SELECT *
+        FROM GUCianStudent
+        WHERE GUCianStudent.id = @studentId
+    END
     ELSE
         BEGIN
-            SELECT * FROM NonGUCianStudent
-            WHERE NonGUCianStudent.id = @studentId
-        END
+        SELECT *
+        FROM NonGUCianStudent
+        WHERE NonGUCianStudent.id = @studentId
+    END
 END
 
 -- 6.b: Edit my profile (change any of my personal information).
@@ -635,20 +660,21 @@ BEGIN
     WHERE PostGradUser.id = @studentId
 
     IF EXISTS (
-        SELECT * FROM GUCianStudent
-        WHERE GUCianStudent.id = @studentId
+        SELECT *
+    FROM GUCianStudent
+    WHERE GUCianStudent.id = @studentId
     )
         BEGIN
-            UPDATE GUCianStudent
+        UPDATE GUCianStudent
             SET firstName = @firstName, lastName = @lastName, address = @address
             WHERE GUCianStudent.id = @studentId
-        END
+    END
     ELSE
         BEGIN
-            UPDATE NonGUCianStudent
+        UPDATE NonGUCianStudent
             SET firstName = @firstName, lastName = @lastName, address = @address
             WHERE NonGUCianStudent.id = @studentId
-        END
+    END
 END
 
 -- 6.c: As a Gucian graduate, add my undergarduate ID.
@@ -669,7 +695,8 @@ CREATE PROC ViewCoursesGrades
     @studentID INT
 AS
 BEGIN
-    SELECT C.course_id, C.grade FROM NonGUCianTakeCourse C
+    SELECT C.course_id, C.grade
+    FROM NonGUCianTakeCourse C
     WHERE C.NonGUCianID = @studentID
 END
 
@@ -682,7 +709,7 @@ AS
 BEGIN
     SELECT CP.course_id, I.*
     FROM NonGUCianPayCourse CP
-    INNER JOIN Installment I ON I.paymentID = CP.payment_id
+        INNER JOIN Installment I ON I.paymentID = CP.payment_id
     WHERE CP.NonGUCianID = @studentID
 END
 
@@ -693,24 +720,25 @@ CREATE PROC ViewThesisPaymentsInstall
 AS
 BEGIN
     IF EXISTS (
-        SELECT * FROM GUCianStudent
-        WHERE GUCianStudent.id = @studentID
+        SELECT *
+    FROM GUCianStudent
+    WHERE GUCianStudent.id = @studentID
     )
         BEGIN
-            SELECT GUCianThesis.thesisSerialNumber, I.*
-            FROM GUCianRegisterThesis GUCianThesis
+        SELECT GUCianThesis.thesisSerialNumber, I.*
+        FROM GUCianRegisterThesis GUCianThesis
             INNER JOIN Thesis T ON T.serialNumber = GUCianThesis.thesisSerialNumber
             INNER JOIN Installment I ON I.paymentID = T.payment_id
-            WHERE GUCianThesis.GUCianID = @studentID
-        END
+        WHERE GUCianThesis.GUCianID = @studentID
+    END
     ELSE
         BEGIN
-            SELECT NonGUCianThesis.thesisSerialNumber, I.*
-            FROM NonGUCianRegisterThesis NonGUCianThesis
+        SELECT NonGUCianThesis.thesisSerialNumber, I.*
+        FROM NonGUCianRegisterThesis NonGUCianThesis
             INNER JOIN Thesis T ON T.serialNumber = NonGUCianThesis.thesisSerialNumber
             INNER JOIN Installment I ON I.paymentID = T.payment_id
-            WHERE NonGUCianThesis.NonGUCianID = @studentID
-        END
+        WHERE NonGUCianThesis.NonGUCianID = @studentID
+    END
 END
 
 ---- 6.e.3: View upcoming installments.
@@ -720,31 +748,32 @@ CREATE PROC ViewUpcomingInstallments
 AS
 BEGIN
     IF EXISTS (
-        SELECT * FROM GUCianStudent
-        WHERE GUCianStudent.id = @studentID
+        SELECT *
+    FROM GUCianStudent
+    WHERE GUCianStudent.id = @studentID
     )
         BEGIN
-            SELECT I.*
-            FROM GUCianRegisterThesis GUCianThesis
+        SELECT I.*
+        FROM GUCianRegisterThesis GUCianThesis
             INNER JOIN Thesis T ON T.serialNumber = GUCianThesis.thesisSerialNumber
             INNER JOIN Installment I ON I.paymentID = T.payment_id
-            WHERE GUCianThesis.GUCianID = @studentID AND I.date > GETDATE()
-        END
+        WHERE GUCianThesis.GUCianID = @studentID AND I.date > GETDATE()
+    END
     ELSE
         BEGIN
-            SELECT I.*
+                    SELECT I.*
             FROM NonGUCianRegisterThesis NonGUCianThesis
-            INNER JOIN Thesis T ON T.serialNumber = NonGUCianThesis.thesisSerialNumber
-            INNER JOIN Installment I ON I.paymentID = T.payment_id
+                INNER JOIN Thesis T ON T.serialNumber = NonGUCianThesis.thesisSerialNumber
+                INNER JOIN Installment I ON I.paymentID = T.payment_id
             WHERE NonGUCianThesis.NonGUCianID = @studentID AND I.date > GETDATE()
 
-            UNION
+        UNION
 
             SELECT I.*
             FROM NonGUCianPayCourse CP
-            INNER JOIN Installment I ON I.paymentID = CP.payment_id
+                INNER JOIN Installment I ON I.paymentID = CP.payment_id
             WHERE CP.NonGUCianID = @studentID AND I.date > GETDATE()
-        END
+    END
 END
 
 ---- 6.e.4: View missed installments.
@@ -754,31 +783,32 @@ CREATE PROC ViewMissedInstallments
 AS
 BEGIN
     IF EXISTS (
-        SELECT * FROM GUCianStudent
-        WHERE GUCianStudent.id = @studentID
+        SELECT *
+    FROM GUCianStudent
+    WHERE GUCianStudent.id = @studentID
     )
         BEGIN
-            SELECT I.*
-            FROM GUCianRegisterThesis GUCianThesis
+        SELECT I.*
+        FROM GUCianRegisterThesis GUCianThesis
             INNER JOIN Thesis T ON T.serialNumber = GUCianThesis.thesisSerialNumber
             INNER JOIN Installment I ON I.paymentID = T.payment_id
-            WHERE GUCianThesis.GUCianID = @studentID AND I.date < GETDATE() AND I.isPaid = 0
-        END
+        WHERE GUCianThesis.GUCianID = @studentID AND I.date < GETDATE() AND I.isPaid = 0
+    END
     ELSE
         BEGIN
-            SELECT I.*
+                    SELECT I.*
             FROM NonGUCianRegisterThesis NonGUCianThesis
-            INNER JOIN Thesis T ON T.serialNumber = NonGUCianThesis.thesisSerialNumber
-            INNER JOIN Installment I ON I.paymentID = T.payment_id
+                INNER JOIN Thesis T ON T.serialNumber = NonGUCianThesis.thesisSerialNumber
+                INNER JOIN Installment I ON I.paymentID = T.payment_id
             WHERE NonGUCianThesis.NonGUCianID = @studentID AND I.date < GETDATE() AND I.isPaid = 0
 
-            UNION
+        UNION
 
             SELECT I.*
             FROM NonGUCianPayCourse CP
-            INNER JOIN Installment I ON I.paymentID = CP.payment_id
+                INNER JOIN Installment I ON I.paymentID = CP.payment_id
             WHERE CP.NonGUCianID = @studentID AND I.date < GETDATE() AND I.isPaid = 0
-        END
+    END
 END
 
 -- 6.f: Add and fill my progress report(s).
@@ -789,79 +819,81 @@ CREATE PROC AddProgressReport
     @thesisSerialNo INT,
     @progressReportDate DATE
 AS
-BEGIN 
+BEGIN
     IF EXISTS (
-        SELECT * FROM GUCianRegisterThesis GT
-        WHERE GT.thesisSerialNumber = @thesisSerialNo
+        SELECT *
+    FROM GUCianRegisterThesis GT
+    WHERE GT.thesisSerialNumber = @thesisSerialNo
     )
         BEGIN
-            DECLARE @GUCianStudentID INT
-            SET @GUCianStudentID = (
+        DECLARE @GUCianStudentID INT
+        SET @GUCianStudentID = (
                 SELECT GUCianID
-                FROM GUCianRegisterThesis
-                WHERE thesisSerialNumber = @thesisSerialNo
+        FROM GUCianRegisterThesis
+        WHERE thesisSerialNumber = @thesisSerialNo
             )
 
-            INSERT INTO GUCianProgressReport
-                (date, thesisSerialNumber)
-            VALUES
-                (@progressReportDate, @thesisSerialNo)
-        END
+        INSERT INTO GUCianProgressReport
+            (date, thesisSerialNumber)
+        VALUES
+            (@progressReportDate, @thesisSerialNo)
+    END
     ELSE
         BEGIN
-            DECLARE @NonGUCianStudentID INT
-            SET @NonGUCianStudentID = (
+        DECLARE @NonGUCianStudentID INT
+        SET @NonGUCianStudentID = (
                 SELECT NonGUCianID
-                FROM NonGUCianRegisterThesis
-                WHERE thesisSerialNumber = @thesisSerialNo
+        FROM NonGUCianRegisterThesis
+        WHERE thesisSerialNumber = @thesisSerialNo
             )
 
-            INSERT INTO NonGUCianProgressReport
-                (date, thesisSerialNumber)
-            VALUES
-                (@progressReportDate, @thesisSerialNo)
-        END
+        INSERT INTO NonGUCianProgressReport
+            (date, thesisSerialNumber)
+        VALUES
+            (@progressReportDate, @thesisSerialNo)
+    END
 END
 
 ---- 6.f.2: Fill a progress report.
 -- TODO: where's the description in schema?
 GO
 CREATE PROC FillProgressReport
-    @thesisSerialNo INT, 
-    @progressReportNo INT, 
-    @state INT, 
+    @thesisSerialNo INT,
+    @progressReportNo INT,
+    @state INT,
     @description VARCHAR(200)
 AS
 BEGIN
     IF EXISTS (
-        SELECT * FROM GUCianRegisterThesis GT
-        WHERE GT.thesisSerialNumber = @thesisSerialNo
+        SELECT *
+    FROM GUCianRegisterThesis GT
+    WHERE GT.thesisSerialNumber = @thesisSerialNo
     )
         BEGIN
-            DECLARE @GUCianStudentID INT
-            SET @GUCianStudentID = (
+        DECLARE @GUCianStudentID INT
+        SET @GUCianStudentID = (
                 SELECT GUCianID
-                FROM GUCianRegisterThesis
-                WHERE thesisSerialNumber = @thesisSerialNo
+        FROM GUCianRegisterThesis
+        WHERE thesisSerialNumber = @thesisSerialNo
             )
 
-            UPDATE GUCianProgressReport
+        UPDATE GUCianProgressReport
             SET state = @state, description = @description
             WHERE progressReportNumber = @progressReportNo AND student_id = @GUCianStudentID
-        END
+    END
     ELSE
         BEGIN
-            DECLARE @NonGUCianStudentID INT
-            SET @NonGUCianStudentID = (
+        DECLARE @NonGUCianStudentID INT
+        SET @NonGUCianStudentID = (
                 SELECT NonGUCianID
-                FROM NonGUCianRegisterThesis
-                WHERE thesisSerialNumber = @thesisSerialNo
+        FROM NonGUCianRegisterThesis
+        WHERE thesisSerialNumber = @thesisSerialNo
             )
 
-            UPDATE NonGUCianProgressReport
+        UPDATE NonGUCianProgressReport
             SET state = @state, description = @description
             WHERE progressReportNumber = @progressReportNo AND student_id = @NonGUCianStudentID
-        END
+    END
 END
 
 -- 6.g: View my progress report(s) evaluations.
@@ -872,18 +904,21 @@ CREATE PROC ViewEvalProgressReport
 AS
 BEGIN
     IF EXISTS (
-        SELECT * FROM GUCianProgressReport
-        WHERE thesisSerialNumber = @thesisSerialNo AND progressReportNumber = @progressReportNo
+        SELECT *
+    FROM GUCianProgressReport
+    WHERE thesisSerialNumber = @thesisSerialNo AND progressReportNumber = @progressReportNo
     )
         BEGIN
-            SELECT evaluation FROM GUCianProgressReport
-            WHERE thesisSerialNumber = @thesisSerialNo AND progressReportNumber = @progressReportNo
-        END
+        SELECT evaluation
+        FROM GUCianProgressReport
+        WHERE thesisSerialNumber = @thesisSerialNo AND progressReportNumber = @progressReportNo
+    END
     ELSE
         BEGIN
-            SELECT evaluation FROM NonGUCianProgressReport
-            WHERE thesisSerialNumber = @thesisSerialNo AND progressReportNumber = @progressReportNo
-        END
+        SELECT evaluation
+        FROM NonGUCianProgressReport
+        WHERE thesisSerialNumber = @thesisSerialNo AND progressReportNumber = @progressReportNo
+    END
 END
 
 -- 6.h: Add Publication.
