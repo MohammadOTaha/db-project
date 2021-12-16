@@ -3,8 +3,8 @@
 GO
 CREATE PROC StudentRegister
     @first_name VARCHAR(20),
-    @last_name VARCHAR(20),
-    @password VARCHAR(20),
+    @lASt_name VARCHAR(20),
+    @pASsword VARCHAR(20),
     @faculty VARCHAR(20),
     @Gucian BIT,
     @email VARCHAR(50),
@@ -12,40 +12,40 @@ CREATE PROC StudentRegister
 AS
 BEGIN
     INSERT INTO PostGradUser
-        (email, password)
+        (email, pASsword)
     VALUES
-        (@email, @password);
+        (@email, @pASsword);
 
     DECLARE @student_id INT = SCOPE_IDENTITY();
 
     IF @Gucian = 1
         BEGIN
         INSERT INTO GUCianStudent
-            (id, firstName, lastName, type, faculty, address)
+            (id, firstName, lAStName, type, faculty, address)
         VALUES
-            (@student_id, @first_name, @last_name, @Gucian, @faculty, @address);
+            (@student_id, @first_name, @lASt_name, @Gucian, @faculty, @address);
     END
     ELSE
         BEGIN
         INSERT INTO NonGUCianStudent
-            (id, firstName, lastName, type, faculty, address)
+            (id, firstName, lAStName, type, faculty, address)
         VALUES
-            (@student_id, @first_name, @last_name, @Gucian, @faculty, @address);
+            (@student_id, @first_name, @lASt_name, @Gucian, @faculty, @address);
     END
 END
 
 GO
 CREATE PROC SupervisorRegister
     @name VARCHAR(20),
-    @password VARCHAR(20),
+    @pASsword VARCHAR(20),
     @faculty VARCHAR(20),
     @email VARCHAR(20)
 AS
 BEGIN
     INSERT INTO PostGradUser
-        (email, password)
+        (email, pASsword)
     VALUES
-        (@email, @password);
+        (@email, @pASsword);
 
     DECLARE @supervisor_id INT = SCOPE_IDENTITY();
 
@@ -56,18 +56,18 @@ BEGIN
 END
 
 ------------------- (2) Registered User's Features -------------------
--- 2.a: login using my username and password.
+-- 2.a: login using my username and pASsword.
 GO
 CREATE PROC userLogin
     @ID INT,
-    @password VARCHAR(20),
+    @pASsword VARCHAR(20),
     @Success BIT OUTPUT
 AS
 BEGIN
     IF EXISTS (
         SELECT *
     FROM PostGradUser
-    WHERE id = @ID AND password = @password
+    WHERE id = @ID AND pASsword = @pASsword
     )
         BEGIN
         SET @Success = 1;
@@ -77,13 +77,6 @@ BEGIN
         SET @Success = 0;
     END
 END
-
-/*
-we have to test it
-declare @success bit
-exe userlogin 18,'123',@success output
-print @success
-*/
 
 -- 2.b: add my mobile number(s).
 GO
@@ -116,49 +109,49 @@ END
 GO
 CREATE PROC AdminListUp
 AS
-select *
-from Supervisor
+SELECT *
+FROM Supervisor
     INNER JOIN PostGradUser ON PostGradUser.id = Supervisor.id;
 
 GO
 CREATE PROC AdminViewSupervisorProfile
     @supID INT
 AS
-select *
-from Supervisor
-    INNER JOIN PostGradUser on PostGradUser.id = Supervisor.id
-Where Supervisor.id = @supID;
+SELECT *
+FROM Supervisor
+    INNER JOIN PostGradUser ON PostGradUser.id = Supervisor.id
+WHERE Supervisor.id = @supID;
 
 
 GO
 CREATE PROC AdminViewAllTheses
 AS
-select *
-from Thesis;
+SELECT *
+FROM Thesis;
 
 GO
-CREATE PROC AdminViewOnGoingTheses
+CREATE PROC AdminViewOnGOingTheses
     @ThesisCount SMALLINT Output
 AS
-select @ThesisCount = Count(*)
-from Thesis T
+SELECT @ThesisCount = Count(*)
+FROM Thesis T
 
 
---We need to ask about it
+--We need to ASk about it
 GO
 CREATE PROC AdminViewStudentThesisBySupervisor
 AS
-    Select S1.name as Supervisor, T1.title as Thesis , GUCianStudent.firstName as First_name , GUCianStudent.lastName as Last_name
-    From GUCianRegisterThesis
+    SELECT S1.name AS Supervisor, T1.title AS Thesis , GUCianStudent.firstName AS First_name , GUCianStudent.lAStName AS LASt_name
+    FROM GUCianRegisterThesis
         INNER JOIN Supervisor S1 On S1.id = GUCianRegisterThesis.supervisor_id
-        INNER join Thesis T1 on T1.serialNumber = GUCianRegisterThesis.thesisSerialNumber
-        INNER JOIn GUCianStudent ON GUCianStudent.id = GUCianRegisterThesis.GUCianID
+        INNER JOIN Thesis T1 on T1.serialNumber = GUCianRegisterThesis.thesisSerialNumber
+        INNER JOIN GUCianStudent ON GUCianStudent.id = GUCianRegisterThesis.GUCianID
 UNION
-    Select S2.name, T2.title, NonGUCianStudent.firstName , NonGUCianStudent.lastName
-    From NonGUCianRegisterThesis
+    SELECT S2.name, T2.title, NonGUCianStudent.firstName , NonGUCianStudent.lAStName
+    FROM NonGUCianRegisterThesis
         INNER JOIN Supervisor S2 On S2.id = NonGUCianRegisterThesis.supervisor_id
-        INNER join Thesis T2 on T2.serialNumber = NonGUCianRegisterThesis.thesisSerialNumber
-        INNER JOIn NonGUCianStudent ON NonGUCianStudent.id = NonGUCianRegisterThesis.NonGUCianID
+        INNER JOIN Thesis T2 on T2.serialNumber = NonGUCianRegisterThesis.thesisSerialNumber
+        INNER JOIN NonGUCianStudent ON NonGUCianStudent.id = NonGUCianRegisterThesis.NonGUCianID
 
 
 
@@ -167,8 +160,8 @@ GO
 CREATE PROC AdminListNonGucianCourse
     @courseID Int
 AS
-Select NG.firstName , NG.lastName, C.code, NonGUCianTakeCourse.grade
-FRom NonGUCianTakeCourse
+Select NG.firstName , NG.lAStName, C.code, NonGUCianTakeCourse.grade
+FROM NonGUCianTakeCourse
     INNER JOIN NonGUCianStudent NG ON NG.id = NonGUCianTakeCourse.NonGUCianID
     INNER JOIN Course C ON C.id = NonGUCianTakeCourse.course_id
 
@@ -191,12 +184,12 @@ create PROC AdminIssueThesisPayment
 AS
 Declare @pay_id SMALLINT
 if exists ( select *
-from Thesis
+FROM Thesis
 where Thesis.serialNumber = @ThesisSerial)
 BEGIN
     set @success = 1;
     select @pay_id =payment_id
-    from Thesis
+    FROM Thesis
     where serialNumber=@ThesisSerial
     INSERT into Payment
         (id, amount, installmentsCnt, fundPercentage)
@@ -214,18 +207,18 @@ CREATE PROC AdminViewStudentProfile
     @sid INT
 AS
 If EXISTS (Select *
-From GUCianStudent
+FROM GUCianStudent
 where GUCianStudent.id = @sid)
 begin
     select *
-    from GUCianStudent INNER JOIN PostGradUser ON PostGradUser.id = GUCianStudent.id
+    FROM GUCianStudent INNER JOIN PostGradUser ON PostGradUser.id = GUCianStudent.id
         INNER JOIN GUCStudentPhoneNumber GP ON GP.GUCianID = GUCianStudent.id
     WHERE GUCianStudent.id = @sid
 end
 else 
 begin
     select *
-    from NonGUCianStudent INNER JOIN PostGradUser ON PostGradUser.id = NonGUCianStudent.id
+    FROM NonGUCianStudent INNER JOIN PostGradUser ON PostGradUser.id = NonGUCianStudent.id
         INNER JOIN NonGUCianPhoneNumber GP ON GP.NonGUCianID = NonGUCianStudent.id
     WHERE NonGUCianStudent.id = @sid;
 end
@@ -249,15 +242,15 @@ declare @dateAdded DATE
 declare @totalPaymentAmount INT
 declare @amountOfInstallment INT
 select @paymentIdFound = Payment.id
-From Payment
+FROM Payment
 Where Payment.id = @paymentID
--- Now I got the ID of the payment
+-- Now I GOt the ID of the payment
 Select @numberOfInstallments = Payment.installmentsCnt
-From Payment
+FROM Payment
 where Payment.id = @paymentID
 -- getting number of installemnts
 select @totalPaymentAmount = Payment.amount
-From Payment
+FROM Payment
 where Payment.id = @paymentID
 --getting the amount of payment
 set @dateAdded = @installStartDate
@@ -279,7 +272,7 @@ GO
 CREATE PROC AdminListAcceptPublication
 AS
 select P.title
-from Thesis_Publication
+FROM Thesis_Publication
     INNER JOIN Publication P ON P.id = Thesis_Publication.publication_id
 Where P.isAccepted = '1';
 
@@ -304,7 +297,7 @@ CREATE PROC linkCourseStudent
     @studentID INT
 AS
 IF EXISTS (select *
-from NonGUCianTakeCourse
+FROM NonGUCianTakeCourse
 where NonGUCianTakeCourse.NonGUCianID = @studentID)
 BEGIN
     INSERT INTO NonGUCianTakeCourse
@@ -321,7 +314,7 @@ CREATE PROC AddStudentCourseGrade
     @grade DECIMAL
 AS
 IF EXISTS (select *
-from NonGUCianTakeCourse
+FROM NonGUCianTakeCourse
 where NonGUCianTakeCourse.NonGUCianID = @studentID)
 BEGIN
     UPDATE NonGUCianTakeCourse
@@ -337,7 +330,7 @@ CREATE PROC ViewExamSupDefense
     @defenseDate DATETIME
 AS
     select E.name , S.name
-    From ExaminerEvaluateDefense
+    FROM ExaminerEvaluateDefense
         INNER JOIN Examiner E ON E.id = ExaminerEvaluateDefense.examiner_id
         INNER JOIN GUCianRegisterThesis ON ExaminerEvaluateDefense.thesisSerialNumber = GUCianRegisterThesis.thesisSerialNumber
         INNER JOIN Supervisor S ON S.id = GUCianRegisterThesis.supervisor_id
@@ -345,7 +338,7 @@ AS
     --Connecting The defenseData with Date given
 UNION
     select E.name , S.name
-    From ExaminerEvaluateDefense
+    FROM ExaminerEvaluateDefense
         INNER JOIN Examiner E ON E.id = ExaminerEvaluateDefense.examiner_id
         INNER JOIN NonGUCianRegisterThesis ON ExaminerEvaluateDefense.thesisSerialNumber = NonGUCianRegisterThesis.thesisSerialNumber
         INNER JOIN Supervisor S ON S.id = NonGUCianRegisterThesis.supervisor_id
@@ -367,8 +360,8 @@ IF EXISTS (
 FROM GUCianProgressReport PR
 WHERE 
         PR.thesisSerialNumber = @thesisSerialNo AND
-    PR.progressReportNumber = @progressReportNo AND
-    PR.supervisor_id = @supervisorID
+        PR.progressReportNumber = @progressReportNo AND
+        PR.supervisor_id = @supervisorID
 )
 BEGIN
     UPDATE GUCianProgressReport
@@ -394,13 +387,13 @@ CREATE PROC ViewSupStudentsYears
     @supervisorID INT
 AS
 BEGIN
-            SELECT GUCianStudent.firstName, GUCianStudent.lastName, T1.years
+            SELECT GUCianStudent.firstName, GUCianStudent.lAStName, T1.years
         FROM GUCianRegisterThesis GUCianThesis
             INNER JOIN GUCianStudent GUCianStudent ON GUCianStudent.id = GUCianThesis.GUCianID
             INNER JOIN Thesis T1 ON T1.serialNumber = GUCianThesis.thesisSerialNumber
         WHERE GUCianThesis.supervisor_id = @supervisorID
     UNION
-        SELECT NonGUCianStudent.firstName, NonGUCianStudent.lastName, T2.years
+        SELECT NonGUCianStudent.firstName, NonGUCianStudent.lAStName, T2.years
         FROM NonGUCianRegisterThesis NonGUCianThesis
             INNER JOIN NonGUCianStudent NonGUCianStudent ON NonGUCianStudent.id = NonGUCianThesis.NonGUCianID
             INNER JOIN Thesis T2 ON T2.serialNumber = NonGUCianThesis.thesisSerialNumber
@@ -534,7 +527,7 @@ BEGIN
         (@thesisSerialNo, @ExaminerID, @DefenseDate)
 END
 
--- 4.g: Cancel a Thesis if the evaluation of the last progress report is zero.
+-- 4.g: Cancel a Thesis if the evaluation of the lASt progress report is zero.
 GO
 CREATE PROC CancelThesis
     @thesisSerialNo INT
@@ -588,7 +581,6 @@ BEGIN
     SET grade = @grade
     WHERE Thesis.serialNumber = @thesisSerialNo
 END
-
 
 ------------------- (5) Examiner's Features -------------------
 
@@ -648,15 +640,15 @@ GO
 CREATE PROC editMyProfile
     @studentId INT,
     @firstName VARCHAR(10),
-    @lastName VARCHAR(10),
-    @password VARCHAR(10),
+    @lAStName VARCHAR(10),
+    @pASsword VARCHAR(10),
     @email VARCHAR(10),
     @address VARCHAR(10),
     @type VARCHAR(10)
 AS
 BEGIN
     UPDATE PostGradUser
-    SET email = @email, password = @password
+    SET email = @email, pASsword = @pASsword
     WHERE PostGradUser.id = @studentId
 
     IF EXISTS (
@@ -666,18 +658,18 @@ BEGIN
     )
         BEGIN
         UPDATE GUCianStudent
-            SET firstName = @firstName, lastName = @lastName, address = @address
+            SET firstName = @firstName, lAStName = @lAStName, address = @address
             WHERE GUCianStudent.id = @studentId
     END
     ELSE
         BEGIN
         UPDATE NonGUCianStudent
-            SET firstName = @firstName, lastName = @lastName, address = @address
+            SET firstName = @firstName, lAStName = @lAStName, address = @address
             WHERE NonGUCianStudent.id = @studentId
     END
 END
 
--- 6.c: As a Gucian graduate, add my undergarduate ID.
+-- 6.c: AS a Gucian graduate, add my undergarduate ID.
 GO
 CREATE PROC addUndergradID
     @studentID INT,
@@ -689,7 +681,7 @@ BEGIN
     WHERE GUCianStudent.id = @studentID
 END
 
--- 6.d: As a nonGucian student, view my courses’ grades.
+-- 6.d: AS a nonGucian student, view my courses’ grades.
 GO
 CREATE PROC ViewCoursesGrades
     @studentID INT
