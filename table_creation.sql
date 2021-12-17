@@ -3,6 +3,7 @@
 
 -- Creating the database
 CREATE DATABASE PostGradSystem;
+USE PostGradSystem;
 
 -- Entities:
 CREATE TABLE PostGradUser(

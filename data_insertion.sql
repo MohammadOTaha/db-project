@@ -1,9 +1,4 @@
--- set identity_insert off for all tables
--- select 'set identity_insert ['+s.name+'].['+o.name+'] off'
--- from sys.objects o
--- inner join sys.schemas s on s.schema_id=o.schema_id
--- where o.[type]='U'
--- and exists(select 1 from sys.columns where object_id=o.object_id and is_identity=1)
+USE PostGradSystem;
 
 INSERT INTO
     PostGradUser (email, PASSWORD)
@@ -39,7 +34,6 @@ VALUES
     ('admin4@example.com', '1234'),
     ('admin5@example.com', '1234');
 
-select * from PostGradUser
 INSERT INTO
     GUCianStudent (
         id,
@@ -626,22 +620,22 @@ INSERT INTO
         comment
     )
 VALUES
-    ('2019-05-07', 1, 11, 'examiner1 comment1'),
-    ('2009-02-01', 2, 12, 'examiner2 comment1'),
-    ('2012-12-05', 3, 13, 'examiner3 comment1'),
-    ('2019-12-11', 4, 14, 'examiner4 comment1'),
-    ('2018-02-10', 5, 15, 'examiner5 comment1'),
-    ('2019-02-01', 6, 11, 'examiner1 comment2'),
-    ('2019-02-01', 7, 12, 'examiner2 comment2'),
-    ('2021-02-01', 8, 13, 'examiner3 comment2'),
-    ('2021-05-07', 9, 14, 'examiner4 comment2'),
-    ('2019-02-01', 10, 15, 'examiner5 comment2'),
-    ('2019-02-01', 11, 11, 'examiner1 comment3'),
-    ('2019-12-12', 12, 12, 'examiner2 comment3'),
-    ('2001-02-01', 13, 13, 'examiner3 comment3'),
-    ('2025-02-01', 14, 14, 'examiner4 comment3'),
-    ('2001-05-07', 15, 15, 'examiner5 comment3'),
-    ('2010-02-01', 16, 11, 'examiner1 comment4'),
-    ('2019-12-11', 17, 12, 'examiner2 comment4'),
-    ('2019-02-01', 18, 13, 'examiner3 comment4'),
-    ('2021-02-01', 19, 14, 'examiner4 comment4');
+    ('2019-05-07', 1, 16, 'examiner1 comment1'),
+    ('2009-02-01', 2, 17, 'examiner2 comment1'),
+    ('2012-12-05', 3, 18, 'examiner3 comment1'),
+    ('2019-12-11', 4, 19, 'examiner4 comment1'),
+    ('2018-02-10', 5, 20, 'examiner5 comment1'),
+    ('2019-02-01', 6, 16, 'examiner1 comment2'),
+    ('2019-02-01', 7, 17, 'examiner2 comment2'),
+    ('2021-02-01', 8, 18, 'examiner3 comment2'),
+    ('2021-05-07', 9, 19, 'examiner4 comment2'),
+    ('2019-02-01', 10, 20, 'examiner5 comment2'),
+    ('2019-02-01', 11, 16, 'examiner1 comment3'),
+    ('2019-12-12', 12, 17, 'examiner2 comment3'),
+    ('2001-02-01', 13, 18, 'examiner3 comment3'),
+    ('2025-02-01', 14, 19, 'examiner4 comment3'),
+    ('2001-05-07', 15, 20, 'examiner5 comment3'),
+    ('2010-02-01', 16, 16, 'examiner1 comment4'),
+    ('2019-12-11', 17, 17, 'examiner2 comment4'),
+    ('2019-02-01', 18, 18, 'examiner3 comment4'),
+    ('2021-02-01', 19, 19, 'examiner4 comment4');
