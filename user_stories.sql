@@ -1,3 +1,4 @@
+USE PostGradSystem
 ------------------- (1) Unregistered User's Features -------------------
 -- 1.a:  Register to the website.
 GO
@@ -938,7 +939,7 @@ create PROC linkPubThesis
 AS
 BEGIN
     INSERT INTO Thesis_Publication
-        (thesisSerialNumber, publicationID)
+        (thesisSerialNumber, publication_id)
     VALUES
         (@thesisSerialNo, @PubID)
 END
