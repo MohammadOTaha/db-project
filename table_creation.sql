@@ -4,19 +4,6 @@
 -- Creating the database
 CREATE DATABASE PostGradSystem;
 USE PostGradSystem;
-DECLARE @DatabaseName nvarchar(50)
-SET @DatabaseName = N'PostGradSystem'
-
-DECLARE @SQL varchar(max)
-
-SELECT @SQL = COALESCE(@SQL,'') + 'Kill ' + Convert(varchar, SPId) + ';'
-FROM MASTER..SysProcesses
-WHERE DBId = DB_ID(@DatabaseName) AND SPId <> @@SPId
-
---SELECT @SQL 
-EXEC(@SQL)
-
-DROP DATABASE PostGradSystem;
 
 -- Entities:
 CREATE TABLE PostGradUser(
@@ -138,7 +125,7 @@ CREATE TABLE GUCianProgressReport(
 
     FOREIGN KEY (student_id) REFERENCES GUCianStudent(id) ON DELETE CASCADE,
     FOREIGN KEY (thesisSerialNumber) REFERENCES Thesis(serialNumber) ON DELETE CASCADE,
-    FOREIGN KEY (supervisor_id) REFERENCES Supervisor(id) ON DELETE SET NULL
+    FOREIGN KEY (supervisor_id) REFERENCES Supervisor(id)
 )
 
 
@@ -156,7 +143,7 @@ CREATE TABLE NonGUCianProgressReport(
 
     FOREIGN KEY (student_id) REFERENCES NonGUCianStudent(id) ON DELETE CASCADE,
     FOREIGN KEY (thesisSerialNumber) REFERENCES Thesis(serialNumber) ON DELETE CASCADE,
-    FOREIGN KEY (supervisor_id) REFERENCES Supervisor(id) ON DELETE SET NULL
+    FOREIGN KEY (supervisor_id) REFERENCES Supervisor(id) 
 )
 
 
@@ -238,7 +225,7 @@ CREATE TABLE NonGUCianRegisterThesis(
 
     FOREIGN KEY (NonGUCianID) REFERENCES NonGUCianStudent(id) ON DELETE CASCADE,
     FOREIGN KEY (thesisSerialNumber) REFERENCES Thesis(serialNumber) ON DELETE CASCADE,
-    FOREIGN KEY (supervisor_id) REFERENCES Supervisor(id) ON DELETE SET NULL
+    FOREIGN KEY (supervisor_id) REFERENCES Supervisor(id)
 )
 
 
@@ -250,7 +237,7 @@ CREATE TABLE GUCianRegisterThesis(
     PRIMARY KEY (GUCianID, thesisSerialNumber, supervisor_id),
 
     FOREIGN KEY (GUCianID) REFERENCES GUCianStudent(id) ON DELETE CASCADE,
-    FOREIGN KEY (supervisor_id) REFERENCES Supervisor(id) ON DELETE SET NULL,
+    FOREIGN KEY (supervisor_id) REFERENCES Supervisor(id),
     FOREIGN KEY (thesisSerialNumber) REFERENCES Thesis(serialNumber) ON DELETE CASCADE
 )
 
@@ -262,7 +249,7 @@ CREATE TABLE Thesis_Publication(
     PRIMARY KEY (thesisSerialNumber, publication_id),
 
     FOREIGN KEY (thesisSerialNumber) REFERENCES Thesis(serialNumber) ON DELETE CASCADE,
-    FOREIGN KEY (publication_id) REFERENCES Publication(id) ON DELETE SET NULL
+    FOREIGN KEY (publication_id) REFERENCES Publication(id) 
 )
 
 
