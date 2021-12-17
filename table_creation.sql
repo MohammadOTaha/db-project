@@ -16,7 +16,7 @@ CREATE TABLE PostGradUser(
 CREATE TABLE Admin(
     id              INT PRIMARY KEY,
     
-    FOREIGN KEY(id) REFERENCES PostGradUser(id)
+    FOREIGN KEY(id) REFERENCES PostGradUser(id) ON DELETE CASCADE
 )
 
 
@@ -30,7 +30,7 @@ CREATE TABLE GUCianStudent(
     GPA             DECIMAL,
     underGradID     INT,
     
-    FOREIGN KEY (id) REFERENCES PostGradUser(id)
+    FOREIGN KEY (id) REFERENCES PostGradUser(id) ON DELETE CASCADE
 )
 
 
@@ -43,7 +43,7 @@ CREATE TABLE NonGUCianStudent(
     address         VARCHAR(50),
     GPA             DECIMAL,
     
-    FOREIGN KEY (id) REFERENCES PostGradUser(id)
+    FOREIGN KEY (id) REFERENCES PostGradUser(id) ON DELETE CASCADE
 )
 
 
@@ -52,7 +52,7 @@ CREATE TABLE Supervisor(
     name            VARCHAR(20),
     faculty         VARCHAR(20),
     
-    FOREIGN KEY(id) REFERENCES PostGradUser(id)
+    FOREIGN KEY(id) REFERENCES PostGradUser(id) ON DELETE CASCADE
 )
 
 
@@ -97,7 +97,7 @@ CREATE TABLE Thesis(
     payment_id      INT,
     noExtension     INT,
     
-    FOREIGN KEY (payment_id) REFERENCES Payment(id)
+    FOREIGN KEY (payment_id) REFERENCES Payment(id) ON DELETE CASCADE 
 )
 
 
@@ -153,7 +153,7 @@ CREATE TABLE Examiner(
     fieldOfWork     VARCHAR(50),
     isNational      BIT,
 
-    FOREIGN KEY (id) REFERENCES PostGradUser(id)
+    FOREIGN KEY (id) REFERENCES PostGradUser(id) ON DELETE CASCADE
 )
 
 
@@ -200,7 +200,7 @@ CREATE TABLE NonGUCianPayCourse(
 
     FOREIGN KEY (NonGUCianID) REFERENCES NonGUCianStudent(id),
     FOREIGN KEY (course_id) REFERENCES Course(id),
-    FOREIGN KEY (payment_id) REFERENCES Payment(id)
+    FOREIGN KEY (payment_id) REFERENCES Payment(id) ON DELETE CASCADE
 )
 
 
