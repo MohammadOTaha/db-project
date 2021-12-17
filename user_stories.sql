@@ -406,8 +406,9 @@ CREATE PROC SupViewProfile
     @supervisorID INT
 AS
 BEGIN
-    SELECT *
+    SELECT Supervisor.id, Supervisor.name, Supervisor.faculty,PostGradUser.email,PostGradUser.[password]
     FROM Supervisor
+    INNER JOIN PostGradUser ON PostGradUser.id = Supervisor.id
     WHERE Supervisor.id = @supervisorID
 END
 

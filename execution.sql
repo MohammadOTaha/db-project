@@ -26,3 +26,20 @@ EXEC addMobile -- Non-GUCian
 
 ------------------- (4) Supservisor's Features -------------------
 -- 4.a: Evaluate a student’s progress report, and give evaluation value 0 to 3
+EXEC EvaluateProgressReport 11 ,1,1,3; -- GUCian
+
+EXEC EvaluateProgressReport 11,6,1,3 -- Non- GUCian
+
+EXEC ViewSupStudentsYears 13 -- 13 Supervise two students One GUCIAN and other Not Gucian
+
+EXEC SupViewProfile 11
+
+EXEC UpdateSupProfile 14,'Roby','MET';
+
+--Another test case needed
+EXEC ViewAStudentPublications 4
+
+
+
+
+
