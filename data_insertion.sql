@@ -39,7 +39,7 @@ VALUES
     ('admin4@example.com', '1234'),
     ('admin5@example.com', '1234');
 
-
+select * from PostGradUser
 INSERT INTO
     GUCianStudent (
         id,
@@ -173,19 +173,19 @@ VALUES
 INSERT INTO
     Examiner (id, name, fieldOfWork, isNational)
 VALUES
-    (11, 'examiner1', 'CS', 1),
-    (12, 'examiner2', 'Law', 0),
-    (13, 'examiner3', 'Medical', 1),
-    (14, 'examiner4', 'Law', 0),
-    (15, 'examiner5', 'Bio', 1);
+    (16, 'examiner1', 'CS', 1),
+    (17, 'examiner2', 'Law', 0),
+    (18, 'examiner3', 'Medical', 1),
+    (19, 'examiner4', 'Law', 0),
+    (20, 'examiner5', 'Bio', 1);
 
 INSERT INTO Admin (id)
 VALUES
-    (16),
-    (17),
-    (18),
-    (19),
-    (20);
+    (21),
+    (22),
+    (23),
+    (24),
+    (25);
 
 INSERT INTO
     Course (fees, creditHours, code)
@@ -581,7 +581,7 @@ VALUES
     (8, 13, 3),
     (9, 14, 4),
     (10, 15, 5);
-
+   
 INSERT INTO
     GUCianRegisterThesis (
         GUCianID, 
