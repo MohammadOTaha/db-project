@@ -26,6 +26,56 @@ EXEC addMobile -- GUCian
 EXEC addMobile -- Non-GUCian
     6, '1234567890';
 
+------------------- (3) Admin's Features -------------------
+-- 3.a: List all supervisors in the system.
+EXEC AdminListUp;
+
+-- 3.b: view the profile of any supervisor that contains all his/her information.
+EXEC AdminViewSupervisorProfile;
+
+-- 3.c: List all Theses in the system.  
+EXEC AdminViewAllTheses;
+
+-- 3.d: List the number of on going theses.
+DECLARE @numOfTheses INT;
+EXEC AdminViewOnGOingTheses @numOfTheses OUTPUT;
+PRINT @numOfTheses;
+
+-- 3.e: List all supervisors’ names currently supervising students, theses title, student name.
+EXEC AdminViewStudentThesisBySupervisor;
+
+-- 3.f: List nonGucians names, course code, and respective grade.
+EXEC AdminListNonGucianCourse 6;
+
+-- 3.g: Update the number of thesis extension by 1.
+EXEC AdminUpdateExtension 1
+
+-- 3.h: Issue a thesis payment.
+DECLARE @successBit BIT;
+EXEC AdminIssueThesisPayment 1, 69420, 1, 0, @successBit OUTPUT;
+PRINT @successBit;
+
+-- 3.i: view the profile of any student that contains all his/her information.
+EXEC AdminViewStudentProfile 1;
+
+-- 3.j: Issue installments as per the number of installments for a certain payment every six months starting from the entered date.
+EXEC AdminIssueInstallPayment 8, '2019-01-01';
+
+-- 3.k: List the title(s) of accepted publication(s) per thesis.
+EXEC AdminListAcceptPublication;
+
+-- 3.l: Add courses and link courses to students.
+---- 3.l.a: Add courses.
+EXEC AddCourse 'IEE',12,42323;
+---- 3.l.b: Link courses to students.
+EXEC linkCourseStudent 5 ,6;
+---- 3.l.c: Add course grade.
+EXEC AddStudentCourseGrade 5,6,30;
+
+-- 3.m: View examiners and supervisor(s) names attending a thesis defense taking place on a certain date.
+EXEC ViewExamSupDefense '2019-12-11';
+
+
 ------------------- (4) Supservisor's Features -------------------
 -- 4.a: Evaluate a student’s progress report, and give evaluation value 0 to 3
 EXEC EvaluateProgressReport 11 ,1,1,3; -- GUCian
