@@ -1,5 +1,4 @@
 USE PostGradSystem;
-
 ------------------- (1) Unregistered User's Features -------------------
 -- 1.a:  Register to the website.
 EXEC StudentRegister -- GUCian

@@ -149,12 +149,16 @@ AS
         INNER JOIN Supervisor S1 On S1.id = GUCianRegisterThesis.supervisor_id
         INNER JOIN Thesis T1 on T1.serialNumber = GUCianRegisterThesis.thesisSerialNumber
         INNER JOIN GUCianStudent ON GUCianStudent.id = GUCianRegisterThesis.GUCianID
-UNION
-    SELECT S2.name, T2.title, NonGUCianStudent.firstName , NonGUCianStudent.lAStName
+        WHERE T1.endDate < GETDATE()
+
+    UNION
+    
+    SELECT S2.name, T2.title, NonGUCianStudent.firstName, NonGUCianStudent.lAStName
     FROM NonGUCianRegisterThesis
         INNER JOIN Supervisor S2 On S2.id = NonGUCianRegisterThesis.supervisor_id
         INNER JOIN Thesis T2 on T2.serialNumber = NonGUCianRegisterThesis.thesisSerialNumber
         INNER JOIN NonGUCianStudent ON NonGUCianStudent.id = NonGUCianRegisterThesis.NonGUCianID
+        WHERE T2.endDate < GETDATE();
 
 -- 3.f: List nonGucians names, course code, and respective grade.
 GO
@@ -270,16 +274,16 @@ AS
     END
 
 
---We have to check it again--
+-- 3.k: Issue installments as per the number of installments for a certain payment every six months starting from the entered date.
 GO
 CREATE PROC AdminListAcceptPublication
 AS
-select P.title
-FROM Thesis_Publication
+    select P.title
+    FROM Thesis_Publication
     INNER JOIN Publication P ON P.id = Thesis_Publication.publication_id
-Where P.isAccepted = '1';
+    Where P.isAccepted = '1';
 
-
+-- 3.l: Add courses and link courses to students. 
 GO
 CREATE PROC AddCourse
     @coursecode varchar(10),
@@ -290,9 +294,6 @@ INSERT INTO Course
     (code , creditHours , fees)
 VALUES
     (@coursecode, @creditHrs , @fees)
-
-
-
 
 GO
 CREATE PROC linkCourseStudent
@@ -308,26 +309,25 @@ BEGIN
     VALUES(@courseID, @studentID)
 end
 
-
--- UPDATE OR INSERT ?
 GO
 CREATE PROC AddStudentCourseGrade
     @courseID INT,
     @studentID INT,
     @grade DECIMAL
 AS
-IF EXISTS (select *
-FROM NonGUCianTakeCourse
-where NonGUCianTakeCourse.NonGUCianID = @studentID)
-BEGIN
-    UPDATE NonGUCianTakeCourse
-SET grade = @grade
-where NonGUCianTakeCourse.NonGUCianID =@studentID AND NonGUCianTakeCourse.course_id = @courseID;
-END
+IF EXISTS (
+    select *
+    FROM NonGUCianTakeCourse
+    where NonGUCianTakeCourse.NonGUCianID = @studentID
+)
+    BEGIN
+        UPDATE NonGUCianTakeCourse
+        SET grade = @grade
+        where NonGUCianTakeCourse.NonGUCianID = @studentID AND NonGUCianTakeCourse.course_id = @courseID;
+    END
 
 
-
--- Which student so I can choose the supervisor of him
+-- 3.m: View examiners and supervisor(s) names attending a thesis defense taking place on a certain date.
 GO
 CREATE PROC ViewExamSupDefense
     @defenseDate DATETIME
@@ -338,8 +338,9 @@ AS
         INNER JOIN GUCianRegisterThesis ON ExaminerEvaluateDefense.thesisSerialNumber = GUCianRegisterThesis.thesisSerialNumber
         INNER JOIN Supervisor S ON S.id = GUCianRegisterThesis.supervisor_id
     WHEre ExaminerEvaluateDefense.[date] = @defenseDate
-    --Connecting The defenseData with Date given
-UNION
+
+    UNION
+    
     select E.name , S.name
     FROM ExaminerEvaluateDefense
         INNER JOIN Examiner E ON E.id = ExaminerEvaluateDefense.examiner_id
