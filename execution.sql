@@ -27,7 +27,7 @@ EXEC addMobile -- Non-GUCian
 
 ------------------- (3) Admin's Features -------------------
 -- 3.a: List all supervisors in the system.
-EXEC AdminListUp;
+EXEC AdminListSup;
 
 -- 3.b: view the profile of any supervisor that contains all his/her information.
 EXEC AdminViewSupervisorProfile;
@@ -105,7 +105,7 @@ EXEC AddGrade 3, 32;
 
 ------------------- (5) Examiner's Features -------------------
 -- 5.a: Add grade for a defense.
-EXEC AddGradeDefense 1, '2019-05-07', 70.35;
+EXEC AddDefenseGrade 1, '2019-05-07', 70.35;
 
 -- 5.b: Add comments for a defense.
 EXEC AddCommentsGrade 1, '2019-05-07', 'This is a good defense';
