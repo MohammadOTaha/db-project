@@ -109,7 +109,7 @@ END
 ------------------- (3) Admin's Features -------------------
 -- 3.a: List all supervisors in the system.
 GO
-CREATE PROC AdminListUp
+CREATE PROC AdminListSup
 AS
     SELECT *
     FROM Supervisor
@@ -597,7 +597,7 @@ END
 
 -- 5.a: Add grade for a defense.
 GO
-CREATE PROC AddGradeDefense
+CREATE PROC AddDefenseGrade
     @ThesisSerialNo INT,
     @DefenseDate DATETIME,
     @grade DECIMAL
