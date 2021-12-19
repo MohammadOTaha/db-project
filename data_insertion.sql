@@ -4,35 +4,35 @@ INSERT INTO
     PostGradUser (email, PASSWORD)
 VALUES
     -- GUCians
-    ('mark@example.com', '1234'),
-    ('tony@example.com', '1234'),
-    ('omar@example.com', '1234'),
-    ('ahmed@example.com', '1234'),
-    ('sarah@example.com', '12340'),
+    ('mark@example.com', 'Ay)5Yq'),
+    ('tony@example.com', 'Ay)5Yq'),
+    ('omar@example.com', 'k~8xJV_E'),
+    ('ahmed@example.com', 'LfJy96^s'),
+    ('sarah@example.com', 'F{]5x?eL'),
     -- Non-GUCians
-    ('amira@example.com', '1234'),
-    ('sally@example.com', '1234'),
-    ('mohammad@example.com', '1234'),
-    ('bassel@example.com', '1234'),
-    ('bahy@exmaple.com', '1234'),
+    ('amira@example.com', 'W.s1xTF3'),
+    ('sally@example.com', 'P6pV/J$f'),
+    ('mohammad@example.com', 'm#D<|n6t'),
+    ('bassel@example.com', 'pMyb<0zj'),
+    ('bahy@exmaple.com', 'Uzaj]7E1'),
     -- Supervisors
-    ('sup1@example.com', '12340'),
-    ('sup2@example.com', '12340'),
-    ('sup3@example.com', '12340'),
-    ('sup4@example.com', '12340'),
-    ('sup5@example.com', '12340'),
+    ('Roger.Watson@example.com', 'wb9W_{4D'),
+    ('Annie.Dunn@example.com', 'IfrZ27@T'),
+    ('Donna.Anderson@example.com', 'Vzx/6W@('),
+    ('Lynn.Griffith@example.com', 'Y3&=+yz['),
+    ('Meredith.French@example.com', 'zvF1P{M-'),
     -- Examiners
-    ('examiner1@example.com', '1234'),
-    ('examiner2@example.com', '1234'),
-    ('examiner3@example.com', '1234'),
-    ('examiner4@example.com', '1234'),
-    ('examiner5@example.com', '1234'),
+    ('Tyson.Cross@example.com', 'v8O=*K-a'),
+    ('Millicent.Schroeder@example.com', 'v8S|/vz.'),
+    ('April.Hansen@example.com', 'W4=beW%h'),
+    ('Donny.Mcintosh@example.com', 'M(`[5ho9'),
+    ('Pamela.Chavez@example.com', 'h%jh}8TV'),
     -- Admins
-    ('admin1@example.com', '1234'),
-    ('admin2@example.com', '1234'),
-    ('admin3@example.com', '1234'),
-    ('admin4@example.com', '1234'),
-    ('admin5@example.com', '1234');
+    ('Richard.Colon@example.com', 'B/IkzY3I'),
+    ('Emmitt.Duarte@example.com', 'm3^dbfEH'),
+    ('Karina.Martinez@example.com', 'cVm)d6&R'),
+    ('Austin.Doyle@example.com', 'Z3SosO#5'),
+    ('Vilma.Benton@example.com', 'gAt"57,m');
 
 INSERT INTO
     GUCianStudent (
@@ -158,20 +158,20 @@ VALUES
 INSERT INTO
     Supervisor (id, name, faculty)
 VALUES
-    (11, 'Sup1', 'CS'),
-    (12, 'Sup2', 'Law'),
-    (13, 'Sup3', 'Medical'),
-    (14, 'Sup4', 'Law'),
-    (15, 'Sup5', 'Bio');
+    (11, 'Roger Watson', 'CS'),
+    (12, 'Annie Dunn', 'Law'),
+    (13, 'Donna Anderson', 'Medical'),
+    (14, 'Lynn Griffith', 'Law'),
+    (15, 'Meredith French', 'Bio');
 
 INSERT INTO
     Examiner (id, name, fieldOfWork, isNational)
 VALUES
-    (16, 'examiner1', 'CS', 1),
-    (17, 'examiner2', 'Law', 0),
-    (18, 'examiner3', 'Medical', 1),
-    (19, 'examiner4', 'Law', 0),
-    (20, 'examiner5', 'Bio', 1);
+    (16, 'Tyson Cross', 'CS', 1),
+    (17, 'Millicent Schroeder', 'Law', 0),
+    (18, 'April Hansen', 'Medical', 1),
+    (19, 'Donny Mcintosh', 'Law', 0),
+    (20, 'Pamela Chavez', 'Bio', 1);
 
 INSERT INTO Admin (id)
 VALUES
