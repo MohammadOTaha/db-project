@@ -100,7 +100,7 @@ namespace PostGradSystem
             linkPubToThesis = true;
             thesis_info = new Dictionary<String, String>();
 
-            int user_id = 6;
+            int user_id = Convert.ToInt32(Session["user_id"]);
 
             if(user_id == 0) {
                 Response.Redirect("~/Login.aspx");

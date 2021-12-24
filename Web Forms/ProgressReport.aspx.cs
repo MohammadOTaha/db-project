@@ -105,7 +105,7 @@ namespace PostGradSystem
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            int user_id = 1;
+            int user_id = Convert.ToInt32(Session["user_id"]);
 
             if(user_id == 0) {
                 Response.Redirect("Login.aspx");
