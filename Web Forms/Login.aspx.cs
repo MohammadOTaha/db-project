@@ -1,19 +1,25 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Web;
 using System.Web.Configuration;
-using System.Web.UI;
-using System.Web.UI.WebControls;
 
 namespace PostGradSystem
 {
     public partial class Login : System.Web.UI.Page
     {
-        protected void Page_Load(object sender, EventArgs e)
+        static DBConnection db_connection = new DBConnection();
+        private class DBConnection
         {
+            private static SqlConnection conn;
 
+            public DBConnection() 
+            {
+                conn = new SqlConnection(WebConfigurationManager.ConnectionStrings["DefaultConnection"].ToString());
+            }
+
+            public SqlConnection getConnection()
+            {
+                return conn;
+            }
         }
 
         protected void login(object sender, EventArgs e)
@@ -21,18 +27,15 @@ namespace PostGradSystem
             String input_mail = in_email.Text;
             String input_pass = in_pass.Text;
 
-            String connString = WebConfigurationManager.ConnectionStrings["DefaultConnection"].ToString();
-            SqlConnection conn = new SqlConnection(connString);
-
             // get the id of the user with the given email using select statement
-            SqlCommand getId = new SqlCommand("SELECT id FROM PostGradUser WHERE email = @input_mail", conn);
+            SqlCommand getId = new SqlCommand("SELECT id FROM PostGradUser WHERE email = @input_mail", db_connection.getConnection());
             getId.Parameters.AddWithValue("@input_mail", input_mail);
 
             // use the stored procedure to login the user
-            SqlCommand loginProc = new SqlCommand("userLogin", conn);
+            SqlCommand loginProc = new SqlCommand("userLogin", db_connection.getConnection());
             SqlParameter out_bit = new SqlParameter("@success", System.Data.SqlDbType.Bit);
 
-            conn.Open();
+            db_connection.getConnection().Open();
             int id = Convert.ToInt32(getId.ExecuteScalar());
 
             loginProc.Parameters.AddWithValue("@id", id);
@@ -43,9 +46,11 @@ namespace PostGradSystem
             loginProc.CommandType = System.Data.CommandType.StoredProcedure;
             loginProc.ExecuteNonQuery();
             bool success = (bool)out_bit.Value;
-            conn.Close();
+            
+            if(success) Session["user_id"] = id;
+            else Response.Write("<script>alert('Invalid email or password')</script>");
 
-            Response.Write(success);
+            db_connection.getConnection().Close();
         }
     }
 }

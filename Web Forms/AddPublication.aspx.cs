@@ -98,9 +98,10 @@ namespace PostGradSystem
             btn_showLinkPub.Visible = false;
 
             linkPubToThesis = true;
+
             thesis_info = new Dictionary<String, String>();
 
-            int user_id = Convert.ToInt32(Session["user_id"]);
+            int user_id = 1;
 
             if(user_id == 0) {
                 Response.Redirect("~/Login.aspx");
@@ -115,6 +116,7 @@ namespace PostGradSystem
                     String thesis_serial_number = reader.GetInt32(1).ToString();
 
                     thesis_info.Add(thesis_title, thesis_serial_number);
+
                     thesis_dropList.Items.Add(thesis_title);
                 }
                 
@@ -141,10 +143,13 @@ namespace PostGradSystem
 
             // execute stored procedure
             db_connection.getConnection().Open();
-            add_pub_sp.ExecuteNonQuery();
 
+            add_pub_sp.ExecuteNonQuery();
+            
             // get the last inserted publication id
-            SqlCommand cmd = new SqlCommand(
+
+            if(linkPubToThesis) {
+                SqlCommand cmd = new SqlCommand(
                 (
                     @"
                     SELECT TOP 1 id
@@ -152,12 +157,11 @@ namespace PostGradSystem
                     ORDER BY id DESC
                     "
                 ), 
-                db_connection.getConnection()
-            );
+                    db_connection.getConnection()
+                );
 
-            int pub_id = Convert.ToInt32(cmd.ExecuteScalar());
+                int pub_id = Convert.ToInt32(cmd.ExecuteScalar());
 
-            if(linkPubToThesis) {
                 SqlCommand link_pub_thesis_sp = new SqlCommand("linkPubThesis", db_connection.getConnection());
                 link_pub_thesis_sp.CommandType = System.Data.CommandType.StoredProcedure;
 
@@ -166,7 +170,7 @@ namespace PostGradSystem
 
                 link_pub_thesis_sp.ExecuteNonQuery();
             }
-
+            
             db_connection.getConnection().Close();
         }
     }

@@ -60,6 +60,60 @@ namespace PostGradSystem
         protected global::System.Web.UI.WebControls.DropDownList thesis_dropList;
 
         /// <summary>
+        /// pnl_fillReport control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel pnl_fillReport;
+
+        /// <summary>
+        /// lbl_reportDesc control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lbl_reportDesc;
+
+        /// <summary>
+        /// report_desc control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox report_desc;
+
+        /// <summary>
+        /// lbl_reportState control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lbl_reportState;
+
+        /// <summary>
+        /// report_state control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox report_state;
+
+        /// <summary>
+        /// btn_fillReport control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btn_fillReport;
+
+        /// <summary>
         /// btn_addReport control.
         /// </summary>
         /// <remarks>

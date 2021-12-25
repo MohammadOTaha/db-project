@@ -26,6 +26,7 @@ namespace PostGradSystem
         
         static Dictionary<String, String> thesis_info;
 
+        static Boolean isGUCian;
         private static Boolean is_gucian(String user_id)
         {
             SqlCommand cmd = new SqlCommand(
@@ -49,7 +50,7 @@ namespace PostGradSystem
 
             cmd.ExecuteNonQuery();
 
-            return Convert.ToBoolean(cmd.Parameters["@is_gucian"].Value);
+            return isGUCian = Convert.ToBoolean(cmd.Parameters["@is_gucian"].Value);
         }
 
         private static SqlDataReader getStudentTheses(String user_id) 
@@ -105,7 +106,8 @@ namespace PostGradSystem
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            int user_id = Convert.ToInt32(Session["user_id"]);
+            // int user_id = Convert.ToInt32(Session["user_id"]);
+            int user_id = 1;
 
             if(user_id == 0) {
                 Response.Redirect("Login.aspx");
@@ -119,6 +121,52 @@ namespace PostGradSystem
             }
         }
 
+
+        static Boolean fillProgressReport = false;
+        protected void fillReport(object sender, EventArgs e)
+        {
+            fillProgressReport = true;
+
+            pnl_fillReport.Visible = true;
+            btn_fillReport.Visible = false;
+        }
+
+        
+        private static int getLastReportNo(ref DropDownList thesis_dropList, String user_id) {
+            SqlCommand cmd;
+            
+            if(isGUCian) {
+                cmd = new SqlCommand(
+                    (
+                        @"
+                        SELECT MAX(progressReportNumber)
+                        FROM GUCianProgressReport
+                        WHERE thesisSerialNumber = @thesisSerialNumber AND student_id = @user_id
+                        "
+                    ), 
+                    db_connection.getConnection()
+                );
+            }
+            else {
+                cmd = new SqlCommand(
+                    (
+                        @"
+                        SELECT MAX(progressReportNumber)
+                        FROM NonGUCianProgressReport
+                        WHERE thesisSerialNumber = @thesisSerialNumber AND student_id = @user_id
+                        "
+                    ), 
+                    db_connection.getConnection()
+                );
+            }
+
+            cmd.Parameters.AddWithValue("@thesisSerialNumber", thesis_info[thesis_dropList.SelectedItem.Text]);
+            cmd.Parameters.AddWithValue("@user_id", user_id);
+
+
+            return Convert.ToInt32(cmd.ExecuteScalar());
+        }
+        
         protected void addReport(object sender, EventArgs e)
         {
             db_connection.getConnection().Open();
@@ -128,10 +176,30 @@ namespace PostGradSystem
 
             addReport_sb.Parameters.AddWithValue("@thesisSerialNo", thesis_info[thesis_dropList.SelectedItem.Text]);
             addReport_sb.Parameters.AddWithValue("@progressReportDate", report_date.Text);
-
+    
             addReport_sb.ExecuteNonQuery();
+
+            if(fillProgressReport) {
+                // int user_id = Convert.ToInt32(Session["user_id"]);
+                int user_id = 1;
+
+                SqlCommand fillReport_sb = new SqlCommand("FillProgressReport", db_connection.getConnection());
+                fillReport_sb.CommandType = System.Data.CommandType.StoredProcedure;
+
+                fillReport_sb.Parameters.AddWithValue("@thesisSerialNo", thesis_info[thesis_dropList.SelectedItem.Text]);
+                fillReport_sb.Parameters.AddWithValue("@progressReportNo", getLastReportNo(ref thesis_dropList, user_id.ToString()));
+                // add int value 
+                int state = 0;
+                Int32.TryParse(report_state.Text, out state);
+                fillReport_sb.Parameters.AddWithValue("@state", state);
+                fillReport_sb.Parameters.AddWithValue("@description", report_desc.Text);
+
+                fillReport_sb.ExecuteNonQuery();
+            }
             
             db_connection.getConnection().Close();
         }
+
+
     }
 }
