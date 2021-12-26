@@ -74,26 +74,26 @@ namespace PostGradSystem
                 // initialize headerCell
                 TableHeaderCell headerCell = new TableHeaderCell();
                 headerCell.Text = "Course Code";
-                // headerCell.CssClass = "text-center";
-                headerCell.Width = Unit.Percentage(25);
+                headerCell.Attributes.Add("style", "text-align: center;");
+                headerCell.Width = Unit.Percentage(15);
                 headerRow.Cells.Add(headerCell);
 
                 headerCell = new TableHeaderCell();
                 headerCell.Text = "Grade";
-                // headerCell.CssClass = "text-center";
-                headerCell.Width = Unit.Percentage(25);
+                headerCell.Attributes.Add("style", "text-align: center;");
+                headerCell.Width = Unit.Percentage(10);
                 headerRow.Cells.Add(headerCell);
 
                 headerCell = new TableHeaderCell();
                 headerCell.Text = "Credit Hours";
-                // headerCell.CssClass = "text-center";
-                headerCell.Width = Unit.Percentage(25);
+                headerCell.Attributes.Add("style", "text-align: center;");
+                headerCell.Width = Unit.Percentage(10);
                 headerRow.Cells.Add(headerCell);
 
                 headerCell = new TableHeaderCell();
                 headerCell.Text = "Fees";
-                // headerCell.CssClass = "text-center";
-                headerCell.Width = Unit.Percentage(25);
+                headerCell.Attributes.Add("style", "text-align: center;");
+                headerCell.Width = Unit.Percentage(65);
                 headerRow.Cells.Add(headerCell);
 
                 coursesTable.Rows.Add(headerRow);
@@ -124,7 +124,8 @@ namespace PostGradSystem
                     coursesTable.Rows.Add(row);
                 }
 
-                coursesTable.RenderControl(new HtmlTextWriter(Response.Output));
+                // add the table to div
+                coursesDiv.Controls.Add(coursesTable);
 
                 db_connection.getConnection().Close();
             }

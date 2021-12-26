@@ -2,6 +2,8 @@
 using System.Data.SqlClient;
 using System.Web.Configuration;
 using System.Collections.Generic;
+using System.Web.UI.WebControls;
+using System.Web.Security; 
 
 namespace PostGradSystem
 {
@@ -33,13 +35,13 @@ namespace PostGradSystem
             SqlCommand register;
             if(is_gucian) {
                 register = new SqlCommand(
-                    "INSERT INTO GUCianStudent (id, first_name, last_name, type, faculty, address, underGradID) VALUES (@id, @first_name, @last_name, @type, @faculty, @address, @underGradID)", 
+                    "INSERT INTO GUCianStudent (id, firstName, lastName, type, faculty, address, underGradID) VALUES (@id, @first_name, @last_name, @type, @faculty, @address, @underGradID)", 
                     db_connection.getConnection()
                 );
             }
             else {
                 register = new SqlCommand(
-                    "INSERT INTO NonGUCianStudent (id, first_name, last_name, type, faculty, address) VALUES (@id, @first_name, @last_name, @type, @faculty, @address)", 
+                    "INSERT INTO NonGUCianStudent (id, firstName, lastName, type, faculty, address) VALUES (@id, @first_name, @last_name, @type, @faculty, @address)", 
                     db_connection.getConnection()
                 );
             }
@@ -98,8 +100,27 @@ namespace PostGradSystem
             register.ExecuteNonQuery();
         }
 
+        private static int getRegisteredUserID(Dictionary<String, String> user_info)
+        {
+            SqlCommand insertUser = new SqlCommand("INSERT INTO PostGradUser (email, password) VALUES (@email, @password) SELECT scope_identity()", db_connection.getConnection());
+            insertUser.Parameters.AddWithValue("@email", user_info["email"]);
+            insertUser.Parameters.AddWithValue("@password", user_info["password"]);
+
+            return Convert.ToInt32(insertUser.ExecuteScalar());
+        }
+
+        private static Boolean isUserTypeChosen(ref DropDownList user_type)
+        {
+            return user_type.SelectedIndex != 0;
+        }
+
         protected void register(object sender, EventArgs e)
         {
+            if(!isUserTypeChosen(ref usertypedroplist)) {
+                Response.Write("<script>alert('Please choose a user type.');</script>");
+                return;
+            }
+
             Dictionary<String, String> user_info = new Dictionary<String, String>();
             user_info.Add("first_name", firstname.Text);
             user_info.Add("last_name", lastname.Text);
@@ -108,21 +129,18 @@ namespace PostGradSystem
             user_info.Add("password", password.Text);
             user_info.Add("faculty", faculty.Text);
             user_info.Add("type", usertypedroplist.SelectedValue);
-
-            SqlCommand insertUser = new SqlCommand("INSERT INTO PostGradUser (email, password) VALUES (@email, @password) SELECT scope_identity()", db_connection.getConnection());
-            insertUser.Parameters.AddWithValue("@email", user_info["email"]);
-            insertUser.Parameters.AddWithValue("@password", user_info["password"]);
-
+            user_info.Add("underGradID", underGradID.Text);
+            
             db_connection.getConnection().Open();
             
-            int user_id = Convert.ToInt32(insertUser.ExecuteScalar());
+            int user_id = getRegisteredUserID(user_info);
             user_info.Add("user_id", user_id.ToString());
 
             switch(user_info["type"]) {
-                case "GUCian Student":
+                case "GUCian":
                     registerStudent(true, user_info);
                     break;
-                case "Non-GUCian Student":
+                case "Non-GUCian":
                     registerStudent(false, user_info);
                     break;
                 case "Supervisor":
@@ -137,6 +155,16 @@ namespace PostGradSystem
             }
             
             db_connection.getConnection().Close();
+        }
+
+        protected void usertype_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if(usertypedroplist.SelectedValue == "GUCian") {
+                underGradID.Visible = true;
+            }
+            else {
+                underGradID.Visible = false;
+            }
         }
     }
 }

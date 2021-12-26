@@ -11,16 +11,16 @@ namespace PostGradSystem
 {
 
 
-    public partial class Theses
+    public partial class StudentHome
     {
 
         /// <summary>
-        /// thesesDiv control.
+        /// courses_panel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl thesesDiv;
+        protected global::System.Web.UI.WebControls.Panel courses_panel;
     }
 }

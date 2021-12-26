@@ -122,14 +122,7 @@ namespace PostGradSystem
         }
 
 
-        static Boolean fillProgressReport = false;
-        protected void fillReport(object sender, EventArgs e)
-        {
-            fillProgressReport = true;
-
-            pnl_fillReport.Visible = true;
-            btn_fillReport.Visible = false;
-        }
+        static Boolean fillProgressReport = true;
 
         
         private static int getLastReportNo(ref DropDownList thesis_dropList, String user_id) {

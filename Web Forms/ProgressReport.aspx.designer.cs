@@ -15,24 +15,6 @@ namespace PostGradSystem
     {
 
         /// <summary>
-        /// form1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlForm form1;
-
-        /// <summary>
-        /// lbl_reportDate control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lbl_reportDate;
-
-        /// <summary>
         /// report_date control.
         /// </summary>
         /// <remarks>
@@ -40,15 +22,6 @@ namespace PostGradSystem
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox report_date;
-
-        /// <summary>
-        /// lbl_thesis control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lbl_thesis;
 
         /// <summary>
         /// thesis_dropList control.
@@ -60,42 +33,6 @@ namespace PostGradSystem
         protected global::System.Web.UI.WebControls.DropDownList thesis_dropList;
 
         /// <summary>
-        /// pnl_fillReport control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel pnl_fillReport;
-
-        /// <summary>
-        /// lbl_reportDesc control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lbl_reportDesc;
-
-        /// <summary>
-        /// report_desc control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox report_desc;
-
-        /// <summary>
-        /// lbl_reportState control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lbl_reportState;
-
-        /// <summary>
         /// report_state control.
         /// </summary>
         /// <remarks>
@@ -105,13 +42,13 @@ namespace PostGradSystem
         protected global::System.Web.UI.WebControls.TextBox report_state;
 
         /// <summary>
-        /// btn_fillReport control.
+        /// report_desc control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btn_fillReport;
+        protected global::System.Web.UI.WebControls.TextBox report_desc;
 
         /// <summary>
         /// btn_addReport control.

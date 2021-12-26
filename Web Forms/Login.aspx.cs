@@ -22,6 +22,42 @@ namespace PostGradSystem
             }
         }
 
+        private static String getUserType(String user_id)
+        {
+            SqlCommand cmd = new SqlCommand(
+                (
+                    @"IF EXISTS (SELECT * FROM GUCianStudent WHERE id = @user_id)
+                    BEGIN
+                        SET @type = 'GUCian';
+                    END
+                    ELSE IF EXISTS (SELECT * FROM NonGUCianStudent WHERE id = @user_id)
+                    BEGIN
+                        SET @type = 'NonGUCian';
+                    END
+                    ELSE IF EXISTS (SELECT * FROM Examiner WHERE id = @user_id)
+                    BEGIN
+                        SET @type = 'Examiner';
+                    END
+                    ELSE IF EXISTS (SELECT * FROM Supervisor WHERE id = @user_id)
+                    BEGIN
+                        SET @type = 'Supervisor';
+                    END
+                    ELSE 
+                    BEGIN
+                        SET @type = 'Admin';
+                    END"
+                ), 
+                db_connection.getConnection());
+
+            cmd.Parameters.AddWithValue("@user_id", user_id);
+            cmd.Parameters.Add("@type", System.Data.SqlDbType.VarChar, 50);
+            cmd.Parameters["@type"].Direction = System.Data.ParameterDirection.Output;
+
+            cmd.ExecuteNonQuery();
+
+            return cmd.Parameters["@type"].Value.ToString();
+        }
+
         protected void login(object sender, EventArgs e)
         {
             String input_mail = in_email.Text;
@@ -47,7 +83,12 @@ namespace PostGradSystem
             loginProc.ExecuteNonQuery();
             bool success = (bool)out_bit.Value;
             
-            if(success) Session["user_id"] = id;
+            if(success) {
+                Session.Add("user_id", id);
+                Session.Add("user_type", getUserType(id.ToString()));
+
+                Response.Redirect("/Home.aspx");
+            }
             else Response.Write("<script>alert('Invalid email or password')</script>");
 
             db_connection.getConnection().Close();

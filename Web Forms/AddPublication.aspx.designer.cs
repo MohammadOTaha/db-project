@@ -15,24 +15,6 @@ namespace PostGradSystem
     {
 
         /// <summary>
-        /// form1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlForm form1;
-
-        /// <summary>
-        /// lbl_pubTitle control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lbl_pubTitle;
-
-        /// <summary>
         /// pub_title control.
         /// </summary>
         /// <remarks>
@@ -40,15 +22,6 @@ namespace PostGradSystem
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox pub_title;
-
-        /// <summary>
-        /// lbl_pubDate control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lbl_pubDate;
 
         /// <summary>
         /// pub_date control.
@@ -60,15 +33,6 @@ namespace PostGradSystem
         protected global::System.Web.UI.WebControls.TextBox pub_date;
 
         /// <summary>
-        /// lbl_pubHost control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lbl_pubHost;
-
-        /// <summary>
         /// pub_host control.
         /// </summary>
         /// <remarks>
@@ -78,15 +42,6 @@ namespace PostGradSystem
         protected global::System.Web.UI.WebControls.TextBox pub_host;
 
         /// <summary>
-        /// lbl_pubPlace control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lbl_pubPlace;
-
-        /// <summary>
         /// pub_place control.
         /// </summary>
         /// <remarks>
@@ -94,15 +49,6 @@ namespace PostGradSystem
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox pub_place;
-
-        /// <summary>
-        /// lbl_pubType control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lbl_pubType;
 
         /// <summary>
         /// rdoYes control.
@@ -132,15 +78,6 @@ namespace PostGradSystem
         protected global::System.Web.UI.WebControls.Panel linkPubPanel;
 
         /// <summary>
-        /// lbl_thesis control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lbl_thesis;
-
-        /// <summary>
         /// thesis_dropList control.
         /// </summary>
         /// <remarks>
@@ -159,12 +96,12 @@ namespace PostGradSystem
         protected global::System.Web.UI.WebControls.Button btn_showLinkPub;
 
         /// <summary>
-        /// Button1 control.
+        /// btn_register control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button Button1;
+        protected global::System.Web.UI.WebControls.Button btn_register;
     }
 }

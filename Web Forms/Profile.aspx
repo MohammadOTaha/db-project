@@ -32,7 +32,6 @@
         <asp:label ID="lbl_undergradID" runat="server"></asp:label>
     </div>
 
-    // div only visible for undergraduate students
     <div ID="phoneDiv" runat="server">
         <asp:Label ID="phoneCnt" runat="server" Text="Phone: "></asp:Label>
         <asp:label ID="lbl_phone" runat="server"></asp:label>

@@ -1,4 +1,5 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Courses.aspx.cs" Inherits="PostGradSystem.Courses" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="StudentHome.aspx.cs"
+Inherits="PostGradSystem.StudentHome" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -51,7 +52,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">Student Courses</a>
+          <a class="navbar-brand" href="#">Student Home</a>
         </div>
         <div class="collapse navbar-collapse" id="myNavbar">
           <ul class="nav navbar-nav navbar-right">
@@ -70,12 +71,40 @@
       </div>
     </nav>
 
-    <div class="container" id="coursesDiv" runat="server">
+    <div class="container" id="coursesDiv">
       <div class="row">
-        
+        <div class="col-sm-4">
+            <div class="panel panel-success">
+              <div class="panel-heading">
+                  <a href="AddPublication.aspx">PUBLICATIONS</a>
+              </div>
+              <div class="panel-body">
+                Add and link Publications to an ongoing Thesis
+              </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+          <div class="panel panel-success">
+            <div class="panel-heading">
+                <a href="Theses.aspx">THESES</a>
+            </div>
+            <div class="panel-body">View all Theses</div>
+          </div>
+        </div>
+        <div class="col-sm-4">
+          <div class="panel panel-success">
+            <div class="panel-heading">
+                <a href="ProgressReport.aspx">PROGRESS REPORTS</a>
+            </div>
+            <div class="panel-body">
+              Add and fill Progress Reports for an ongoing Thesis
+            </div>
+          </div>
+        </div>
       </div>
     </div>
     <br />
+    
     <br /><br />
   </body>
 </html>

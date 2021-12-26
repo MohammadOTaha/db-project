@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data.SqlClient;
 using System.Web.Configuration;
+using System.Web.UI.WebControls;
 
 namespace PostGradSystem
 {
@@ -85,7 +86,7 @@ namespace PostGradSystem
         }
         protected void Page_Load(object sender, EventArgs e)
         {
-            int user_id = Convert.ToInt32(Session["user_id"]);
+            int user_id = 1;
 
             if(user_id == 0) {
                 Response.Redirect("Login.aspx");
@@ -95,17 +96,120 @@ namespace PostGradSystem
 
                 SqlDataReader reader = getStudentTheses(user_id.ToString());
 
+                Table thesesTable = new Table();
+                thesesTable.CssClass = "table table-striped table-bordered table-hover";
+                thesesTable.ID = "coursesTable";
+                thesesTable.Width = Unit.Percentage(100);
+                thesesTable.CellSpacing = 0;
+                thesesTable.CellPadding = 0;
+                thesesTable.GridLines = GridLines.None;
+
+                // initialize headerRow
+                TableHeaderRow headerRow = new TableHeaderRow();
+                headerRow.TableSection = TableRowSection.TableHeader;
+
+                // initialize headerCell
+                TableHeaderCell headerCell = new TableHeaderCell();
+                headerCell.Text = "Title";
+                headerCell.Attributes.Add("style", "text-align: center; vertical-align: middle;");
+                headerCell.Width = Unit.Percentage(20);
+                headerRow.Cells.Add(headerCell);
+
+                headerCell = new TableHeaderCell();
+                headerCell.Text = "Type";
+                headerCell.Attributes.Add("style", "text-align: center; vertical-align: middle;");
+                headerCell.Width = Unit.Percentage(10);
+                headerRow.Cells.Add(headerCell);
+
+                headerCell = new TableHeaderCell();
+                headerCell.Text = "Field";
+                headerCell.Attributes.Add("style", "text-align: center; vertical-align: middle;");
+                headerCell.Width = Unit.Percentage(20);
+                headerRow.Cells.Add(headerCell);
+
+                headerCell = new TableHeaderCell();
+                headerCell.Text = "Start Date";
+                headerCell.Attributes.Add("style", "text-align: center; vertical-align: middle;");
+                headerCell.Width = Unit.Percentage(10);
+                headerRow.Cells.Add(headerCell);
+
+                headerCell = new TableHeaderCell();
+                headerCell.Text = "End Date";
+                headerCell.Attributes.Add("style", "text-align: center; vertical-align: middle;");
+                headerCell.Width = Unit.Percentage(10);
+                headerRow.Cells.Add(headerCell);
+
+                headerCell = new TableHeaderCell();
+                headerCell.Text = "Defense Date";
+                headerCell.Attributes.Add("style", "text-align: center; vertical-align: middle;");
+                headerCell.Width = Unit.Percentage(10);
+                headerRow.Cells.Add(headerCell);
+
+                headerCell = new TableHeaderCell();
+                headerCell.Text = "Grade";
+                headerCell.Attributes.Add("style", "text-align: center; vertical-align: middle;");
+                headerCell.Width = Unit.Percentage(10);
+                headerRow.Cells.Add(headerCell);
+
+                headerCell = new TableHeaderCell();
+                headerCell.Text = "Number of Extensions";
+                headerCell.Attributes.Add("style", "text-align: center; vertical-align: middle;");
+                headerCell.Width = Unit.Percentage(10);
+                headerRow.Cells.Add(headerCell);
+
+                thesesTable.Rows.Add(headerRow);
+
                 // view the data
                 while(reader.Read()) {
-                    Response.Write(reader["title"] + "<br />");
-                    Response.Write(reader["type"] + "<br />");
-                    Response.Write(reader["field"] + "<br />");
-                    Response.Write(reader["startDate"] + "<br />");
-                    Response.Write(reader["endDate"] + "<br />");
-                    Response.Write(reader["defenseDate"] + "<br />");
-                    Response.Write(reader["grade"] + "<br />");
-                    Response.Write(reader["noExtension"] + "<br />");
+                    TableRow row = new TableRow();
+                    row.TableSection = TableRowSection.TableBody;
+
+                    TableCell titleCell = new TableCell();
+                    titleCell.Text = reader["title"].ToString();
+                    titleCell.Attributes.Add("style", "text-align: center; vertical-align: middle;");
+                    row.Cells.Add(titleCell);
+
+                    TableCell typeCell = new TableCell();
+                    typeCell.Text = reader["type"].ToString();
+                    typeCell.Attributes.Add("style", "text-align: center; vertical-align: middle;");
+                    row.Cells.Add(typeCell);
+
+                    TableCell fieldCell = new TableCell();
+                    fieldCell.Text = reader["field"].ToString();
+                    fieldCell.Attributes.Add("style", "text-align: center; vertical-align: middle;");
+                    row.Cells.Add(fieldCell);
+
+                    TableCell startDateCell = new TableCell();
+                    startDateCell.Text = reader["startDate"].ToString();
+                    startDateCell.Attributes.Add("style", "text-align: center; vertical-align: middle;");
+                    row.Cells.Add(startDateCell);
+
+                    TableCell endDateCell = new TableCell();
+                    endDateCell.Text = reader["endDate"].ToString();
+                    endDateCell.Attributes.Add("style", "text-align: center; vertical-align: middle;");
+                    row.Cells.Add(endDateCell);
+
+                    TableCell defenseDateCell = new TableCell();
+                    defenseDateCell.Text = reader["defenseDate"].ToString();
+                    defenseDateCell.Attributes.Add("style", "text-align: center; vertical-align: middle;");
+                    row.Cells.Add(defenseDateCell);
+
+                    TableCell gradeCell = new TableCell();
+                    gradeCell.Text = reader["grade"].ToString();
+                    gradeCell.Attributes.Add("style", "text-align: center; vertical-align: middle;");
+                    row.Cells.Add(gradeCell);
+
+                    TableCell noExtensionCell = new TableCell();
+                    noExtensionCell.Text = reader["noExtension"].ToString();
+                    noExtensionCell.Attributes.Add("style", "text-align: center; vertical-align: middle;");
+                    row.Cells.Add(noExtensionCell);
+
+                    thesesTable.Rows.Add(row);
                 }
+
+                // add the table to div
+                thesesDiv.Controls.Add(thesesTable);
+
 
                 db_connection.getConnection().Close();
             }
