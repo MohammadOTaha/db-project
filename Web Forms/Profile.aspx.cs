@@ -252,10 +252,11 @@ namespace PostGradSystem
 
                 user_info = getUserInfo(user_id.ToString(), user_type);
 
-                in_firstName.Text = user_info["firstName"];
-                in_lastName.Text = user_info["lastName"];
-                in_email.Text = user_info["email"];
-                in_address.Text = user_info["address"];
+                // in_firstName.Text = user_info["firstName"];
+                // in_lastName.Text = user_info["lastName"];
+                // in_email.Text = user_info["email"];
+                // in_address.Text = user_info["address"];
+                in_undergradID.DataBind();
                
                 writeToPage(ref profileDiv, user_info, user_id.ToString(), user_type);
             }
@@ -280,30 +281,18 @@ namespace PostGradSystem
 
             Response.Redirect(Request.RawUrl);
         }
-
+        
         protected void editProfile(object sender, EventArgs e)
         {
-            System.Diagnostics.Debug.WriteLine("------------------");
-
-            System.Diagnostics.Debug.WriteLine(in_email.Text);
-
-            System.Diagnostics.Debug.WriteLine("------------------");
-
-            System.Diagnostics.Debug.WriteLine(in_address.Text);
-
-            System.Diagnostics.Debug.WriteLine("------------------");
-
-
-
             if (db_connection.getConnection().State == System.Data.ConnectionState.Closed) {
                 db_connection.getConnection().Open();
             }
 
             SqlCommand editProfile_sp = new SqlCommand("editMyProfile", db_connection.getConnection());
             editProfile_sp.CommandType = System.Data.CommandType.StoredProcedure;
-
             editProfile_sp.Parameters.AddWithValue("@studentId", Session["user_id"]);
-            editProfile_sp.Parameters.AddWithValue("@type", "a7a");
+            editProfile_sp.Parameters.AddWithValue("@type", Session["user_type"]); 
+            
             editProfile_sp.Parameters.AddWithValue("@firstname", in_firstName.Text);
             editProfile_sp.Parameters.AddWithValue("@lastName", in_lastName.Text);
             editProfile_sp.Parameters.AddWithValue("@password", in_pass.Text);
@@ -311,7 +300,6 @@ namespace PostGradSystem
             editProfile_sp.Parameters.AddWithValue("@address", in_address.Text);
 
             editProfile_sp.ExecuteNonQuery();
-
         }
     }
 }

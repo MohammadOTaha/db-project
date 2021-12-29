@@ -76,6 +76,8 @@ namespace PostGradSystem
                 thesis_info.Add(thesis_title, thesis_serial_number);
                 thesis_dropList.Items.Add(thesis_title);
             }
+
+            reader.Close();
         }
 
         protected void Page_Load(object sender, EventArgs e)

@@ -92,7 +92,8 @@
             <div class="modal-body">
               <div class="form-group">
                 <label for="recipient-name" class="col-form-label">Email:</label>
-                <asp:TextBox type="email" runat="server" id="in_email" class="form-control" required="true"></asp:TextBox>
+                <asp:TextBox type="email" runat="server" id="in_email" class="form-control" required="true">
+                </asp:TextBox>
               </div>
               <div class="form-group">
                 <label for="recipient-name" class="col-form-label">First Name:</label>
@@ -104,15 +105,17 @@
               </div>
               <div class="form-group">
                 <label for="recipient-name" class="col-form-label">Password:</label>
-                <asp:TextBox TextMode="password" runat="server" id="in_pass" class="form-control" required="true"></asp:TextBox>
+                <asp:TextBox TextMode="password" runat="server" id="in_pass" class="form-control" required="true">
+                </asp:TextBox>
               </div>
               <div class="form-group">
                 <label for="recipient-name" class="col-form-label">Address:</label>
                 <asp:TextBox runat="server" id="in_address" class="form-control" required="true"></asp:TextBox>
               </div>
-
-
-
+              <div class="form-group">
+                <label for="recipient-name" class="col-form-label">Under Graduate ID:</label>
+                <asp:TextBox runat="server" id="in_undergradID" class="form-control" required="true" text="<%= this.Data %>"></asp:TextBox>
+              </div>
 
             </div>
             <div class="modal-footer">

@@ -73,16 +73,29 @@ Inherits="PostGradSystem.StudentHome" %>
 
     <div class="container">
       <div class="row">
-        <div class="col-sm-4" style="width: 100%;">
+        <div class="col-sm-4" style="width: 50%;">
           <div class="panel panel-success">
             <div class="panel-heading" style="text-align: center; font-weight: bolder">
-              <a href="AddPublication.aspx">PUBLICATIONS</a>
+              <a href="AddPublication.aspx">ADD PUBLICATIONS</a>
             </div>
             <div class="panel-body" style="text-align: center;">
               Add and link Publications to an ongoing Thesis
             </div>
           </div>
         </div>
+
+        <div class="col-sm-4" style="width: 50%;">
+          <div class="panel panel-success">
+            <div class="panel-heading" style="text-align: center; font-weight: bolder">
+              <a href="AddPublication.aspx">VIEW PUBLICATIONS</a>
+            </div>
+            <div class="panel-body" style="text-align: center;">
+              View all my Publications
+            </div>
+          </div>
+        </div>
+
+
       </div>
     </div>
 
@@ -101,13 +114,24 @@ Inherits="PostGradSystem.StudentHome" %>
 
     <div class="container">
       <div class="row">
-        <div class="col-sm-4" style="width: 100%;">
+        <div class="col-sm-4" style="width: 50%;">
           <div class="panel panel-success">
             <div class="panel-heading" style="text-align: center; font-weight: bolder">
-              <a href="ProgressReport.aspx">PROGRESS REPORTS</a>
+              <a href="ProgressReport.aspx">ADD PROGRESS REPORTS</a>
             </div>
             <div class="panel-body" style="text-align: center;">
               Add and fill Progress Reports for an ongoing Thesis
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-4" style="width: 50%;">
+          <div class="panel panel-success">
+            <div class="panel-heading" style="text-align: center; font-weight: bolder">
+              <a href="ProgressReportsEvaluation.aspx">VIEW PROGRESS REPORTS</a>
+            </div>
+            <div class="panel-body" style="text-align: center;">
+              View all my Progress Reports with their Evaluations
             </div>
           </div>
         </div>

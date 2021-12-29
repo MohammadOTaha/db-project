@@ -129,6 +129,8 @@ namespace PostGradSystem
 
                 // add the table to div
                 coursesDiv.Controls.Add(coursesTable);
+
+                reader.Close();
             }
         }
     }
