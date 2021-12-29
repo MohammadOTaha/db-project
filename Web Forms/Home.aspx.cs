@@ -29,8 +29,6 @@ namespace PostGradSystem
         }
         protected void Page_Load(object sender, EventArgs e)
         {
-            db_connection.getConnection().Open();
-
             String user_id = Convert.ToString(Session["user_id"]);
             String user_type = Convert.ToString(Session["user_type"]);
 
@@ -55,8 +53,6 @@ namespace PostGradSystem
                     Response.Redirect("/AdminHome.aspx");
                     break;
             }
-
-            db_connection.getConnection().Close();
         }
     }
 }

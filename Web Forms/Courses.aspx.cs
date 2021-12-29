@@ -42,6 +42,10 @@ namespace PostGradSystem
             );
 
             cmd.Parameters.AddWithValue("@user_id", user_id);
+            
+            if (db_connection.getConnection().State == System.Data.ConnectionState.Closed) {
+                db_connection.getConnection().Open();
+            }
 
             return cmd.ExecuteReader();
         }
@@ -54,8 +58,6 @@ namespace PostGradSystem
                 Response.Redirect("Login.aspx");
             }
             else {
-                db_connection.getConnection().Open();
-
                 SqlDataReader reader = getStudentCourses(user_id.ToString());
 
                 // initialize coursesTable
@@ -100,6 +102,7 @@ namespace PostGradSystem
 
                 while(reader.Read()) {
                     TableRow row = new TableRow();
+                    
                     TableCell code = new TableCell();
                     TableCell grade = new TableCell();
                     TableCell creditHours = new TableCell();
@@ -126,8 +129,6 @@ namespace PostGradSystem
 
                 // add the table to div
                 coursesDiv.Controls.Add(coursesTable);
-
-                db_connection.getConnection().Close();
             }
         }
     }

@@ -9,11 +9,6 @@ namespace PostGradSystem
 {
     public partial class Register : System.Web.UI.Page
     {
-        protected void Page_Load(object sender, EventArgs e)
-        {
-
-        }
-
         static DBConnection db_connection = new DBConnection();
         private class DBConnection
         {
@@ -114,10 +109,38 @@ namespace PostGradSystem
             return user_type.SelectedIndex != 0;
         }
 
+        private static Boolean isValidNewUser(String input_email) {
+            SqlCommand checkUser = new SqlCommand("SELECT * FROM PostGradUser WHERE email = @email", db_connection.getConnection());
+            checkUser.Parameters.AddWithValue("@email", input_email);
+
+            SqlDataReader reader = checkUser.ExecuteReader();
+
+            if(reader.HasRows) {
+                reader.Close();
+                return false;
+            }
+            else {
+                reader.Close();
+                return true;
+            }
+        }
         protected void register(object sender, EventArgs e)
         {
+            if(Session["user_id"] != null) {
+                Response.Redirect("~/Home.aspx");
+            }
+
+            if(db_connection.getConnection().State == System.Data.ConnectionState.Closed){
+                db_connection.getConnection().Open();
+            }
+
             if(!isUserTypeChosen(ref usertypedroplist)) {
                 Response.Write("<script>alert('Please choose a user type.');</script>");
+                return;
+            }
+
+            if(!isValidNewUser(email.Text)) {
+                Response.Write("<script>alert('This email is already registered.');</script>");
                 return;
             }
 
@@ -130,9 +153,7 @@ namespace PostGradSystem
             user_info.Add("faculty", faculty.Text);
             user_info.Add("type", usertypedroplist.SelectedValue);
             user_info.Add("underGradID", underGradID.Text);
-            
-            db_connection.getConnection().Open();
-            
+                        
             int user_id = getRegisteredUserID(user_info);
             user_info.Add("user_id", user_id.ToString());
 
@@ -154,7 +175,11 @@ namespace PostGradSystem
                     break;
             }
             
+            Response.Write("<script>alert('Successfully registered.');</script>");
+
             db_connection.getConnection().Close();
+
+            Response.Redirect("Login.aspx");
         }
 
         protected void usertype_SelectedIndexChanged(object sender, EventArgs e)

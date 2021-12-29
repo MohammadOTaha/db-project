@@ -6,6 +6,14 @@ namespace PostGradSystem
 {
     public partial class Login : System.Web.UI.Page
     {
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            if(Session["user_id"] != null)
+            {
+                Response.Redirect("~/Home.aspx");
+            }
+        }
+
         static DBConnection db_connection = new DBConnection();
         private class DBConnection
         {
@@ -71,7 +79,11 @@ namespace PostGradSystem
             SqlCommand loginProc = new SqlCommand("userLogin", db_connection.getConnection());
             SqlParameter out_bit = new SqlParameter("@success", System.Data.SqlDbType.Bit);
 
-            db_connection.getConnection().Open();
+            if(db_connection.getConnection().State == System.Data.ConnectionState.Closed)
+            {
+                db_connection.getConnection().Open();
+            }
+
             int id = Convert.ToInt32(getId.ExecuteScalar());
 
             loginProc.Parameters.AddWithValue("@id", id);
@@ -90,8 +102,6 @@ namespace PostGradSystem
                 Response.Redirect("/Home.aspx");
             }
             else Response.Write("<script>alert('Invalid email or password')</script>");
-
-            db_connection.getConnection().Close();
         }
     }
 }

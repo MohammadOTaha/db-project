@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
-using System.Web;
+using System.Web.UI.HtmlControls;
 using System.Web.Configuration;
+using System.Web.UI.WebControls;
+using System.Collections;
 
 namespace PostGradSystem
 {
@@ -10,7 +12,6 @@ namespace PostGradSystem
     {
         
         static DBConnection db_connection = new DBConnection();
-
         private class DBConnection
         {
             private static SqlConnection conn;
@@ -26,43 +27,8 @@ namespace PostGradSystem
             }
         }
 
-        private static String getUserType(String user_id)
-        {
-            SqlCommand cmd = new SqlCommand(
-                (
-                    @"IF EXISTS (SELECT * FROM GUCianStudent WHERE id = @user_id)
-                    BEGIN
-                        SET @type = 'GUCian';
-                    END
-                    ELSE IF EXISTS (SELECT * FROM NonGUCianStudent WHERE id = @user_id)
-                    BEGIN
-                        SET @type = 'NonGUCian';
-                    END
-                    ELSE IF EXISTS (SELECT * FROM Examiner WHERE id = @user_id)
-                    BEGIN
-                        SET @type = 'Examiner';
-                    END
-                    ELSE IF EXISTS (SELECT * FROM Supervisor WHERE id = @user_id)
-                    BEGIN
-                        SET @type = 'Supervisor';
-                    END
-                    ELSE 
-                    BEGIN
-                        SET @type = 'Admin';
-                    END"
-                ), 
-                db_connection.getConnection());
-
-            cmd.Parameters.AddWithValue("@user_id", user_id);
-            cmd.Parameters.Add("@type", System.Data.SqlDbType.VarChar, 50);
-            cmd.Parameters["@type"].Direction = System.Data.ParameterDirection.Output;
-
-            cmd.ExecuteNonQuery();
-
-            return cmd.Parameters["@type"].Value.ToString();
-        }
-
-        public static void insertUserInfo(ref Dictionary<String, String> user_info, SqlDataReader reader, String key)
+        static Dictionary<string, string> user_info;
+        public static void insertUserInfo(SqlDataReader reader, String key)
         {
             if(reader[key] != DBNull.Value) user_info.Add(key, reader[key].ToString());
             else user_info.Add(key, null);
@@ -70,7 +36,7 @@ namespace PostGradSystem
 
         private static Dictionary<String, String> getUserInfo (String user_id, String user_type)
         {
-            Dictionary<String, String> user_info = new Dictionary<String, String>();
+            user_info = new Dictionary<String, String>();
 
             SqlCommand cmd = new SqlCommand(
                 (
@@ -124,65 +90,227 @@ namespace PostGradSystem
             {
                 for (int i = 0; i < reader.FieldCount; i++)
                 {
-                    insertUserInfo(ref user_info, reader, reader.GetName(i));
+                    insertUserInfo(reader, reader.GetName(i));
                 }
             }
 
+            reader.Close();
+
             return user_info;
         }
+        private static String prettifyOutputString(String input)
+        {
+            switch (input)
+            {
+                case "firstName":
+                    return "First Name";
+                case "lastName":
+                    return "Last Name";
+                case "underGradID":
+                    return "Undergraduate ID";
+                case "fieldOfWork":
+                    return "Field of Work";
+                case "isNational":
+                    return "National";
+                default:
+                    return input.Substring(0, 1).ToUpper() + input.Substring(1);
+            }
+        }
         
-        private static void loadStudentInfo()
+        private static ArrayList getUserPhoneNumbers(String user_id, String user_type)
         {
+            ArrayList phone_numbers = new ArrayList();
+
+            SqlCommand cmd;
+
+            if(user_type == "GUCian") {
+                cmd = new SqlCommand(
+                    (
+                        @"
+                        SELECT phoneNumber
+                        FROM GUCStudentPhoneNumber
+                        WHERE GUCianID = @user_id
+                        "
+                    ),
+                    db_connection.getConnection()
+                );
+            }
+            else {
+                cmd = new SqlCommand(
+                    (
+                        @"
+                        SELECT phoneNumber
+                        FROM NonGUCianPhoneNumber
+                        WHERE NonGUCianID = @user_id
+                        "
+                    ),
+                    db_connection.getConnection()
+                );
+            }
+
+            cmd.Parameters.AddWithValue("@user_id", user_id);
+
+            SqlDataReader reader = cmd.ExecuteReader();
             
+            while (reader.Read())
+            {
+                phone_numbers.Add(reader["phoneNumber"].ToString());
+            }
+
+            reader.Close();
+
+            return phone_numbers;
         }
-
-        private static void loadExaminerInfo()
+        private static void writeToPage(ref HtmlGenericControl profileDiv, Dictionary<String, String> user_info, String user_id, String user_type)
         {
+            // create a table to hold the user info
+            Table table = new Table();
+            table.CssClass = "table table-striped table-bordered table-hover";
+            table.Width = Unit.Percentage(100);
+            table.CellSpacing = 0;
+            table.CellPadding = 0;
+            table.GridLines = GridLines.None;
 
-        }
+            // create a row for each key/value pair
+            foreach (KeyValuePair<String, String> pair in user_info)
+            {
+                TableRow row = new TableRow();
+                TableCell key = new TableCell();
+                TableCell value = new TableCell();
 
-        private static void loadSupervisorInfo()
-        {
+                key.Width = Unit.Percentage(20);
+                value.Width = Unit.Percentage(80);
 
-        }
+                key.Font.Bold = true;
+                key.CssClass = "text-center text-uppercase text-info";
+                value.CssClass = "text-center";
 
-        private static void loadAdminInfo()
-        {
+                key.Text = prettifyOutputString(pair.Key);
+                value.Text = pair.Value;
 
-        }
+                row.Cells.Add(key);
+                row.Cells.Add(value);
 
-        private static void writeToPage(ref HttpResponse r, Dictionary<String, String> user_info)
-        {
-            if(user_info.ContainsKey("email")) r.Write(user_info["email"] + "<br>");
-            if(user_info.ContainsKey("firstName")) r.Write(user_info["firstName"] + "<br>");
-            if(user_info.ContainsKey("lastName")) r.Write(user_info["lastName"] + "<br>");
-            if(user_info.ContainsKey("faculty")) r.Write(user_info["faculty"] + "<br>");
-            if(user_info.ContainsKey("address")) r.Write(user_info["address"] + "<br>");
-            if(user_info.ContainsKey("GPA")) r.Write(user_info["GPA"] + "<br>");
-            if(user_info.ContainsKey("underGradID")) r.Write(user_info["underGradID"] + "<br>");
-            if(user_info.ContainsKey("name")) r.Write(user_info["name"] + "<br>");
-            if(user_info.ContainsKey("fieldOfWork")) r.Write(user_info["fieldOfWork"] + "<br>");
-            if(user_info.ContainsKey("isNational")) r.Write(user_info["isNational"] + "<br>");
+                table.Rows.Add(row);
+            }
+
+            // add the table to the page
+            profileDiv.Controls.Add(table);
+
+            if(user_type == "GUCian" || user_type == "Non-GUCian") {
+                // create a table to hold the user phone numbers
+                Table phone_numbers_table = new Table();
+                phone_numbers_table.CssClass = "table table-striped table-bordered table-hover";
+                phone_numbers_table.Width = Unit.Percentage(100);
+                phone_numbers_table.CellSpacing = 0;
+                phone_numbers_table.CellPadding = 0;
+                phone_numbers_table.GridLines = GridLines.None;
+
+                // create a row for each phone number, numbered from 1
+                int i = 1;
+                foreach (String phone_number in getUserPhoneNumbers(user_id, user_type))
+                {
+                    TableRow row = new TableRow();
+                    TableCell key = new TableCell();
+                    TableCell value = new TableCell();
+
+                    key.Width = Unit.Percentage(20);
+                    value.Width = Unit.Percentage(80);
+
+                    key.Font.Bold = true;
+                    key.CssClass = "text-center text-uppercase text-info";
+                    value.CssClass = "text-center";
+
+                    key.Text = "Phone Number " + i;
+                    value.Text = phone_number;
+
+                    row.Cells.Add(key);
+                    row.Cells.Add(value);
+
+                    phone_numbers_table.Rows.Add(row);
+
+                    i++;
+                }
+
+                // add the table to the page
+                profileDiv.Controls.Add(phone_numbers_table);
+            }
         }
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            int user_id = Convert.ToInt32(Session["user_id"]);
+            if(db_connection.getConnection().State == System.Data.ConnectionState.Closed) {
+                db_connection.getConnection().Open();
+            }
 
-            if (user_id == 0) {
+            if (Session["user_id"] == null) {
                 Response.Redirect("Login.aspx");
             }
             else {
-                db_connection.getConnection().Open();
+                int user_id = Convert.ToInt32(Session["user_id"]);
+                String user_type = Convert.ToString(Session["user_type"]);
 
-                Dictionary<String, String> user_info = getUserInfo(user_id.ToString(), getUserType(user_id.ToString()));
+                user_info = getUserInfo(user_id.ToString(), user_type);
 
-                HttpResponse r = HttpContext.Current.Response;
-
-                writeToPage(ref r, user_info);
-
-                db_connection.getConnection().Close();
+                in_firstName.Text = user_info["firstName"];
+                in_lastName.Text = user_info["lastName"];
+                in_email.Text = user_info["email"];
+                in_address.Text = user_info["address"];
+               
+                writeToPage(ref profileDiv, user_info, user_id.ToString(), user_type);
             }
+        }
+
+        protected void addPhoneNumber(object sender, EventArgs e)
+        {
+            System.Diagnostics.Debug.WriteLine("editProfile");
+
+            if(db_connection.getConnection().State == System.Data.ConnectionState.Closed) {
+                db_connection.getConnection().Open();
+            }
+
+
+            SqlCommand addPhone_sp = new SqlCommand("addMobile", db_connection.getConnection());
+            addPhone_sp.CommandType = System.Data.CommandType.StoredProcedure;
+
+            addPhone_sp.Parameters.AddWithValue("@ID", Session["user_id"]);
+            addPhone_sp.Parameters.AddWithValue("@mobile_number", in_phone_number.Text);
+
+            addPhone_sp.ExecuteNonQuery();
+
+            Response.Redirect(Request.RawUrl);
+        }
+
+        protected void editProfile(object sender, EventArgs e)
+        {
+            System.Diagnostics.Debug.WriteLine("------------------");
+
+            System.Diagnostics.Debug.WriteLine(in_email.Text);
+
+            System.Diagnostics.Debug.WriteLine("------------------");
+
+            System.Diagnostics.Debug.WriteLine(in_address.Text);
+
+            System.Diagnostics.Debug.WriteLine("------------------");
+
+
+
+            if (db_connection.getConnection().State == System.Data.ConnectionState.Closed) {
+                db_connection.getConnection().Open();
+            }
+
+            SqlCommand editProfile_sp = new SqlCommand("editMyProfile", db_connection.getConnection());
+            editProfile_sp.CommandType = System.Data.CommandType.StoredProcedure;
+
+            editProfile_sp.Parameters.AddWithValue("@studentId", Session["user_id"]);
+            editProfile_sp.Parameters.AddWithValue("@type", "a7a");
+            editProfile_sp.Parameters.AddWithValue("@firstname", in_firstName.Text);
+            editProfile_sp.Parameters.AddWithValue("@lastName", in_lastName.Text);
+            editProfile_sp.Parameters.AddWithValue("@password", in_pass.Text);
+            editProfile_sp.Parameters.AddWithValue("@email", in_email.Text);
+            editProfile_sp.Parameters.AddWithValue("@address", in_address.Text);
+
+            editProfile_sp.ExecuteNonQuery();
 
         }
     }

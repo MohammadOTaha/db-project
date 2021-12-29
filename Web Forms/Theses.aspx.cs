@@ -7,6 +7,9 @@ namespace PostGradSystem
 {
     public partial class Theses : System.Web.UI.Page
     {
+
+        static int user_id;
+        static string user_type;
         static DBConnection db_connection = new DBConnection();
         private class DBConnection
         {
@@ -23,37 +26,10 @@ namespace PostGradSystem
             }
         }
 
-
-        private static Boolean is_gucian(String user_id)
-        {
-            SqlCommand cmd = new SqlCommand(
-                (
-                    @"
-                    IF EXISTS (SELECT * FROM GUCianStudent WHERE id = @user_id)
-                        BEGIN
-                            SET @is_gucian = 1;
-                        END
-                    ELSE 
-                        BEGIN
-                            SET @is_gucian = 0;
-                        END
-                    "
-                ), 
-                db_connection.getConnection());
-
-            cmd.Parameters.AddWithValue("@user_id", user_id);
-            cmd.Parameters.Add("@is_gucian", System.Data.SqlDbType.Bit);
-            cmd.Parameters["@is_gucian"].Direction = System.Data.ParameterDirection.Output;
-
-            cmd.ExecuteNonQuery();
-
-            return Convert.ToBoolean(cmd.Parameters["@is_gucian"].Value);
-        }
-
         private static SqlDataReader getStudentTheses(String user_id)
         {
             SqlCommand cmd;
-            if(is_gucian(user_id)) {
+            if(user_type == "GUCian") {
                 cmd = new SqlCommand(
                     (
                         @"
@@ -82,18 +58,21 @@ namespace PostGradSystem
 
             cmd.Parameters.AddWithValue("@user_id", user_id);
 
+            if(db_connection.getConnection().State == System.Data.ConnectionState.Closed) {
+                db_connection.getConnection().Open();
+            }
+
             return cmd.ExecuteReader();
         }
         protected void Page_Load(object sender, EventArgs e)
         {
-            int user_id = 1;
+            user_id = Convert.ToInt32(Session["user_id"]);
+            user_type = Session["user_type"].ToString();
 
             if(user_id == 0) {
                 Response.Redirect("Login.aspx");
             }
             else {
-                db_connection.getConnection().Open();
-
                 SqlDataReader reader = getStudentTheses(user_id.ToString());
 
                 Table thesesTable = new Table();
@@ -210,8 +189,7 @@ namespace PostGradSystem
                 // add the table to div
                 thesesDiv.Controls.Add(thesesTable);
 
-
-                db_connection.getConnection().Close();
+                reader.Close();
             }
         }
     }

@@ -25,13 +25,12 @@ namespace PostGradSystem
         static Dictionary<String, String> thesis_info;
         static Boolean linkPubToThesis = false;
 
-        protected void Page_Load(object sender, EventArgs e)
-        {
-            
-        }
-
         private static Boolean is_gucian(String user_id)
         {
+            if(db_connection.getConnection().State == System.Data.ConnectionState.Closed) {
+                db_connection.getConnection().Open();
+            }
+
             SqlCommand cmd = new SqlCommand(
                 (
                     @"
@@ -100,17 +99,19 @@ namespace PostGradSystem
 
             linkPubToThesis = true;
 
-            thesis_info = new Dictionary<String, String>();
-
-            int user_id = 1;
+            int user_id = Convert.ToInt32(Session["user_id"]);
 
             if(user_id == 0) {
                 Response.Redirect("~/Login.aspx");
             }
             else {
-                db_connection.getConnection().Open();
-                
+                if(db_connection.getConnection().State == System.Data.ConnectionState.Closed) {
+                    db_connection.getConnection().Open();
+                }
+                        
                 SqlDataReader reader = getStudentTheses(user_id.ToString());
+
+                thesis_info = new Dictionary<String, String>();
 
                 while(reader.Read()) {
                     String thesis_title = reader.GetString(0);
@@ -124,13 +125,16 @@ namespace PostGradSystem
                 linkPubPanel.Visible = true;
 
                 reader.Close();
-                db_connection.getConnection().Close();
             }
 
         }
 
         protected void addPublication(object sender, EventArgs e)
         {
+            if(db_connection.getConnection().State == System.Data.ConnectionState.Closed) {
+                db_connection.getConnection().Open();
+            }
+
             // execute stored procedure
             SqlCommand add_pub_sp = new SqlCommand("addPublication", db_connection.getConnection());
             add_pub_sp.CommandType = System.Data.CommandType.StoredProcedure;
@@ -143,8 +147,6 @@ namespace PostGradSystem
             add_pub_sp.Parameters.AddWithValue("@accepted", rdoYes.Checked ? 1 : 0);
 
             // execute stored procedure
-            db_connection.getConnection().Open();
-
             add_pub_sp.ExecuteNonQuery();
             
             // get the last inserted publication id
@@ -172,7 +174,6 @@ namespace PostGradSystem
                 link_pub_thesis_sp.ExecuteNonQuery();
             }
             
-            db_connection.getConnection().Close();
         }
     }
 }

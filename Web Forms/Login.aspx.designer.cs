@@ -24,15 +24,6 @@ namespace PostGradSystem
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
 
         /// <summary>
-        /// label_in_email control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label label_in_email;
-
-        /// <summary>
         /// in_email control.
         /// </summary>
         /// <remarks>
@@ -40,15 +31,6 @@ namespace PostGradSystem
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox in_email;
-
-        /// <summary>
-        /// label_in_pass control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label label_in_pass;
 
         /// <summary>
         /// in_pass control.

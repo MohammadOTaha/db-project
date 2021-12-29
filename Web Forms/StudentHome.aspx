@@ -33,7 +33,7 @@ Inherits="PostGradSystem.StudentHome" %>
     </style>
   </head>
   <body>
-    <div class="jumbotron">
+    <div class="jumbotron jumbotron-fluid">
       <div class="container text-center">
         <h1>German University in Cairo</h1>
       </div>
@@ -71,40 +71,66 @@ Inherits="PostGradSystem.StudentHome" %>
       </div>
     </nav>
 
-    <div class="container" id="coursesDiv">
+    <div class="container">
       <div class="row">
-        <div class="col-sm-4">
-            <div class="panel panel-success">
-              <div class="panel-heading">
-                  <a href="AddPublication.aspx">PUBLICATIONS</a>
-              </div>
-              <div class="panel-body">
-                Add and link Publications to an ongoing Thesis
-              </div>
-            </div>
-        </div>
-        <div class="col-sm-4">
+        <div class="col-sm-4" style="width: 100%;">
           <div class="panel panel-success">
-            <div class="panel-heading">
-                <a href="Theses.aspx">THESES</a>
+            <div class="panel-heading" style="text-align: center; font-weight: bolder">
+              <a href="AddPublication.aspx">PUBLICATIONS</a>
             </div>
-            <div class="panel-body">View all Theses</div>
+            <div class="panel-body" style="text-align: center;">
+              Add and link Publications to an ongoing Thesis
+            </div>
           </div>
         </div>
-        <div class="col-sm-4">
-          <div class="panel panel-success">
-            <div class="panel-heading">
-                <a href="ProgressReport.aspx">PROGRESS REPORTS</a>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-4" style="width: 100%;">
+          <div class="panel panel-success" >
+            <div class="panel-heading" style="text-align: center; font-weight: bolder;">
+              <a href="Theses.aspx">THESES</a>
             </div>
-            <div class="panel-body">
+            <div class="panel-body" style="text-align: center;">View all Theses</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-4" style="width: 100%;">
+          <div class="panel panel-success">
+            <div class="panel-heading" style="text-align: center; font-weight: bolder">
+              <a href="ProgressReport.aspx">PROGRESS REPORTS</a>
+            </div>
+            <div class="panel-body" style="text-align: center;">
               Add and fill Progress Reports for an ongoing Thesis
             </div>
           </div>
         </div>
       </div>
     </div>
+
+    <div class="container" id="coursesDiv" runat="server">
+      <div class="row">
+        <div class="col-sm-4" style="width: 100%">
+          <div class="panel panel-success">
+            <div class="panel-heading" style="text-align: center; font-weight: bolder;">
+              <a href="Courses.aspx">COURSES</a>
+            </div>
+            <div class="panel-body" style="text-align: center;">
+              View all Courses with their respective Grades
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <br />
-    
+
     <br /><br />
   </body>
 </html>

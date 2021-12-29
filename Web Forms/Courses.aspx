@@ -1,4 +1,5 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Courses.aspx.cs" Inherits="PostGradSystem.Courses" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Courses.aspx.cs"
+Inherits="PostGradSystem.Courses" %>
 
 <!DOCTYPE html>
 <html lang="en">

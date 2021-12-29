@@ -7,7 +7,9 @@ using System.Web.UI.WebControls;
 namespace PostGradSystem
 {
     public partial class ProgressReport : System.Web.UI.Page
-    {
+    {   
+        static int user_id;
+        static String user_type;
         static DBConnection db_connection = new DBConnection();
         private class DBConnection
         {
@@ -25,37 +27,9 @@ namespace PostGradSystem
         }
         
         static Dictionary<String, String> thesis_info;
-
-        static Boolean isGUCian;
-        private static Boolean is_gucian(String user_id)
-        {
-            SqlCommand cmd = new SqlCommand(
-                (
-                    @"
-                    IF EXISTS (SELECT * FROM GUCianStudent WHERE id = @user_id)
-                        BEGIN
-                            SET @is_gucian = 1;
-                        END
-                    ELSE 
-                        BEGIN
-                            SET @is_gucian = 0;
-                        END
-                    "
-                ), 
-                db_connection.getConnection());
-
-            cmd.Parameters.AddWithValue("@user_id", user_id);
-            cmd.Parameters.Add("@is_gucian", System.Data.SqlDbType.Bit);
-            cmd.Parameters["@is_gucian"].Direction = System.Data.ParameterDirection.Output;
-
-            cmd.ExecuteNonQuery();
-
-            return isGUCian = Convert.ToBoolean(cmd.Parameters["@is_gucian"].Value);
-        }
-
         private static SqlDataReader getStudentTheses(String user_id) 
         {
-            if(is_gucian(user_id)) {
+            if(user_id == "GUCian") {
                 SqlCommand cmd = new SqlCommand(
                     (
                         @"
@@ -106,29 +80,27 @@ namespace PostGradSystem
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            // int user_id = Convert.ToInt32(Session["user_id"]);
-            int user_id = 1;
+            user_id = Convert.ToInt32(Session["user_id"]);
 
             if(user_id == 0) {
                 Response.Redirect("Login.aspx");
             }
             else {
-                db_connection.getConnection().Open();
+                if(db_connection.getConnection().State == System.Data.ConnectionState.Closed) {
+                    db_connection.getConnection().Open();
+                }
 
                 loadThesisDropDownList(getStudentTheses(user_id.ToString()), ref thesis_dropList);
-
-                db_connection.getConnection().Close();
             }
         }
 
 
         static Boolean fillProgressReport = true;
 
-        
         private static int getLastReportNo(ref DropDownList thesis_dropList, String user_id) {
             SqlCommand cmd;
             
-            if(isGUCian) {
+            if(user_type == "GUCian") {
                 cmd = new SqlCommand(
                     (
                         @"
@@ -162,7 +134,8 @@ namespace PostGradSystem
         
         protected void addReport(object sender, EventArgs e)
         {
-            db_connection.getConnection().Open();
+            user_id = Convert.ToInt32(Session["user_id"]);
+            user_type = Session["user_type"].ToString();
 
             SqlCommand addReport_sb = new SqlCommand("AddProgressReport", db_connection.getConnection());
             addReport_sb.CommandType = System.Data.CommandType.StoredProcedure;
@@ -173,9 +146,6 @@ namespace PostGradSystem
             addReport_sb.ExecuteNonQuery();
 
             if(fillProgressReport) {
-                // int user_id = Convert.ToInt32(Session["user_id"]);
-                int user_id = 1;
-
                 SqlCommand fillReport_sb = new SqlCommand("FillProgressReport", db_connection.getConnection());
                 fillReport_sb.CommandType = System.Data.CommandType.StoredProcedure;
 
@@ -190,7 +160,6 @@ namespace PostGradSystem
                 fillReport_sb.ExecuteNonQuery();
             }
             
-            db_connection.getConnection().Close();
         }
 
 

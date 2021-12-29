@@ -95,7 +95,9 @@ namespace PostGradSystem
                 Response.Redirect("~/Login.aspx");
             }
             else {
-                db_connection.getConnection().Open();
+                if(db_connection.getConnection().State == System.Data.ConnectionState.Closed) {
+                    db_connection.getConnection().Open();
+                }
 
                 isGUCian = is_gucian(user_id.ToString());
 
@@ -115,7 +117,9 @@ namespace PostGradSystem
             int user_id = Convert.ToInt32(Session["user_id"]);
             
             if(!String.IsNullOrEmpty(tb_add_phone.Text)) {
-                db_connection.getConnection().Open();
+                if(db_connection.getConnection().State == System.Data.ConnectionState.Closed) {
+                    db_connection.getConnection().Open();
+                }
 
                 SqlCommand addPhone_sp = new SqlCommand("addMobile", db_connection.getConnection());
                 addPhone_sp.CommandType = System.Data.CommandType.StoredProcedure;

@@ -3,110 +3,176 @@ Inherits="PostGradSystem.TestForm" %>
 
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
-  <head runat="server">
-    <title>Student Register</title>
-  </head>
-  <body>
-    <link href="Content/bootstrap.min.css" rel="stylesheet" />
-    <script src="Scripts/bootstrap.min.js"></script>
-    <section class="vh-100" style="background-color: #eee">
-      <div class="container h-100">
-        <div class="row d-flex justify-content-center align-items-center h-100">
-          <div class="col-lg-12 col-xl-11">
-            <div class="card text-black" style="border-radius: 25px">
-              <div class="card-body p-md-5">
-                <div class="row justify-content-center">
-                  <div class="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
-                    <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">
-                      Sign up
-                    </p>
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>Bootstrap Example</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link
+			rel="stylesheet"
+			href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+		/>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+		<style>
+			/* Remove the navbar's default rounded borders and increase the bottom margin */
+			.navbar {
+				margin-bottom: 50px;
+				border-radius: 0;
+			}
 
-                    <form class="mx-1 mx-md-4" runat="server">
-                      <div class="d-flex flex-row align-items-center mb-4">
-                        <i class="fas fa-user fa-lg me-3 fa-fw"></i>
-                        <div class="form-outline flex-fill mb-0">
-                          <asp:TextBox
-                            type="text"
-                            ID="firstname"
-                            class="form-control"
-                            runat="server"
-                            placeholder="First Name"
-                            required="true"
-                            maxlength="50"
-                          />
-                        </div>
-                      </div>
+			/* Remove the jumbotron's default bottom margin */
+			.jumbotron {
+				margin-bottom: 0;
+			}
 
-                      <div class="d-flex flex-row align-items-center mb-4">
-                        <i class="fas fa-user fa-lg me-3 fa-fw"></i>
-                        <div class="form-outline flex-fill mb-0">
-                          <asp:TextBox
-                            type="text"
-                            ID="lastname"
-                            class="form-control"
-                            runat="server"
-                            placeholder="Last Name"
-                            required="true"
-                            maxlength="50"
-                          />
-                        </div>
-                      </div>
+			/* Add a gray background color and some padding to the footer */
+			footer {
+				background-color: #f2f2f2;
+				padding: 25px;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="jumbotron">
+			<div class="container text-center">
+				<h1>German University in Cairo</h1>
+			</div>
+		</div>
 
-                      <div class="d-flex flex-row align-items-center mb-4">
-                        <i class="fas fa-user fa-lg me-3 fa-fw"></i>
-                        <div class="form-outline flex-fill mb-0">
-                          <asp:TextBox
-                            type="text"
-                            ID="email"
-                            class="form-control"
-                            runat="server"
-                            placeholder="Email Address"
-                            required="true"
-                            maxlength="50"
-                          />
-                        </div>
-                      </div>
+		<nav class="navbar navbar-inverse">
+			<div class="container-fluid">
+				<div class="navbar-header">
+					<button
+						type="button"
+						class="navbar-toggle"
+						data-toggle="collapse"
+						data-target="#myNavbar"
+					>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand" href="#">Student Courses</a>
+				</div>
+				<div class="collapse navbar-collapse" id="myNavbar">
+					<ul class="nav navbar-nav navbar-right">
+						<li>
+							<a href="Profile.aspx">
+								<span class="glyphicon glyphicon-user"></span>
+								My Account
+							</a>
+						</li>
+						<li>
+							<a href="Login.aspx">
+								<span class="glyphicon glyphicon-log-out"></span
+								>Logout
+							</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</nav>
 
-                      <div class="d-flex flex-row align-items-center mb-4">
-                        <i class="fas fa-user fa-lg me-3 fa-fw"></i>
-                        <div class="form-outline flex-fill mb-0">
-                          <asp:TextBox
-                            type="password"
-                            ID="password"
-                            class="form-control"
-                            runat="server"
-                            placeholder="Password"
-                            required="true"
-                          />
-                        </div>
-                      </div>
+		<div class="container" id="profileDiv" runat="server">
+			<div class="row"></div>
+		</div>
 
-                      <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
-						<asp:Button ID="btn_register" runat="server" Text="Register" class="btn btn-primary btn-lg" />
-                      </div>
-                    </form>
-                  </div>
-                  <div
-                    class="
-                      col-md-10 col-lg-6 col-xl-7
-                      d-flex
-                      align-items-center
-                      order-1 order-lg-2
-                    "
-                  >
-                    <img
-                      src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-registration/draw1.webp"
-                      class="img-fluid"
-                      alt="Sample image"
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  </body>
+		<form runat="server">
+			<div class="container bg-light">
+				<div class="col-md-12 text-center">
+					<asp:Button
+						type="button"
+						class="btn btn-primary"
+						runat="server"
+						data-toggle="modal"
+						data-target="#exampleModal"
+						data-whatever="@mdo"
+						Text="Edit Profile Details"
+					/>
+					<asp:Button
+						type="button"
+						class="btn btn-warning"
+						runat="server"
+						Text="Add Phone Number"
+					/>
+					<div
+						class="modal fade"
+						id="exampleModal"
+						tabindex="-1"
+						role="dialog"
+						aria-labelledby="exampleModalLabel"
+						aria-hidden="true"
+					>
+						<div class="modal-dialog" role="document">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5
+										class="modal-title"
+										id="exampleModalLabel"
+									>
+										New message
+									</h5>
+									<button
+										type="button"
+										class="close"
+										data-dismiss="modal"
+										aria-label="Close"
+									>
+										<span aria-hidden="true">&times;</span>
+									</button>
+								</div>
+								<div class="modal-body">
+									<form>
+										<div class="form-group">
+											<label
+												for="recipient-name"
+												class="col-form-label"
+												>Recipient:</label
+											>
+											<input
+												type="text"
+												class="form-control"
+												id="recipient-name"
+											/>
+										</div>
+										<div class="form-group">
+											<label
+												for="message-text"
+												class="col-form-label"
+												>Message:</label
+											>
+											<textarea
+												class="form-control"
+												id="message-text"
+											></textarea>
+										</div>
+									</form>
+								</div>
+								<div class="modal-footer">
+									<button
+										type="button"
+										class="btn btn-secondary"
+										data-dismiss="modal"
+									>
+										Close
+									</button>
+									<button
+										type="button"
+										class="btn btn-primary"
+									>
+										Send message
+									</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</form>
+
+		<br />
+		<br /><br />
+	</body>
 </html>

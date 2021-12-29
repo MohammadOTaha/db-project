@@ -11,11 +11,12 @@ namespace PostGradSystem
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            String user_id = Convert.ToString(Session["user_id"]);
-            String user_type = Convert.ToString(Session["user_type"]);
+            if(Session["user_id"] == null) {
+                Response.Redirect("Login.aspx");
+            }
 
-            if(user_type == "GUCian") {
-                courses_panel.Visible = false;
+            if(Session["user_type"].ToString() == "GUCian") {
+                coursesDiv.Visible = false;
             }
         }
     }

@@ -15,12 +15,12 @@ namespace PostGradSystem
     {
 
         /// <summary>
-        /// courses_panel control.
+        /// coursesDiv control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel courses_panel;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl coursesDiv;
     }
 }
