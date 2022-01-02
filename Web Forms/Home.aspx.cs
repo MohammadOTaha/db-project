@@ -41,15 +41,15 @@ namespace PostGradSystem
                     Response.Redirect("/StudentHome.aspx");
                     break;
 
-                case "supervisor":
+                case "Supervisor":
                     Response.Redirect("/SupervisorHome.aspx");
                     break;
                 
-                case "examiner":
+                case "Examiner":
                     Response.Redirect("/ExaminerHome.aspx");
                     break;
 
-                case "admin":
+                case "Admin":
                     Response.Redirect("/AdminHome.aspx");
                     break;
             }

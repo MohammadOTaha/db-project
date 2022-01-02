@@ -35,7 +35,7 @@ namespace PostGradSystem
                 cmd = new SqlCommand(
                     (
                         @"
-                        SELECT T.title 'Title', T.field 'Field', T.defenseDate 'Defense Date', PR.evaluation 'Evaluation', PR.[date] 'Report Date', S.name 'Supervisor Name'
+                        SELECT T.title 'Thesis Title', T.field 'Field', T.defenseDate 'Defense Date', PR.evaluation 'Evaluation', PR.[date] 'Report Date', S.name 'Supervisor Name'
                         FROM GUCianProgressReport PR
                         INNER JOIN Thesis T ON PR.thesisSerialNumber = T.serialNumber
                         INNER JOIN Supervisor S ON S.id = PR.supervisor_id
@@ -49,7 +49,7 @@ namespace PostGradSystem
                 cmd = new SqlCommand(
                     (
                         @"
-                        SELECT T.title 'Title', T.field 'Field', T.defenseDate 'Defense Date', PR.evaluation 'Evaluation', PR.[date] 'Report Date', S.name 'Supervisor Name'
+                        SELECT T.title 'Thesis Title', T.field 'Field', T.defenseDate 'Defense Date', PR.evaluation 'Evaluation', PR.[date] 'Report Date', S.name 'Supervisor Name'
                         FROM NonGUCianProgressReport PR
                         INNER JOIN Thesis T ON PR.thesisSerialNumber = T.serialNumber
                         INNER JOIN Supervisor S ON S.id = PR.supervisor_id
@@ -82,7 +82,7 @@ namespace PostGradSystem
             headerRow.TableSection = TableRowSection.TableHeader;
 
             TableHeaderCell titleHeader = new TableHeaderCell();
-            titleHeader.Text = "Title";
+            titleHeader.Text = "Thesis Title";
             titleHeader.Attributes.Add("style", "text-align: center;");
             headerRow.Cells.Add(titleHeader);
 
@@ -133,7 +133,7 @@ namespace PostGradSystem
                     row.TableSection = TableRowSection.TableBody;
 
                     TableCell titleCell = new TableCell();
-                    titleCell.Text = reports["Title"].ToString();
+                    titleCell.Text = reports["Thesis Title"].ToString();
                     titleCell.Attributes.Add("style", "text-align: center;");
                     row.Cells.Add(titleCell);
 

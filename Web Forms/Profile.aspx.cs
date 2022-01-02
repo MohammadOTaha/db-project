@@ -10,13 +10,13 @@ namespace PostGradSystem
 {
     public partial class Profile : System.Web.UI.Page
     {
-        
+
         static DBConnection db_connection = new DBConnection();
         private class DBConnection
         {
             private static SqlConnection conn;
 
-            public DBConnection() 
+            public DBConnection()
             {
                 conn = new SqlConnection(WebConfigurationManager.ConnectionStrings["DefaultConnection"].ToString());
             }
@@ -30,11 +30,11 @@ namespace PostGradSystem
         static Dictionary<string, string> user_info;
         public static void insertUserInfo(SqlDataReader reader, String key)
         {
-            if(reader[key] != DBNull.Value) user_info.Add(key, reader[key].ToString());
+            if (reader[key] != DBNull.Value) user_info.Add(key, reader[key].ToString());
             else user_info.Add(key, null);
         }
 
-        private static Dictionary<String, String> getUserInfo (String user_id, String user_type)
+        private static Dictionary<String, String> getUserInfo(String user_id, String user_type)
         {
             user_info = new Dictionary<String, String>();
 
@@ -77,7 +77,7 @@ namespace PostGradSystem
                             WHERE Admin.id = @user_id;
                         END
                     "
-                ), 
+                ),
                 db_connection.getConnection()
             );
 
@@ -116,14 +116,96 @@ namespace PostGradSystem
                     return input.Substring(0, 1).ToUpper() + input.Substring(1);
             }
         }
-        
+
+        private static void showMyStudents(String user_id, ref HtmlGenericControl Div2)
+        {
+            int superVisorID = Convert.ToInt32(user_id);
+            SqlCommand cmd = new SqlCommand(@"SELECT GUCianStudent.firstName , GUCianStudent.lastName, T1.years
+                                FROM GUCianRegisterThesis
+                                    INNER JOIN Supervisor S1 On S1.id = GUCianRegisterThesis.supervisor_id
+                                    INNER JOIN Thesis T1 on T1.serialNumber = GUCianRegisterThesis.thesisSerialNumber
+                                    INNER JOIN GUCianStudent ON GUCianStudent.id = GUCianRegisterThesis.GUCianID
+                                    WHERE T1.endDate > GETDATE() AND S1.id = @superVisorID
+
+                                UNION
+
+                                SELECT NonGUCianStudent.firstName, NonGUCianStudent.lAStName,T2.years
+                                FROM NonGUCianRegisterThesis
+                                    INNER JOIN Supervisor S2 On S2.id = NonGUCianRegisterThesis.supervisor_id
+                                    INNER JOIN Thesis T2 on T2.serialNumber = NonGUCianRegisterThesis.thesisSerialNumber
+                                    INNER JOIN NonGUCianStudent ON NonGUCianStudent.id = NonGUCianRegisterThesis.NonGUCianID
+                                    WHERE T2.endDate > GETDATE() AND S2.id = @superVisorID",
+                    db_connection.getConnection());
+
+            //Check if the connection is open
+            if (db_connection.getConnection().State == System.Data.ConnectionState.Closed)
+            {
+                db_connection.getConnection().Open();
+            }
+
+            cmd.Parameters.AddWithValue("@superVisorId", superVisorID);
+
+            //Create a table
+            Table table = new Table();
+            table.GridLines = GridLines.None;
+            table.CssClass = "table table-bordered table-striped";
+            table.Width = Unit.Percentage(40);
+            table.CellSpacing = 0;
+            table.CellPadding = 0;
+            table.GridLines = GridLines.None;
+
+            //Create a table header row
+            TableHeaderRow headerRow = new TableHeaderRow();
+
+            //Add header row to the table
+            table.Rows.Add(headerRow);
+
+            //Create a new cell and add it to the row
+            TableHeaderCell headerCell = new TableHeaderCell();
+            headerCell.Text = "First Name";
+            headerCell.Width = Unit.Percentage(20);
+            headerRow.Cells.Add(headerCell);
+
+            //Create a new cell and add it to the row
+            headerCell = new TableHeaderCell();
+            headerCell.Text = "Last Name";
+            headerCell.Width = Unit.Percentage(20);
+            headerRow.Cells.Add(headerCell);
+
+            //Create a new cell and add it to the row
+            headerCell = new TableHeaderCell();
+            headerCell.Text = "Years";
+            headerCell.Width = Unit.Percentage(10);
+            headerRow.Cells.Add(headerCell);
+            SqlDataReader rdr = cmd.ExecuteReader();
+
+            while (rdr.Read())
+            {
+                //Make table and insert data to it
+                TableRow row = new TableRow();
+                TableCell cell1 = new TableCell();
+                TableCell cell2 = new TableCell();
+                TableCell cell3 = new TableCell();
+                cell1.Text = rdr["firstName"].ToString();
+                cell2.Text = rdr["lastName"].ToString();
+                cell3.Text = rdr["years"].ToString();
+                row.Cells.Add(cell1);
+                row.Cells.Add(cell2);
+                row.Cells.Add(cell3);
+                table.Rows.Add(row);
+            }
+            db_connection.getConnection().Close();
+            Div2.Controls.Add(table);
+        }
+
         private static ArrayList getUserPhoneNumbers(String user_id, String user_type)
         {
             ArrayList phone_numbers = new ArrayList();
 
             SqlCommand cmd;
 
-            if(user_type == "GUCian") {
+            if (user_type == "GUCian")
+            {
                 cmd = new SqlCommand(
                     (
                         @"
@@ -135,7 +217,8 @@ namespace PostGradSystem
                     db_connection.getConnection()
                 );
             }
-            else {
+            else
+            {
                 cmd = new SqlCommand(
                     (
                         @"
@@ -151,7 +234,7 @@ namespace PostGradSystem
             cmd.Parameters.AddWithValue("@user_id", user_id);
 
             SqlDataReader reader = cmd.ExecuteReader();
-            
+
             while (reader.Read())
             {
                 phone_numbers.Add(reader["phoneNumber"].ToString());
@@ -197,7 +280,8 @@ namespace PostGradSystem
             // add the table to the page
             profileDiv.Controls.Add(table);
 
-            if(user_type == "GUCian" || user_type == "Non-GUCian") {
+            if (user_type == "GUCian" || user_type == "Non-GUCian")
+            {
                 // create a table to hold the user phone numbers
                 Table phone_numbers_table = new Table();
                 phone_numbers_table.CssClass = "table table-striped table-bordered table-hover";
@@ -237,28 +321,47 @@ namespace PostGradSystem
             }
         }
 
+
         protected void Page_Load(object sender, EventArgs e)
         {
-            if(db_connection.getConnection().State == System.Data.ConnectionState.Closed) {
+            if (db_connection.getConnection().State == System.Data.ConnectionState.Closed)
+            {
                 db_connection.getConnection().Open();
             }
 
-            if (Session["user_id"] == null) {
+            if (Session["user_id"] == null)
+            {
                 Response.Redirect("Login.aspx");
             }
-            else {
-                int user_id = Convert.ToInt32(Session["user_id"]);
-                String user_type = Convert.ToString(Session["user_type"]);
+            else
+            {
+                if (!Page.IsPostBack)
+                {
+                    int user_id = Convert.ToInt32(Session["user_id"]);
+                    String user_type = Convert.ToString(Session["user_type"]);
 
-                user_info = getUserInfo(user_id.ToString(), user_type);
+                    user_info = getUserInfo(user_id.ToString(), user_type);
 
-                // in_firstName.Text = user_info["firstName"];
-                // in_lastName.Text = user_info["lastName"];
-                // in_email.Text = user_info["email"];
-                // in_address.Text = user_info["address"];
-                in_undergradID.DataBind();
-               
-                writeToPage(ref profileDiv, user_info, user_id.ToString(), user_type);
+                    if (user_type.Equals("Supervisor")) {
+                        showButton.Visible = true;
+                        phone_numberpanel.Visible = false;
+
+                    }
+                    else {
+                        showButton.Visible = false;
+                    }
+
+                    in_firstName.Text = user_info["firstName"];
+                    in_lastName.Text = user_info["lastName"];
+                    in_email.Text = user_info["email"];
+                    in_address.Text = user_info["address"];
+                    in_undergradID.Text = user_info["underGradID"];
+
+                    writeToPage(ref profileDiv, user_info, user_id.ToString(), user_type);
+
+                    showMyStudents(user_id.ToString(), ref Div2);
+                }
+
             }
         }
 
@@ -266,7 +369,8 @@ namespace PostGradSystem
         {
             System.Diagnostics.Debug.WriteLine("editProfile");
 
-            if(db_connection.getConnection().State == System.Data.ConnectionState.Closed) {
+            if (db_connection.getConnection().State == System.Data.ConnectionState.Closed)
+            {
                 db_connection.getConnection().Open();
             }
 
@@ -281,18 +385,19 @@ namespace PostGradSystem
 
             Response.Redirect(Request.RawUrl);
         }
-        
+
         protected void editProfile(object sender, EventArgs e)
         {
-            if (db_connection.getConnection().State == System.Data.ConnectionState.Closed) {
+            if (db_connection.getConnection().State == System.Data.ConnectionState.Closed)
+            {
                 db_connection.getConnection().Open();
             }
 
             SqlCommand editProfile_sp = new SqlCommand("editMyProfile", db_connection.getConnection());
             editProfile_sp.CommandType = System.Data.CommandType.StoredProcedure;
             editProfile_sp.Parameters.AddWithValue("@studentId", Session["user_id"]);
-            editProfile_sp.Parameters.AddWithValue("@type", Session["user_type"]); 
-            
+            editProfile_sp.Parameters.AddWithValue("@type", Session["user_type"]);
+
             editProfile_sp.Parameters.AddWithValue("@firstname", in_firstName.Text);
             editProfile_sp.Parameters.AddWithValue("@lastName", in_lastName.Text);
             editProfile_sp.Parameters.AddWithValue("@password", in_pass.Text);
@@ -300,6 +405,8 @@ namespace PostGradSystem
             editProfile_sp.Parameters.AddWithValue("@address", in_address.Text);
 
             editProfile_sp.ExecuteNonQuery();
+
+            Response.Redirect(Request.RawUrl);
         }
     }
 }

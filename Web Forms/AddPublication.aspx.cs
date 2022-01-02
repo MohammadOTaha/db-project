@@ -172,8 +172,14 @@ namespace PostGradSystem
                 link_pub_thesis_sp.Parameters.AddWithValue("@thesisSerialNo", thesis_info[thesis_dropList.SelectedItem.Text]);
 
                 link_pub_thesis_sp.ExecuteNonQuery();
+            }   
+        }
+
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            if(Session["user_id"] == null) {
+                Response.Redirect("~/Login.aspx");
             }
-            
         }
     }
 }

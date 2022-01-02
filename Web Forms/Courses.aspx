@@ -1,16 +1,13 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Courses.aspx.cs"
-Inherits="PostGradSystem.Courses" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Courses.aspx.cs" Inherits="PostGradSystem.Courses" %>
 
-<!DOCTYPE html>
-<html lang="en">
+  <!DOCTYPE html>
+  <html lang="en">
+
   <head>
     <title>Bootstrap Example</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link
-      rel="stylesheet"
-      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
-    />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <style>
@@ -32,6 +29,7 @@ Inherits="PostGradSystem.Courses" %>
       }
     </style>
   </head>
+
   <body>
     <div class="jumbotron">
       <div class="container text-center">
@@ -42,12 +40,7 @@ Inherits="PostGradSystem.Courses" %>
     <nav class="navbar navbar-inverse">
       <div class="container-fluid">
         <div class="navbar-header">
-          <button
-            type="button"
-            class="navbar-toggle"
-            data-toggle="collapse"
-            data-target="#myNavbar"
-          >
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
@@ -57,12 +50,17 @@ Inherits="PostGradSystem.Courses" %>
         <div class="collapse navbar-collapse" id="myNavbar">
           <ul class="nav navbar-nav navbar-right">
             <li>
+              <a href="Home.aspx">
+                <span class="glyphicon glyphicon-home"></span> Home
+              </a>
+            </li>
+            <li>
               <a href="Profile.aspx">
                 <span class="glyphicon glyphicon-user"></span> My Account
               </a>
             </li>
             <li>
-              <a href="Login.aspx">
+              <a href="Logout.aspx">
                 <span class="glyphicon glyphicon-log-out"></span>Logout
               </a>
             </li>
@@ -73,10 +71,11 @@ Inherits="PostGradSystem.Courses" %>
 
     <div class="container" id="coursesDiv" runat="server">
       <div class="row">
-        
+
       </div>
     </div>
     <br />
     <br /><br />
   </body>
-</html>
+
+  </html>

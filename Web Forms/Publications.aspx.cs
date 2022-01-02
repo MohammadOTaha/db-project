@@ -39,10 +39,11 @@ namespace PostGradSystem
                 cmd = new SqlCommand(
                     (
                         @"
-                        SELECT P.title 'Publication Title', P.[date] 'Date', P.host 'Host', P.place 'Location', P.isAccepted 'Accepted'
+                        SELECT T.title 'Thesis Title', P.title 'Publication Title', P.[date] 'Date', P.host 'Host', P.place 'Location', P.isAccepted 'Accepted'
                         FROM Thesis_Publication TP
                         INNER JOIN Publication P ON TP.Publication_ID = P.id
                         INNER JOIN GUCianRegisterThesis GRT ON TP.thesisSerialNumber = GRT.thesisSerialNumber
+                        INNER JOIN Thesis T ON T.serialNumber = TP.thesisSerialNumber                   
                         WHERE GRT.GUCianID = @studentID
                         "
                     ),
@@ -53,10 +54,11 @@ namespace PostGradSystem
                 cmd = new SqlCommand(
                     (
                         @"
-                        SELECT P.title 'Publication Title', P.[date] 'Date', P.host 'Host', P.place 'Location', P.isAccepted 'Accepted'
+                        SELECT T.title 'Thesis Title', P.title 'Publication Title', P.[date] 'Date', P.host 'Host', P.place 'Location', P.isAccepted 'Accepted'
                         FROM Thesis_Publication TP
                         INNER JOIN Publication P ON TP.Publication_ID = P.id
                         INNER JOIN NonGUCianRegisterThesis GRT ON TP.thesisSerialNumber = GRT.thesisSerialNumber
+                        INNER JOIN Thesis T ON T.serialNumber = TP.thesisSerialNumber
                         WHERE GRT.NonGUCianID = @studentID
                         "
                     ),
@@ -84,6 +86,12 @@ namespace PostGradSystem
 
             TableHeaderRow headerRow = new TableHeaderRow();
             headerRow.TableSection = TableRowSection.TableHeader;
+
+            TableHeaderCell thesisTitleHeader = new TableHeaderCell();
+            thesisTitleHeader.Text = "Thesis Title";
+            thesisTitleHeader.Attributes.Add("style", "text-align: center;");
+            headerRow.Cells.Add(thesisTitleHeader);
+
 
             TableHeaderCell titleHeader = new TableHeaderCell();
             titleHeader.Text = "Publication Title";
@@ -125,41 +133,46 @@ namespace PostGradSystem
 
                 Table publicationsTable = initReportsTable();
 
-                SqlDataReader reports = getStudentPublications(user_id, user_type);
+                SqlDataReader publications = getStudentPublications(user_id, user_type);
 
-                while(reports.Read()) {
+                while(publications.Read()) {
                     TableRow row = new TableRow();
                     row.TableSection = TableRowSection.TableBody;
 
+                    TableCell thesisTitleCell = new TableCell();
+                    thesisTitleCell.Text = publications["Thesis Title"].ToString();
+                    thesisTitleCell.Attributes.Add("style", "text-align: center;");
+                    row.Cells.Add(thesisTitleCell);
+
                     TableCell titleCell = new TableCell();
-                    titleCell.Text = reports["Publication Title"].ToString();
+                    titleCell.Text = publications["Publication Title"].ToString();
                     titleCell.Attributes.Add("style", "text-align: center;");
                     row.Cells.Add(titleCell);
 
                     TableCell dateCell = new TableCell();
-                    dateCell.Text = reports["Date"].ToString();
+                    dateCell.Text = publications["Date"].ToString();
                     dateCell.Attributes.Add("style", "text-align: center;");
                     row.Cells.Add(dateCell);
 
                     TableCell hostCell = new TableCell();
-                    hostCell.Text = reports["Host"].ToString();
+                    hostCell.Text = publications["Host"].ToString();
                     hostCell.Attributes.Add("style", "text-align: center;");
                     row.Cells.Add(hostCell);
 
                     TableCell locationCell = new TableCell();
-                    locationCell.Text = reports["Location"].ToString();
+                    locationCell.Text = publications["Location"].ToString();
                     locationCell.Attributes.Add("style", "text-align: center;");
                     row.Cells.Add(locationCell);
 
                     TableCell isAcceptedCell = new TableCell();
-                    isAcceptedCell.Text = reports["Accepted"].ToString();
+                    isAcceptedCell.Text = publications["Accepted"].ToString();
                     isAcceptedCell.Attributes.Add("style", "text-align: center;");
                     row.Cells.Add(isAcceptedCell);
 
                     publicationsTable.Rows.Add(row);
                 }
 
-                reports.Close();
+                publications.Close();
 
                 publicationsDiv.Controls.Add(publicationsTable);
             }

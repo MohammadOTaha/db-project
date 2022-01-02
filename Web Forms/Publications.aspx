@@ -51,13 +51,18 @@
                 <div class="collapse navbar-collapse" id="myNavbar">
                     <ul class="nav navbar-nav navbar-right">
                         <li>
+                            <a href="Home.aspx">
+                                <span class="glyphicon glyphicon-home"></span> Home
+                            </a>
+                        </li>
+                        <li>
                             <a href="Profile.aspx">
                                 <span class="glyphicon glyphicon-user"></span> My Account
                             </a>
                         </li>
                         <li>
-                            <a href="Login.aspx">
-                                <span class="glyphicon glyphicon-log-out"></span>Logout
+                            <a href="Logout.aspx">
+                                <span class="glyphicon glyphicon-log-out"></span> Logout
                             </a>
                         </li>
                     </ul>

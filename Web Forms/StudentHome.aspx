@@ -1,16 +1,13 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="StudentHome.aspx.cs"
-Inherits="PostGradSystem.StudentHome" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="StudentHome.aspx.cs" Inherits="PostGradSystem.StudentHome" %>
 
-<!DOCTYPE html>
-<html lang="en">
+  <!DOCTYPE html>
+  <html lang="en">
+
   <head>
     <title>Bootstrap Example</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link
-      rel="stylesheet"
-      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
-    />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <style>
@@ -32,6 +29,7 @@ Inherits="PostGradSystem.StudentHome" %>
       }
     </style>
   </head>
+
   <body>
     <div class="jumbotron jumbotron-fluid">
       <div class="container text-center">
@@ -42,12 +40,7 @@ Inherits="PostGradSystem.StudentHome" %>
     <nav class="navbar navbar-inverse">
       <div class="container-fluid">
         <div class="navbar-header">
-          <button
-            type="button"
-            class="navbar-toggle"
-            data-toggle="collapse"
-            data-target="#myNavbar"
-          >
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
@@ -59,10 +52,10 @@ Inherits="PostGradSystem.StudentHome" %>
             <li>
               <a href="Profile.aspx">
                 <span class="glyphicon glyphicon-user"></span> My Account
-              </a>
+              </a>add
             </li>
             <li>
-              <a href="Login.aspx">
+              <a href="Logout.aspx">
                 <span class="glyphicon glyphicon-log-out"></span>Logout
               </a>
             </li>
@@ -73,7 +66,7 @@ Inherits="PostGradSystem.StudentHome" %>
 
     <div class="container">
       <div class="row">
-        <div class="col-sm-4" style="width: 50%;">
+        <div class="col-sm-4" style="width: 34%;">
           <div class="panel panel-success">
             <div class="panel-heading" style="text-align: center; font-weight: bolder">
               <a href="AddPublication.aspx">ADD PUBLICATIONS</a>
@@ -84,10 +77,21 @@ Inherits="PostGradSystem.StudentHome" %>
           </div>
         </div>
 
-        <div class="col-sm-4" style="width: 50%;">
+        <div class="col-sm-4" style="width: 33%;">
           <div class="panel panel-success">
             <div class="panel-heading" style="text-align: center; font-weight: bolder">
-              <a href="AddPublication.aspx">VIEW PUBLICATIONS</a>
+              <a href="LinkPublication.aspx">LINK PUBLICATIONS</a>
+            </div>
+            <div class="panel-body" style="text-align: center;">
+              Link a Publication to Thesis
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-4" style="width: 33%;">
+          <div class="panel panel-success">
+            <div class="panel-heading" style="text-align: center; font-weight: bolder">
+              <a href="Publications.aspx">VIEW PUBLICATIONS</a>
             </div>
             <div class="panel-body" style="text-align: center;">
               View all my Publications
@@ -102,7 +106,7 @@ Inherits="PostGradSystem.StudentHome" %>
     <div class="container">
       <div class="row">
         <div class="col-sm-4" style="width: 100%;">
-          <div class="panel panel-success" >
+          <div class="panel panel-success">
             <div class="panel-heading" style="text-align: center; font-weight: bolder;">
               <a href="Theses.aspx">THESES</a>
             </div>
@@ -157,4 +161,5 @@ Inherits="PostGradSystem.StudentHome" %>
 
     <br /><br />
   </body>
-</html>
+
+  </html>
