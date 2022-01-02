@@ -15,12 +15,10 @@
         margin-bottom: 50px;
         border-radius: 0;
       }
-
       /* Remove the jumbotron's default bottom margin */
       .jumbotron {
         margin-bottom: 0;
       }
-
       /* Add a gray background color and some padding to the footer */
       footer {
         background-color: #f2f2f2;
@@ -72,17 +70,14 @@
     <form runat="server">
       <div class="container bg-light">
         <div class="col-md-12 text-center">
-          <asp:panel id="pnl_editProfile" runat="server" visible="true">
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal1"
-              data-whatever="@mdo">Edit My Profile</button>
+          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal1"
+            data-whatever="@mdo">Edit My Profile</button>
+          <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#modal_phoneNumber"
+            data-whatever="@mdo">Add Phone Number</button>
+          <asp:panel id="phone_numberpanel" runat="server" visible="false">
+            <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#exampleModal2"
+              data-whatever="@mdo">Show My Students</button>
           </asp:panel>
-
-          <asp:panel id="pnl_addPhone" runat="server">
-            <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#exampleModal"
-              data-whatever="@mdo">Add Phone Number</button>
-
-          </asp:panel>
-
           <br />
           <br />
           <br />
@@ -124,10 +119,10 @@
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel1">New message</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
+              <h4 class="modal-title" id="exampleModalLabel1" style="font-weight: bold;">Edit Profile Info</h4>
             </div>
             <div class="modal-body">
               <div class="form-group">
@@ -154,8 +149,7 @@
               </div>
               <div class="form-group">
                 <label for="recipient-name" class="col-form-label">Under Graduate ID:</label>
-                <asp:TextBox runat="server" id="in_undergradID" class="form-control" required="true" visible="false">
-                </asp:TextBox>
+                <asp:TextBox runat="server" id="in_undergradID" class="form-control" required="true"></asp:TextBox>
               </div>
             </div>
             <div class="modal-footer">
@@ -166,15 +160,15 @@
         </div>
       </div>
 
-      <div class="modal fade" id="exampleModal3" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+      <div class="modal fade" id="modal_phoneNumber" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">New message</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
+              <h4 class="modal-title" id="exampleModalLabel1" style="font-weight: bold;">Add Phone Number</h4>
             </div>
             <div class="modal-body">
               <div class="form-group">
@@ -186,7 +180,6 @@
               <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
               <asp:Button type="button" class="btn btn-warning" runat="server" UseSubmitBehavior="false"
                 Text="Add Phone Number" OnClick="addPhoneNumber" />
-
             </div>
           </div>
         </div>
