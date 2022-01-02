@@ -976,7 +976,7 @@ where thesisSerialNumber = @ThesisSerialNo and date = @DefenseDate
 end
 else set @Success=0
 go
-alter proc AddDefenseGrade
+create proc AddDefenseGrade
 @ThesisSerialNo int , @DefenseDate Datetime , @grade decimal(4,2), @Success bit output
 as
 if(exists( select * from Thesis where serialNumber =@ThesisSerialNo))
