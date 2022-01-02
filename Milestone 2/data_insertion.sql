@@ -156,13 +156,13 @@ VALUES
 
 
 INSERT INTO
-    Supervisor (id, name, faculty)
+    Supervisor (id, firstName, lastName, faculty)
 VALUES
-    (11, 'Roger Watson', 'CS'),
-    (12, 'Annie Dunn', 'Law'),
-    (13, 'Donna Anderson', 'Medical'),
-    (14, 'Lynn Griffith', 'Law'),
-    (15, 'Meredith French', 'Bio');
+    (11, 'Roger', 'Watson', 'CS'),
+    (12, 'Annie', 'Dunn', 'Law'),
+    (13, 'Donna', 'Anderson', 'Medical'),
+    (14, 'Lynn', 'Griffith', 'Law'),
+    (15, 'Meredith', 'French', 'Bio');
 
 INSERT INTO
     Examiner (id, name, fieldOfWork, isNational)

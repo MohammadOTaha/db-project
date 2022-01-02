@@ -16,7 +16,7 @@ CREATE TABLE PostGradUser(
 CREATE TABLE Admin(
     id              INT PRIMARY KEY,
     
-    FOREIGN KEY(id) REFERENCES PostGradUser(id) ON DELETE CASCADE
+    FOREIGN KEY(id) REFERENCES PostGradUser(id) ON DELETE CASCADE ON UPDATE CASCADE
 )
 
 
@@ -30,7 +30,7 @@ CREATE TABLE GUCianStudent(
     GPA             DECIMAL,
     underGradID     INT,
     
-    FOREIGN KEY (id) REFERENCES PostGradUser(id) ON DELETE CASCADE
+    FOREIGN KEY (id) REFERENCES PostGradUser(id) ON DELETE CASCADE ON UPDATE CASCADE
 )
 
 
@@ -43,16 +43,17 @@ CREATE TABLE NonGUCianStudent(
     address         VARCHAR(50),
     GPA             DECIMAL,
     
-    FOREIGN KEY (id) REFERENCES PostGradUser(id) ON DELETE CASCADE
+    FOREIGN KEY (id) REFERENCES PostGradUser(id) ON DELETE CASCADE ON UPDATE CASCADE
 )
 
 
 CREATE TABLE Supervisor(
     id              INT PRIMARY KEY,
-    name            VARCHAR(20),
+    firstName       VARCHAR(20),
+    lastName        VARCHAR(20),
     faculty         VARCHAR(20),
     
-    FOREIGN KEY(id) REFERENCES PostGradUser(id) ON DELETE CASCADE
+    FOREIGN KEY(id) REFERENCES PostGradUser(id) ON DELETE CASCADE ON UPDATE CASCADE
 )
 
 
@@ -80,7 +81,7 @@ CREATE TABLE Installment(
 
     PRIMARY KEY (paymentID, date),
 
-    FOREIGN KEY (paymentID) REFERENCES Payment(id) ON DELETE CASCADE
+    FOREIGN KEY (paymentID) REFERENCES Payment(id) ON DELETE CASCADE ON UPDATE CASCADE
 )
 
 
@@ -97,7 +98,7 @@ CREATE TABLE Thesis(
     payment_id      INT,
     noExtension     INT,
     
-    FOREIGN KEY (payment_id) REFERENCES Payment(id) ON DELETE CASCADE 
+    FOREIGN KEY (payment_id) REFERENCES Payment(id) ON DELETE CASCADE ON UPDATE CASCADE
 )
 
 
@@ -123,8 +124,8 @@ CREATE TABLE GUCianProgressReport(
     
     PRIMARY KEY (student_id, progressReportNumber),
 
-    FOREIGN KEY (student_id) REFERENCES GUCianStudent(id) ON DELETE CASCADE,
-    FOREIGN KEY (thesisSerialNumber) REFERENCES Thesis(serialNumber) ON DELETE CASCADE,
+    FOREIGN KEY (student_id) REFERENCES GUCianStudent(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (thesisSerialNumber) REFERENCES Thesis(serialNumber) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (supervisor_id) REFERENCES Supervisor(id)
 )
 
@@ -141,8 +142,8 @@ CREATE TABLE NonGUCianProgressReport(
     
     PRimary KEY (student_id, progressReportNumber),
 
-    FOREIGN KEY (student_id) REFERENCES NonGUCianStudent(id) ON DELETE CASCADE,
-    FOREIGN KEY (thesisSerialNumber) REFERENCES Thesis(serialNumber) ON DELETE CASCADE,
+    FOREIGN KEY (student_id) REFERENCES NonGUCianStudent(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (thesisSerialNumber) REFERENCES Thesis(serialNumber) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (supervisor_id) REFERENCES Supervisor(id) 
 )
 
@@ -153,7 +154,7 @@ CREATE TABLE Examiner(
     fieldOfWork     VARCHAR(50),
     isNational      BIT,
 
-    FOREIGN KEY (id) REFERENCES PostGradUser(id) ON DELETE CASCADE
+    FOREIGN KEY (id) REFERENCES PostGradUser(id) ON DELETE CASCADE ON UPDATE CASCADE
 )
 
 
@@ -165,7 +166,7 @@ CREATE TABLE Defense(
 
     PRIMARY KEY (thesisSerialNumber, date),
 
-    FOREIGN KEY (thesisSerialNumber) REFERENCES Thesis(serialNumber) ON DELETE CASCADE
+    FOREIGN KEY (thesisSerialNumber) REFERENCES Thesis(serialNumber) ON DELETE CASCADE ON UPDATE CASCADE
 )
 --------------------- END OF ENTITIES ---------------------
 
@@ -177,7 +178,7 @@ CREATE TABLE GUCStudentPhoneNumber(
 
     PRIMARY KEY (GUCianID, phoneNumber),
 
-    FOREIGN KEY (GUCianID) REFERENCES GUCianStudent(id) ON DELETE CASCADE
+    FOREIGN KEY (GUCianID) REFERENCES GUCianStudent(id) ON DELETE CASCADE ON UPDATE CASCADE
 )
 
 
@@ -187,7 +188,7 @@ CREATE TABLE NonGUCianPhoneNumber(
 
     PRIMARY KEY (NonGUCianID, phoneNumber),
 
-    FOREIGN KEY (NonGUCianID) REFERENCES NonGUCianStudent(id) ON DELETE CASCADE
+    FOREIGN KEY (NonGUCianID) REFERENCES NonGUCianStudent(id) ON DELETE CASCADE ON UPDATE CASCADE
 )
 
 
@@ -198,9 +199,9 @@ CREATE TABLE NonGUCianPayCourse(
 
     PRIMARY KEY (NonGUCianID, course_id, payment_id),
 
-    FOREIGN KEY (NonGUCianID) REFERENCES NonGUCianStudent(id) ON DELETE CASCADE,
-    FOREIGN KEY (course_id) REFERENCES Course(id),
-    FOREIGN KEY (payment_id) REFERENCES Payment(id) ON DELETE CASCADE
+    FOREIGN KEY (NonGUCianID) REFERENCES NonGUCianStudent(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (course_id) REFERENCES Course(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (payment_id) REFERENCES Payment(id) ON DELETE CASCADE ON UPDATE CASCADE
 )
 
 
@@ -223,8 +224,8 @@ CREATE TABLE NonGUCianRegisterThesis(
 
     PRIMARY KEY (NonGUCianID, thesisSerialNumber,supervisor_id),
 
-    FOREIGN KEY (NonGUCianID) REFERENCES NonGUCianStudent(id) ON DELETE CASCADE,
-    FOREIGN KEY (thesisSerialNumber) REFERENCES Thesis(serialNumber) ON DELETE CASCADE,
+    FOREIGN KEY (NonGUCianID) REFERENCES NonGUCianStudent(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (thesisSerialNumber) REFERENCES Thesis(serialNumber) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (supervisor_id) REFERENCES Supervisor(id)
 )
 
@@ -236,9 +237,9 @@ CREATE TABLE GUCianRegisterThesis(
 
     PRIMARY KEY (GUCianID, thesisSerialNumber, supervisor_id),
 
-    FOREIGN KEY (GUCianID) REFERENCES GUCianStudent(id) ON DELETE CASCADE,
+    FOREIGN KEY (GUCianID) REFERENCES GUCianStudent(id) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (supervisor_id) REFERENCES Supervisor(id),
-    FOREIGN KEY (thesisSerialNumber) REFERENCES Thesis(serialNumber) ON DELETE CASCADE
+    FOREIGN KEY (thesisSerialNumber) REFERENCES Thesis(serialNumber) ON DELETE CASCADE ON UPDATE CASCADE
 )
 
 
@@ -248,8 +249,8 @@ CREATE TABLE Thesis_Publication(
 
     PRIMARY KEY (thesisSerialNumber, publication_id),
 
-    FOREIGN KEY (thesisSerialNumber) REFERENCES Thesis(serialNumber) ON DELETE CASCADE,
-    FOREIGN KEY (publication_id) REFERENCES Publication(id) 
+    FOREIGN KEY (thesisSerialNumber) REFERENCES Thesis(serialNumber) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (publication_id) REFERENCES Publication(id) ON DELETE CASCADE ON UPDATE CASCADE
 )
 
 
@@ -261,7 +262,7 @@ CREATE TABLE ExaminerEvaluateDefense(
 
     PRIMARY KEY (date, thesisSerialNumber, examiner_id),
     
-    FOREIGN KEY (examiner_id) REFERENCES Examiner(id) ON DELETE CASCADE,
-    FOREIGN KEY (thesisSerialNumber, date) REFERENCES Defense(thesisSerialNumber,date) ON DELETE CASCADE
+    FOREIGN KEY (examiner_id) REFERENCES Examiner(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (thesisSerialNumber, date) REFERENCES Defense(thesisSerialNumber,date) ON DELETE CASCADE ON UPDATE CASCADE
 )
 --------------------- END OF RELATIONS ---------------------
