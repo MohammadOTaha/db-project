@@ -24,13 +24,22 @@ namespace PostGradSystem
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl profileDiv;
 
         /// <summary>
-        /// phone_numberpanel control.
+        /// pnl_editProfile control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel phone_numberpanel;
+        protected global::System.Web.UI.WebControls.Panel pnl_editProfile;
+
+        /// <summary>
+        /// pnl_addPhone control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel pnl_addPhone;
 
         /// <summary>
         /// showButton control.

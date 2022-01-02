@@ -61,7 +61,7 @@
               </a>
             </li>
             <li>
-              <a href="Login.aspx">
+              <a href="Logout.aspx">
                 <span class="glyphicon glyphicon-log-out"></span>Logout
               </a>
             </li>

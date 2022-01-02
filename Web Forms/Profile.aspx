@@ -72,14 +72,17 @@
     <form runat="server">
       <div class="container bg-light">
         <div class="col-md-12 text-center">
-          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal1"
-            data-whatever="@mdo">Edit My Profile</button>
-          <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#exampleModal"
-            data-whatever="@mdo">Add Phone Number</button>
-          <asp:panel id="phone_numberpanel" runat="server" visible="false">
-            <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#exampleModal2"
-              data-whatever="@mdo">Show My Students</button>
+          <asp:panel id="pnl_editProfile" runat="server" visible="true">
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal1"
+              data-whatever="@mdo">Edit My Profile</button>
           </asp:panel>
+
+          <asp:panel id="pnl_addPhone" runat="server">
+            <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#exampleModal"
+              data-whatever="@mdo">Add Phone Number</button>
+
+          </asp:panel>
+
           <br />
           <br />
           <br />
@@ -151,7 +154,8 @@
               </div>
               <div class="form-group">
                 <label for="recipient-name" class="col-form-label">Under Graduate ID:</label>
-                <asp:TextBox runat="server" id="in_undergradID" class="form-control" required="true"></asp:TextBox>
+                <asp:TextBox runat="server" id="in_undergradID" class="form-control" required="true" visible="false">
+                </asp:TextBox>
               </div>
             </div>
             <div class="modal-footer">
@@ -182,6 +186,7 @@
               <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
               <asp:Button type="button" class="btn btn-warning" runat="server" UseSubmitBehavior="false"
                 Text="Add Phone Number" OnClick="addPhoneNumber" />
+
             </div>
           </div>
         </div>

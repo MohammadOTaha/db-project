@@ -64,7 +64,7 @@ namespace PostGradSystem
                         END
                     ELSE IF @user_type = 'Supervisor'
                         BEGIN
-                            SELECT PostGradUser.email email, Supervisor.name name, Supervisor.faculty faculty
+                            SELECT PostGradUser.email email, Supervisor.firstName firstName, Supervisor.lastName lastName, Supervisor.faculty faculty
                             FROM Supervisor 
                             INNER JOIN PostGradUser ON Supervisor.id = PostGradUser.id
                             WHERE Supervisor.id = @user_id;
@@ -342,10 +342,10 @@ namespace PostGradSystem
 
                     user_info = getUserInfo(user_id.ToString(), user_type);
 
-                    if (user_type.Equals("Supervisor")) {
+                    if (user_type == "Supervisor") {
                         showButton.Visible = true;
-                        phone_numberpanel.Visible = false;
-
+                        pnl_addPhone.Visible = false;
+                        pnl_editProfile.Visible = false;
                     }
                     else {
                         showButton.Visible = false;
@@ -354,8 +354,11 @@ namespace PostGradSystem
                     in_firstName.Text = user_info["firstName"];
                     in_lastName.Text = user_info["lastName"];
                     in_email.Text = user_info["email"];
-                    in_address.Text = user_info["address"];
-                    in_undergradID.Text = user_info["underGradID"];
+                    if(user_type == "GUCian" || user_type == "NonGUCian") in_address.Text = user_info["address"];
+                    if(user_type == "GUCian") {
+                        in_undergradID.Visible = true;
+                        in_undergradID.Text = user_info["underGradID"];
+                    }
 
                     writeToPage(ref profileDiv, user_info, user_id.ToString(), user_type);
 
