@@ -536,13 +536,25 @@ GO
 CREATE PROC AddExaminer
     @thesisSerialNo INT,
     @DefenseDate DATETIME,
-    @examinerID INT
+    @examinerID INT,
+    @Success BIT OUTPUT
 AS
 BEGIN
+      IF EXISTS (Select * From ExaminerEvaluateDefense
+      WHere ExaminerEvaluateDefense.thesisSerialNumber = @thesisSerialNo 
+      AND ExaminerEvaluateDefense.date = @DefenseDate
+      ANd ExaminerEvaluateDefense.examiner_id = @examinerID)
+      BEGIN
+      Set @Success =0
+      END
+      ELSE
+      BEGIN
     INSERT INTO ExaminerEvaluateDefense
         (thesisSerialNumber, examiner_id, date)
     VALUES
         (@thesisSerialNo, @examinerID, @DefenseDate)
+         Set @Success =1
+        END
 END
 
 -- 4.g: Cancel a Thesis if the evaluation of the lASt progress report is zero.
