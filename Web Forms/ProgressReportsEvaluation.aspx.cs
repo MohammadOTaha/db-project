@@ -35,7 +35,7 @@ namespace PostGradSystem
                 cmd = new SqlCommand(
                     (
                         @"
-                        SELECT T.title 'Thesis Title', T.field 'Field', T.defenseDate 'Defense Date', PR.evaluation 'Evaluation', PR.[date] 'Report Date', S.name 'Supervisor Name'
+                        SELECT T.title 'Thesis Title', T.field 'Field', T.defenseDate 'Defense Date', PR.evaluation 'Evaluation', PR.[date] 'Report Date', S.firstName 'Supervisor First Name', S.lastName 'Supervisor Last Name'
                         FROM GUCianProgressReport PR
                         INNER JOIN Thesis T ON PR.thesisSerialNumber = T.serialNumber
                         INNER JOIN Supervisor S ON S.id = PR.supervisor_id
@@ -49,7 +49,7 @@ namespace PostGradSystem
                 cmd = new SqlCommand(
                     (
                         @"
-                        SELECT T.title 'Thesis Title', T.field 'Field', T.defenseDate 'Defense Date', PR.evaluation 'Evaluation', PR.[date] 'Report Date', S.name 'Supervisor Name'
+                        SELECT T.title 'Thesis Title', T.field 'Field', T.defenseDate 'Defense Date', PR.evaluation 'Evaluation', PR.[date] 'Report Date', S.firstName 'Supervisor First Name', S.lastName 'Supervisor Last Name'
                         FROM NonGUCianProgressReport PR
                         INNER JOIN Thesis T ON PR.thesisSerialNumber = T.serialNumber
                         INNER JOIN Supervisor S ON S.id = PR.supervisor_id
@@ -106,10 +106,15 @@ namespace PostGradSystem
             reportDateHeader.Attributes.Add("style", "text-align: center;");
             headerRow.Cells.Add(reportDateHeader);
 
-            TableHeaderCell supervisorHeader = new TableHeaderCell();
-            supervisorHeader.Text = "Supervisor Name";
-            supervisorHeader.Attributes.Add("style", "text-align: center;");
-            headerRow.Cells.Add(supervisorHeader);
+            TableHeaderCell supervisorFirstNameHeader = new TableHeaderCell();
+            supervisorFirstNameHeader.Text = "Supervisor First Name";
+            supervisorFirstNameHeader.Attributes.Add("style", "text-align: center;");
+            headerRow.Cells.Add(supervisorFirstNameHeader);
+
+            TableHeaderCell supervisorLastNameHeader = new TableHeaderCell();
+            supervisorLastNameHeader.Text = "Supervisor Last Name";
+            supervisorLastNameHeader.Attributes.Add("style", "text-align: center;");
+            headerRow.Cells.Add(supervisorLastNameHeader);
 
             reportsTable.Rows.Add(headerRow);
 
@@ -157,11 +162,16 @@ namespace PostGradSystem
                     reportDateCell.Attributes.Add("style", "text-align: center;");
                     row.Cells.Add(reportDateCell);
 
-                    TableCell supervisorCell = new TableCell();
-                    supervisorCell.Text = reports["Supervisor Name"].ToString();
-                    supervisorCell.Attributes.Add("style", "text-align: center;");
-                    row.Cells.Add(supervisorCell);
+                    TableCell supervisorFirstNameCell = new TableCell();
+                    supervisorFirstNameCell.Text = reports["Supervisor First Name"].ToString();
+                    supervisorFirstNameCell.Attributes.Add("style", "text-align: center;");
+                    row.Cells.Add(supervisorFirstNameCell);
 
+                    TableCell supervisorLastNameCell = new TableCell();
+                    supervisorLastNameCell.Text = reports["Supervisor Last Name"].ToString();
+                    supervisorLastNameCell.Attributes.Add("style", "text-align: center;");
+                    row.Cells.Add(supervisorLastNameCell);
+                    
                     reportsTable.Rows.Add(row);
                 }
 

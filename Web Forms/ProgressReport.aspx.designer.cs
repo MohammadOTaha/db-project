@@ -33,6 +33,15 @@ namespace PostGradSystem
         protected global::System.Web.UI.WebControls.DropDownList thesis_dropList;
 
         /// <summary>
+        /// supervisor_dropList control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList supervisor_dropList;
+
+        /// <summary>
         /// report_state control.
         /// </summary>
         /// <remarks>

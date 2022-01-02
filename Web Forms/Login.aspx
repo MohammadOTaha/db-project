@@ -8,7 +8,7 @@
     <link href="Content/bootstrap.min.css" rel="stylesheet" />
     <script src="Scripts/bootstrap.min.js"></script>
 
-    <title>Student Register</title>
+    <title>Student Login</title>
   </head>
 
   <body>
@@ -43,14 +43,13 @@
                         </div>
                       </div>
 
-                      <div class="
-                            d-flex
-                            justify-content-center
-                            mx-4
-                            mb-3 mb-lg-4
-                          ">
+                      <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
                         <asp:Button ID="btnLogin" runat="server" OnClick="login" Text="Log In"
-                          class="btn btn-primary btn-lg" />
+                          class="btn btn-primary btn-lg" style="width: 300px; font-size: 16pt;" />
+                      </div>
+
+                      <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
+                        <a class="btn btn-warning" href="Register.aspx" role="button" style="width: 300px; font-size: 16pt;">Register</a>
                       </div>
                     </div>
                     <div class="

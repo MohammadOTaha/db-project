@@ -1,6 +1,5 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="AddExaminer.aspx.cs" Inherits="PostGradSystem.AddExaminer" %>
-
-    <!DOCTYPE html>
+<!DOCTYPE html>
 
     <html xmlns="http://www.w3.org/1999/xhtml">
 
@@ -32,7 +31,7 @@
                                                         ID="thesis_dropdownList"
                                                         OnSelectedIndexChanged="defenseDateSelection"
                                                         AutoPostBack="true">
-                                                        <asp:ListItem selected hidden>Select Examiner</asp:ListItem>
+                                                        <asp:ListItem selected hidden>Select Thesis</asp:ListItem>
                                                     </asp:DropDownList>
                                                 </div>
 

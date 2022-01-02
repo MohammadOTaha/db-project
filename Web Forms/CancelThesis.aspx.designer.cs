@@ -11,34 +11,25 @@ namespace PostGradSystem
 {
 
 
-    public partial class StudentPublications
+    public partial class CancelThesis
     {
 
         /// <summary>
-        /// student_dropdownList control.
+        /// thesis_dropdownList control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList student_dropdownList;
+        protected global::System.Web.UI.WebControls.DropDownList thesis_dropdownList;
 
         /// <summary>
-        /// btn_addReport control.
+        /// cancel_thesis control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btn_addReport;
-
-        /// <summary>
-        /// publicationsDiv control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl publicationsDiv;
+        protected global::System.Web.UI.WebControls.Button cancel_thesis;
     }
 }

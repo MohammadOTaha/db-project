@@ -26,48 +26,29 @@
 
 
 
-                      <div class="d-flex flex-row align-items-center mb-4">
-                        <i class="fas fa-user fa-lg me-3 fa-fw"></i>
+
+                      <div class="form-group">
                         <div class="form-outline flex-fill mb-0">
-                          <asp:TextBox
-                            type="number"
-                            textmode="number"
-                            ID="super_visor_id"
-                            class="form-control"
-                            runat="server"
-                            placeholder="Super Visor ID"
-                            required="true"
-                          />
+                          <label for="thesis_dropdownList">Thesis</label>
+                          <asp:DropDownList runat="server" CssClass="form-control" ID="thesis_dropdownList">
+                            <asp:ListItem selected hidden>Select Thesis </asp:ListItem>
+                          </asp:DropDownList>
                         </div>
+                        <br />
+                        <br />
                       </div>
 
-
+                        
                       <div class="d-flex flex-row align-items-center mb-4">
                         <i class="fas fa-user fa-lg me-3 fa-fw"></i>
                         <div class="form-outline flex-fill mb-0">
                           <asp:TextBox
                             type="number"
                             textmode="number"
-                            ID="serial_number"
+                            ID="progressReportID"
                             class="form-control"
                             runat="server"
-                            placeholder="Thesis Serial Number"
-                            required="true"
-                          />
-                        </div>
-                      </div>
-
-                    
-                      <div class="d-flex flex-row align-items-center mb-4">
-                        <i class="fas fa-user fa-lg me-3 fa-fw"></i>
-                        <div class="form-outline flex-fill mb-0">
-                          <asp:TextBox
-                            type="number"
-                            textmode="number"
-                            ID="report_number"
-                            class="form-control"
-                            runat="server"
-                            placeholder="Report Number"
+                            placeholder="Progress Report Number"
                             required="true"
                           />
                         </div>
@@ -101,6 +82,9 @@
                         />
                       </div>
                     </form>
+                      <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
+                      <a class="btn btn-warning" href="Home.aspx" role="button">Go Back</a>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -112,3 +96,4 @@
   </body>
 </html>
 </html>
+

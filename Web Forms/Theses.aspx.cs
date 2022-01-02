@@ -66,13 +66,13 @@ namespace PostGradSystem
         }
         protected void Page_Load(object sender, EventArgs e)
         {
-            user_id = Convert.ToInt32(Session["user_id"]);
-            user_type = Session["user_type"].ToString();
-
-            if(user_id == 0) {
+            if(Session["user_id"] == null) {
                 Response.Redirect("Login.aspx");
             }
             else {
+                user_type = Session["user_type"].ToString();
+                user_id = Int32.Parse(Session["user_id"].ToString());
+                
                 SqlDataReader reader = getStudentTheses(user_id.ToString());
 
                 Table thesesTable = new Table();

@@ -280,7 +280,7 @@ namespace PostGradSystem
             // add the table to the page
             profileDiv.Controls.Add(table);
 
-            if (user_type == "GUCian" || user_type == "Non-GUCian")
+            if (user_type == "GUCian" || user_type == "NonGUCian")
             {
                 // create a table to hold the user phone numbers
                 Table phone_numbers_table = new Table();
@@ -345,7 +345,6 @@ namespace PostGradSystem
                     if (user_type == "Supervisor") {
                         showButton.Visible = true;
                         pnl_addPhone.Visible = false;
-                        pnl_editProfile.Visible = false;
                     }
                     else {
                         showButton.Visible = false;
@@ -370,8 +369,6 @@ namespace PostGradSystem
 
         protected void addPhoneNumber(object sender, EventArgs e)
         {
-            System.Diagnostics.Debug.WriteLine("editProfile");
-
             if (db_connection.getConnection().State == System.Data.ConnectionState.Closed)
             {
                 db_connection.getConnection().Open();

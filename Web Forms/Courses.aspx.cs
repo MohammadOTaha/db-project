@@ -52,12 +52,11 @@ namespace PostGradSystem
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            int user_id = Convert.ToInt32(Session["user_id"]);
-
-            if(user_id == 0) {
+            if (Session["user_id"] == null) {
                 Response.Redirect("Login.aspx");
             }
             else {
+                String user_id = Session["user_id"].ToString();
                 SqlDataReader reader = getStudentCourses(user_id.ToString());
 
                 // initialize coursesTable

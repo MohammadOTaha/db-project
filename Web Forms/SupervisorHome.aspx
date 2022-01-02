@@ -74,7 +74,7 @@
         <div class="col-sm-4">
             <div class="panel panel-success">
               <div class="panel-heading">
-                  <a href="StudentPublications.aspx">VIEW PUBLICATIONS</a>
+                  <a href="viewPublications.aspx">VIEW PUBLICATIONS</a>
               </div>
               <div class="panel-body">
                 View publications of specfic Student
@@ -84,7 +84,7 @@
         <div class="col-sm-4">
           <div class="panel panel-success">
             <div class="panel-heading">
-                <a href="AddExaminer.aspx">ADD DEFENSE</a>
+                <a href="AddDefense.aspx">ADD DEFENSE</a>
             </div>
             <div class="panel-body">Adding Defense for Student</div>
           </div>

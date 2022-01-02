@@ -37,9 +37,17 @@
 
                       <div class="d-flex flex-row align-items-center mb-4">
                         <i class="fas fa-user fa-lg me-3 fa-fw"></i>
-                        <asp:DropDownList ID="thesis_dropList" runat="server" AutoPostBack="False" style="width: 365px">
+                        <asp:DropDownList ID="thesis_dropList" class="form-control" runat="server" AutoPostBack="False">
+                          <asp:ListItem selected hidden>Select Thesis</asp:ListItem>
                         </asp:DropDownList>
                       </div>
+
+                      <!-- <div class="d-flex flex-row align-items-center mb-4">
+                        <i class="fas fa-user fa-lg me-3 fa-fw"></i>
+                        <asp:DropDownList ID="supervisor_dropList" class="form-control" runat="server" AutoPostBack="False">
+                          <asp:ListItem selected hidden>Select Supervisor</asp:ListItem>
+                        </asp:DropDownList>
+                      </div> -->
 
                       <div class="d-flex flex-row align-items-center mb-4">
                         <i class="fas fa-user fa-lg me-3 fa-fw"></i>
@@ -57,15 +65,17 @@
                         </div>
                       </div>
 
+                      
+
                       <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
                         <asp:Button ID="btn_addReport" runat="server" Text="Add Report" onClick="addReport"
-                          class="btn btn-primary btn-lg" style="width: 360px" />
+                          class="btn btn-primary btn-lg" />
                       </div>
                     </form>
 
                     <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
                       <a class="btn btn-warning" href="Home.aspx" role="button">Go Back</a>
-                    </div>  
+                    </div>
                   </div>
                 </div>
               </div>

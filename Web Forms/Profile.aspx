@@ -15,10 +15,12 @@
         margin-bottom: 50px;
         border-radius: 0;
       }
+
       /* Remove the jumbotron's default bottom margin */
       .jumbotron {
         margin-bottom: 0;
       }
+
       /* Add a gray background color and some padding to the footer */
       footer {
         background-color: #f2f2f2;
@@ -72,16 +74,17 @@
         <div class="col-md-12 text-center">
           <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal1"
             data-whatever="@mdo">Edit My Profile</button>
-          <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#modal_phoneNumber"
-            data-whatever="@mdo">Add Phone Number</button>
-          <asp:panel id="phone_numberpanel" runat="server" visible="false">
-            <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#exampleModal2"
-              data-whatever="@mdo">Show My Students</button>
+            
+          <br/>
+          <br/>
+
+          <asp:panel id="pnl_addPhone" runat="server">
+            <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#modal_phoneNumber"
+              data-whatever="@mdo">Add Phone Number</button>
           </asp:panel>
-          <br />
-          <br />
-          <br />
-          <br />
+
+          <br/>
+          <br/>
 
           <asp:panel id="showButton" runat="server" visible="false">
             <button type="button" iD="Button1" class="btn btn-warning" data-toggle="modal" data-target="#exampleModal2"
@@ -89,6 +92,8 @@
           </asp:panel>
         </div>
       </div>
+
+
       <div class="modal fade" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-mw" role="document">

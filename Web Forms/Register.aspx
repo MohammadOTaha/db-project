@@ -92,9 +92,13 @@
 
 
                       <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
-                        <asp:Button ID="btn_register" runat="server" Text="Register" onClick="register"
+                        <asp:Button ID="btn_register" runat="server" Text="Register" onClick="register" style="font-size: 16pt;"
                           class="btn btn-primary btn-lg" />
+                          <i class="fas fa-user fa-lg me-3 fa-fw"></i>
+                          <i class="fas fa-user fa-lg me-3 fa-fw"></i>
+                          <a class="btn btn-warning" href="Login.aspx" role="button" style="font-size: 16pt;">Login</a>
                       </div>
+
                     </form>
                   </div>
                   <div class="

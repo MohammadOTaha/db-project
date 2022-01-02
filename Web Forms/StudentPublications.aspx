@@ -24,21 +24,17 @@
                     </p>
 
                     <form class="mx-1 mx-md-4" runat="server">               
-                      <div class="d-flex flex-row align-items-center mb-4">
-                        <i class="fas fa-user fa-lg me-3 fa-fw"></i>
+                      <div class="form-group">
                         <div class="form-outline flex-fill mb-0">
-                            Student ID
-                          <asp:TextBox
-                            type="number"
-                            textmode="number"
-                            ID="student_Id"
-                            class="form-control"
-                            runat="server"
-                            placeholder="Student ID"
-                            required="true"
-                          />
+                            <label for="examiners_dropdown">Thesis</label>
+                            <asp:DropDownList runat="server" CssClass="form-control"
+                               ID="student_dropdownList">
+                                <asp:ListItem selected hidden>Select Student </asp:ListItem>
+                            </asp:DropDownList>
                         </div>
-                      </div>
+                          <br />
+                          <br />
+                    </div>
                       <div
                         class="d-flex justify-content-center mx-4 mb-3 mb-lg-4"
                       >
@@ -57,6 +53,9 @@
                              </div>
                                 </div>
                     </form>
+                      <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
+                      <a class="btn btn-warning" href="Home.aspx" role="button">Go Back</a>
+                    </div>
                   </div>
                 </div>
               </div>

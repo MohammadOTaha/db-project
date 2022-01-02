@@ -52,7 +52,7 @@
             <li>
               <a href="Profile.aspx">
                 <span class="glyphicon glyphicon-user"></span> My Account
-              </a>add
+              </a>
             </li>
             <li>
               <a href="Logout.aspx">
@@ -66,7 +66,7 @@
 
     <div class="container">
       <div class="row">
-        <div class="col-sm-4" style="width: 34%;">
+        <div class="col-sm-4" style="width: 50%;">
           <div class="panel panel-success">
             <div class="panel-heading" style="text-align: center; font-weight: bolder">
               <a href="AddPublication.aspx">ADD PUBLICATIONS</a>
@@ -77,18 +77,7 @@
           </div>
         </div>
 
-        <div class="col-sm-4" style="width: 33%;">
-          <div class="panel panel-success">
-            <div class="panel-heading" style="text-align: center; font-weight: bolder">
-              <a href="LinkPublication.aspx">LINK PUBLICATIONS</a>
-            </div>
-            <div class="panel-body" style="text-align: center;">
-              Link a Publication to Thesis
-            </div>
-          </div>
-        </div>
-
-        <div class="col-sm-4" style="width: 33%;">
+        <div class="col-sm-4" style="width: 50%;">
           <div class="panel panel-success">
             <div class="panel-heading" style="text-align: center; font-weight: bolder">
               <a href="Publications.aspx">VIEW PUBLICATIONS</a>
@@ -132,7 +121,7 @@
         <div class="col-sm-4" style="width: 50%;">
           <div class="panel panel-success">
             <div class="panel-heading" style="text-align: center; font-weight: bolder">
-              <a href="ProgressReportsEvaluation.aspx">VIEW PROGRESS REPORTS</a>
+              <a href="ProgressReportsEvaluation.aspx">VIEW PROGRESS REPORTS EVALUATIONS</a>
             </div>
             <div class="panel-body" style="text-align: center;">
               View all my Progress Reports with their Evaluations

@@ -29,6 +29,10 @@ namespace PostGradSystem
         }
         protected void Page_Load(object sender, EventArgs e)
         {
+            if(Session["user_id"] == null) {
+                Response.Redirect("Login.aspx");
+            }
+
             String user_id = Convert.ToString(Session["user_id"]);
             String user_type = Convert.ToString(Session["user_type"]);
 
@@ -46,7 +50,7 @@ namespace PostGradSystem
                     break;
                 
                 case "Examiner":
-                    Response.Redirect("/ExaminerHome.aspx");
+                    Response.Redirect("/ExaminerPage.aspx");
                     break;
 
                 case "Admin":

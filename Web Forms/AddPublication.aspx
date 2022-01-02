@@ -58,37 +58,31 @@
                         </div>
                       </div>
 
-                      <div class="form-row form-check-inline ">
-                        <div class="d-flex flex-row align-items-center mb-4">
-                          <div class="form-check form-check-inline">
-                            <asp:RadioButton ID="rdoYes" runat="server" Text="Accepted" GroupName="rdo_accepted" />
-                          </div>
-
-                          <div class="form-check form-check-inline">
-                            <asp:RadioButton ID="rdoNo" runat="server" Text="Not Accepted" GroupName="rdo_accepted" />
-                          </div>
+                      <div class="align-items-center mb-4">
+                        <i class="fas fa-user fa-lg me-3 fa-fw"></i>
+                        <i class="fas fa-user fa-lg me-3 fa-fw"></i>
+                        <i class="fas fa-user fa-lg me-3 fa-fw"></i>
+                        <div class="form-check form-check-inline">
+                          <asp:RadioButton ID="rdoYes" runat="server" Text="Accepted" GroupName="rdo_accepted" />
                         </div>
 
-                        <asp:panel id="linkPubPanel" runat="server" visible="false">
-                          <div class="d-flex flex-row align-items-center mb-4">
-                            <i class="fas fa-user fa-lg me-3 fa-fw"></i>
-                            <asp:DropDownList ID="thesis_dropList" class="form-control" runat="server"
-                              AutoPostBack="False" style="width: 100%">
-                            </asp:DropDownList>
-
-                            <label class="form-label" for="thesis_dropList">Your Email</label>
-                          </div>
-                        </asp:panel>
-
-                        <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-15">
-                          <asp:Button ID="btn_showLinkPub" runat="server" Text="Link Publication to Thesis"
-                            onClick="showLink" class="btn btn-success btn-lg" style="width: 360px" />
+                        <div class="form-check form-check-inline">
+                          <asp:RadioButton ID="rdoNo" runat="server" Text="Not Accepted" GroupName="rdo_accepted" Checked="true"/>
                         </div>
+                      </div>
 
-                        <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
-                          <asp:Button ID="btn_register" runat="server" Text="Add Publication" onClick="addPublication"
-                            class="btn btn-primary btn-lg" style="width: 360px" />
-                        </div>
+                      <div class="d-flex flex-row align-items-center mb-4">
+                        <i class="fas fa-user fa-lg me-3 fa-fw"></i>
+                        <asp:DropDownList ID="thesis_dropList" class="form-control" runat="server">
+                          <asp:ListItem selected hidden>Select Thesis</asp:ListItem>
+                        </asp:DropDownList>
+                      </div>
+
+                      <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
+                        <asp:Button ID="btn_register" runat="server" Text="Add Publication" onClick="addPublication"
+                          class="btn btn-primary btn-lg" />
+                      </div>
+
                     </form>
 
                     <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
