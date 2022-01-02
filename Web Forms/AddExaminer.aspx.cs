@@ -36,6 +36,7 @@ namespace PostGradSystem
             }
             else if (!Page.IsPostBack)
             {
+                thesis_info.Clear();
             SqlCommand cmd1 = new SqlCommand(@"Select PostGradUser.email
                                     From Examiner Inner JOIN 
                                     PostGradUser On PostGradUser.id = Examiner.id", db_connection.getConnection());
@@ -71,7 +72,7 @@ namespace PostGradSystem
         protected void add_examiner_Click(object sender, EventArgs e)
         {
             //Get the selected thesisId
-            int thesisId = thesis_info[thesis_dropdownList.SelectedIndex];
+            int thesisId = 4;
             //Get the selected email
             String email = examiners_dropdownList.SelectedValue;
             //Get the examiner with this email
@@ -92,11 +93,25 @@ namespace PostGradSystem
             cmd2.Parameters.AddWithValue("@thesisSerialNo", thesisId);
             cmd2.Parameters.AddWithValue("@ExaminerID", examiner_id);
             cmd2.Parameters.AddWithValue("@DefenseDate", date);
+            cmd2.Parameters.AddWithValue("@Success", System.Data.SqlDbType.Bit).Direction = System.Data.ParameterDirection.Output;
             db_connection.getConnection().Open();
             cmd2.ExecuteNonQuery();
+            //Check if success
             db_connection.getConnection().Close();
+            if (Convert.ToBoolean(cmd2.Parameters["@Success"].Value))
+            {
+                panel1.Visible = true;
+              
+               
+            }
+            else
+            {
+                Response.Write("<script>alert('There is already an Examiner')</script>");
+
+            }
+            
             //Set visibilty of panel is tryue
-            panel1.Visible = true;
+           
             //Redirect to addingExaminer page
 
 

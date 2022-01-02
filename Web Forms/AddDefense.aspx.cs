@@ -12,6 +12,7 @@ namespace PostGradSystem
     public partial class AddDefense : System.Web.UI.Page
     {
         static DBConnection db_connection = new DBConnection();
+        static Dictionary<int, int> thesis_info = new Dictionary<int, int>();
 
         private class DBConnection
         {
@@ -26,6 +27,43 @@ namespace PostGradSystem
             {
                 return conn;
             }
+        }
+        private static void addingThesis(ref DropDownList thesis_dropdownList, int superVisorID)
+        {
+            SqlCommand cmd =
+                new SqlCommand(@"select serialNumber ,title,email From Thesis INNER JOIN GUCianRegisterThesis on GUCianRegisterThesis.thesisSerialNumber = Thesis.serialNumber INNER JOIN PostGradUser on PostgradUser.id = GucianRegisterThesis.GucianID WHERE GUCianRegisterThesis.supervisor_id = @superVisorID
+                                   UNION Select serialNumber,title,email From Thesis INNER JOIN NONGUCianRegisterThesis on NONGUCianRegisterThesis.thesisSerialNumber = Thesis.serialNumber INNER JOIN PostGradUser on PostgradUser.id = NonGucianRegisterThesis.NonGUCianID WHERE NONGUCianRegisterThesis.supervisor_id = @superVisorID", db_connection.getConnection());
+
+            cmd.Parameters.AddWithValue("@superVisorID", superVisorID);
+
+
+            if (db_connection.getConnection().State == System.Data.ConnectionState.Closed)
+            {
+                db_connection.getConnection().Open();
+            }
+            SqlDataReader reader = cmd.ExecuteReader();
+
+
+
+            //while there is a next row
+            int idx = 1;
+            while (reader.Read())
+            {
+                //add the email to the dropdown list
+                thesis_dropdownList.Items.Add(reader.GetString(1) + ", " + reader.GetString(2));
+                //Check if the thesis is already in the dict
+
+                //add the thesis id to the dict
+                thesis_info.Add(idx, reader.GetInt32(0));
+                idx++;
+
+
+
+
+            }
+            reader.Close();
+            db_connection.getConnection().Close();
+
         }
 
         private static int is_gucian(int thesis_serial)
@@ -68,11 +106,16 @@ namespace PostGradSystem
                 //Redirect to login page
                 Response.Redirect("Login.aspx");
             }
+            if (!Page.IsPostBack)
+            {
+                thesis_info.Clear();
+                addingThesis(ref thesis_dropdownList, Convert.ToInt32(Session["user_id"]));
+            }
         }
 
         protected void add_defense_Click(object sender, EventArgs e)
         {
-            int serial_number = Int32.Parse(thesis_serial.Text);
+            int serial_number = thesis_info[thesis_dropdownList.SelectedIndex];
             String defenseDate = defense_date.Text;
             String defenseLocation = defense_location.Text;
 

@@ -36,13 +36,20 @@
 
 
 
-                    <div class="d-flex flex-row align-items-center mb-4">
-                      <i class="fas fa-user fa-lg me-3 fa-fw"></i>
-                      <div class="form-outline flex-fill mb-0">
-                        <asp:TextBox type="number" textmode="number" ID="thesis_serial" class="form-control"
-                          runat="server" placeholder="Thesis Serial Number" required="true" />
-                      </div>
-                    </div>
+                     <div class="form-group">
+                                              <div class="form-outline flex-fill mb-0">
+                                                  <label for="thesis_dropdown">Thesis</label>
+                                                  <asp:DropDownList runat="server" CssClass="form-control"
+                                                      ID="thesis_dropdownList">
+                                                     
+                                                      <asp:ListItem selected hidden>Select Thesis</asp:ListItem>
+                                                  </asp:DropDownList>
+                                              </div>
+
+                                          </div>
+                      <br />
+                      <br />
+
 
                     <div class="d-flex flex-row align-items-center mb-4">
                       <i class="fas fa-user fa-lg me-3 fa-fw"></i>

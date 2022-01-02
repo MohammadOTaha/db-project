@@ -24,13 +24,13 @@ namespace PostGradSystem
         protected global::System.Web.UI.WebControls.TextBox defense_date;
 
         /// <summary>
-        /// thesis_serial control.
+        /// thesis_dropdownList control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox thesis_serial;
+        protected global::System.Web.UI.WebControls.DropDownList thesis_dropdownList;
 
         /// <summary>
         /// defense_location control.
