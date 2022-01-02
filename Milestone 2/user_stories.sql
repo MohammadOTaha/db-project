@@ -956,3 +956,56 @@ BEGIN
     VALUES
         (@thesisSerialNo, @PubID)
 END
+
+
+
+-------------------------------------------------------
+
+-------------- NEWLY ADDED PROCEDURES ----------------
+
+go
+Create proc AddCommentsGrade
+@ThesisSerialNo int , @DefenseDate Datetime , @comments varchar(300), @Success bit output
+as
+if (exists(select * from Thesis where serialNumber =@ThesisSerialNo))
+begin
+set @Success =1
+update ExaminerEvaluateDefense
+set comment = @comments
+where thesisSerialNumber = @ThesisSerialNo and date = @DefenseDate
+end
+else set @Success=0
+go
+alter proc AddDefenseGrade
+@ThesisSerialNo int , @DefenseDate Datetime , @grade decimal(4,2), @Success bit output
+as
+if(exists( select * from Thesis where serialNumber =@ThesisSerialNo))
+begin
+set @Success =1
+update Defense
+set grade = @grade
+where thesisSerialNumber = @ThesisSerialNo and date = @DefenseDate
+end 
+else 
+set @Success =0
+go
+Create PROC search
+@keyWord varchar(20), @Success bit output
+As
+if(exists(select * from Thesis where @keyWord=Thesis.title))
+begin
+set @Success =1
+Select * from Thesis
+where @keyWord=Thesis.title
+end
+else
+set @Success=0
+
+
+GO
+Create Proc editExaminer  @ID varchar(20),  @Name varchar(20) , @Field varchar(20)
+AS
+Update Examiner 
+Set name = @Name,
+fieldOfWork = @Field
+where id =@ID
