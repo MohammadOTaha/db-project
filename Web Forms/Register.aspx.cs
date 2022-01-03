@@ -55,17 +55,19 @@ namespace PostGradSystem
         private static void registerSupervisor(Dictionary<String, String> user_info) 
         {
             SqlCommand register = new SqlCommand(
-                "INSERT INTO Supervisor (id, name, faculty) VALUES (@id, @name, @faculty)", 
+                "INSERT INTO Supervisor (id, firstName,lastName, faculty) VALUES (@id, @firstName,@lastName, @faculty)", 
                 db_connection.getConnection()
             );
 
-            String name = user_info["first_name"] + " " + user_info["last_name"];
+          
             register.Parameters.AddWithValue("@id", user_info["user_id"]);
-            register.Parameters.AddWithValue("@name", name);
+            register.Parameters.AddWithValue("@firstName", user_info["first_name"]);
+            register.Parameters.AddWithValue("@lastName", user_info["last_name"]);
             register.Parameters.AddWithValue("@faculty", user_info["faculty"]);
 
             register.ExecuteNonQuery();
         }
+
 
         private static void registerExaminer(Dictionary<String, String> user_info)
         {
