@@ -12,7 +12,7 @@ namespace PostGradSystem
     public partial class AddExaminer : System.Web.UI.Page
     {
         static DBConnection db_connection = new DBConnection();
-        static Dictionary<int, int> thesis_info = new Dictionary<int, int>();
+        static Dictionary<int, int> thesis_info;
         private class DBConnection
         {
             private static SqlConnection conn;
@@ -27,6 +27,27 @@ namespace PostGradSystem
                 return conn;
             }
         }
+        private static void addingExaminers(ref DropDownList examiners_dropdownList)
+        {
+
+         //Get all examiners from postgraduser
+            SqlCommand cmd = new SqlCommand("SELECT email FROM PostGradUser INNER JOIN EXAMINER ON PostGradUser.id = Examiner.id", db_connection.getConnection());
+            //check if the connection is open
+            if (db_connection.getConnection().State.ToString() == "Closed")
+            {
+                db_connection.getConnection().Open();
+            }
+            SqlDataReader reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                examiners_dropdownList.Items.Add(reader.GetString(0));
+            }
+            reader.Close();
+            db_connection.getConnection().Close();
+        
+        }
+       
+
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -36,34 +57,10 @@ namespace PostGradSystem
             }
             else if (!Page.IsPostBack)
             {
-                thesis_info.Clear();
-            SqlCommand cmd1 = new SqlCommand(@"Select PostGradUser.email
-                                    From Examiner Inner JOIN 
-                                    PostGradUser On PostGradUser.id = Examiner.id", db_connection.getConnection());
-            db_connection.getConnection().Open();
-            SqlDataReader emails = cmd1.ExecuteReader();
-
-            if (emails != null)
-            {
-                while (emails.Read())
-                {
-
-                    String email = emails.GetString(0);
-                    Console.Write(email);
-                    //Check if email is not in the dropdownlist
-                    if (!examiners_dropdownList.Items.Contains(new ListItem(email)))
-                    {
-                        //Add email to dropdownlist
-                        examiners_dropdownList.Items.Add(email);
-                    }
-
-
-
-                }
-            }
-            db_connection.getConnection().Close();
+         
+                   addingExaminers(ref examiners_dropdownList);
                 addingThesis(ref thesis_dropdownList, Convert.ToInt32(Session["user_id"]));
-
+                 db_connection.getConnection().Close();
             }
 
         }
@@ -72,9 +69,10 @@ namespace PostGradSystem
         protected void add_examiner_Click(object sender, EventArgs e)
         {
             //Get the selected thesisId
-            int thesisId = 4;
+            int thesisId = thesis_info[thesis_dropdownList.SelectedIndex];
             //Get the selected email
             String email = examiners_dropdownList.SelectedValue;
+            System.Diagnostics.Debug.WriteLine("------------------------"+email);
             //Get the examiner with this email
             SqlCommand cmd = new SqlCommand(@"Select id from PostGradUser where email = @email", db_connection.getConnection());
             cmd.Parameters.AddWithValue("@email", email);
@@ -119,11 +117,24 @@ namespace PostGradSystem
         private static void addingThesis(ref DropDownList thesis_dropdownList, int superVisorID)
         {
             SqlCommand cmd =
-                new SqlCommand(@"select serialNumber ,title,email From Thesis INNER JOIN GUCianRegisterThesis on GUCianRegisterThesis.thesisSerialNumber = Thesis.serialNumber INNER JOIN PostGradUser on PostgradUser.id = GucianRegisterThesis.GucianID WHERE GUCianRegisterThesis.supervisor_id = @superVisorID
-                                   UNION Select serialNumber,title,email From Thesis INNER JOIN NONGUCianRegisterThesis on NONGUCianRegisterThesis.thesisSerialNumber = Thesis.serialNumber INNER JOIN PostGradUser on PostgradUser.id = NonGucianRegisterThesis.NonGUCianID WHERE NONGUCianRegisterThesis.supervisor_id = @superVisorID", db_connection.getConnection());
+                new SqlCommand(@"SELECT T1.serialNumber,T1.title,PostGraduser.email 
+             FROM GUCianRegisterThesis
+        INNER JOIN PostGradUser on PostGradUser.id = GucianRegisterThesis.GucianID
+        INNER JOIN Thesis T1 on T1.serialNumber = GUCianRegisterThesis.thesisSerialNumber
+        INNER JOIN GUCianStudent ON GUCianStudent.id = GUCianRegisterThesis.GUCianID
+        WHERE T1.endDate > GETDATE() and GucianRegisterThesis.supervisor_id = @superVisorID
+
+    UNION
+   
+     SELECT T2.serialNumber,T2.title,PostGraduser.email 
+    FROM NonGUCianRegisterThesis
+        INNER JOIN PostGradUser on PostGradUser.id = NonGucianRegisterThesis.NonGucianID
+        INNER JOIN Thesis T2 on T2.serialNumber = NonGUCianRegisterThesis.thesisSerialNumber
+        INNER JOIN NonGUCianStudent ON NonGUCianStudent.id = NonGUCianRegisterThesis.NonGUCianID
+        WHERE T2.endDate > GETDATE() and NonGucianRegisterThesis.supervisor_id = @superVisorID", db_connection.getConnection());
 
             cmd.Parameters.AddWithValue("@superVisorID", superVisorID);
-
+         
 
             if (db_connection.getConnection().State == System.Data.ConnectionState.Closed)
             {
@@ -132,7 +143,7 @@ namespace PostGradSystem
             SqlDataReader reader = cmd.ExecuteReader();
 
 
-
+            thesis_info = new Dictionary<int, int>();
             //while there is a next row
             int idx = 1;
             while (reader.Read())

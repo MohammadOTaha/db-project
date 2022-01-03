@@ -12,7 +12,7 @@ namespace PostGradSystem
     public partial class CancelThesis : System.Web.UI.Page
     {
         static DBConnection db_connection = new DBConnection();
-        static Dictionary<int, int> thesis_info = new Dictionary<int, int>();
+        static Dictionary<int, int> thesis_info;
 
         private class DBConnection
         {
@@ -53,8 +53,21 @@ namespace PostGradSystem
         private static void addingThesis(ref DropDownList thesis_dropdownList, int superVisorID)
         {
             SqlCommand cmd =
-                new SqlCommand(@"select serialNumber ,title,email From Thesis INNER JOIN GUCianRegisterThesis on GUCianRegisterThesis.thesisSerialNumber = Thesis.serialNumber INNER JOIN PostGradUser on PostgradUser.id = GucianRegisterThesis.GucianID WHERE GUCianRegisterThesis.supervisor_id = @superVisorID
-                                   UNION Select serialNumber,title,email From Thesis INNER JOIN NONGUCianRegisterThesis on NONGUCianRegisterThesis.thesisSerialNumber = Thesis.serialNumber INNER JOIN PostGradUser on PostgradUser.id = NonGucianRegisterThesis.NonGUCianID WHERE NONGUCianRegisterThesis.supervisor_id = @superVisorID", db_connection.getConnection());
+                new SqlCommand(@"SELECT T1.serialNumber,T1.title,PostGraduser.email 
+             FROM GUCianRegisterThesis
+        INNER JOIN PostGradUser on PostGradUser.id = GucianRegisterThesis.GucianID
+        INNER JOIN Thesis T1 on T1.serialNumber = GUCianRegisterThesis.thesisSerialNumber
+        INNER JOIN GUCianStudent ON GUCianStudent.id = GUCianRegisterThesis.GUCianID
+        WHERE T1.endDate > GETDATE() and GucianRegisterThesis.supervisor_id = @superVisorID
+    
+    UNION
+    
+     SELECT T2.serialNumber,T2.title,PostGraduser.email 
+    FROM NonGUCianRegisterThesis
+        INNER JOIN PostGradUser on PostGradUser.id = NonGucianRegisterThesis.NonGucianID
+        INNER JOIN Thesis T2 on T2.serialNumber = NonGUCianRegisterThesis.thesisSerialNumber
+        INNER JOIN NonGUCianStudent ON NonGUCianStudent.id = NonGUCianRegisterThesis.NonGUCianID
+        WHERE T2.endDate > GETDATE() and NonGucianRegisterThesis.supervisor_id = @superVisorID", db_connection.getConnection());
 
             cmd.Parameters.AddWithValue("@superVisorID", superVisorID);
 
@@ -66,7 +79,7 @@ namespace PostGradSystem
             SqlDataReader reader = cmd.ExecuteReader();
 
 
-
+            thesis_info = new Dictionary<int, int>();
             //while there is a next row
             int idx = 1;
             while (reader.Read())
@@ -211,7 +224,7 @@ namespace PostGradSystem
 
                         Response
                             .Write("<script>alert('Thesis Deleted');</script>");
-                        thesis_dropdownList.Items.Clear();
+                       
                         addingThesis(ref thesis_dropdownList, Convert.ToInt32(Session["user_id"]));
                     }
                     else

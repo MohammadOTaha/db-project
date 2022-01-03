@@ -15,31 +15,22 @@ namespace PostGradSystem
     {
 
         /// <summary>
-        /// super_visor_id control.
+        /// thesis_dropdownList control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox super_visor_id;
+        protected global::System.Web.UI.WebControls.DropDownList thesis_dropdownList;
 
         /// <summary>
-        /// serial_number control.
+        /// progressReportID control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox serial_number;
-
-        /// <summary>
-        /// report_number control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox report_number;
+        protected global::System.Web.UI.WebControls.TextBox progressReportID;
 
         /// <summary>
         /// evaluate_mark control.
