@@ -72,6 +72,7 @@
                             placeholder="Faculty" required="true" maxlength="10" />
                         </div>
                       </div>
+                        
 
                       <div class="d-flex flex-row align-items-center mb-4">
                         <i class="fas fa-user fa-lg me-3 fa-fw"></i>
@@ -89,7 +90,23 @@
                         <asp:TextBox type="text" ID="underGradID" class="form-control" runat="server"
                           placeholder="Under Graduate ID" required="true" maxlength="50" visible="false" />
                       </div>
+                      
 
+                              <div class="d-flex flex-row align-items-center mb-4">
+                        <i class="fas fa-user fa-lg me-3 fa-fw"></i>
+                        <div class="form-outline flex-fill mb-0">
+                          <asp:TextBox type="text" ID="isNationalBit" visible ="false" class="form-control" runat="server"
+                            placeholder="IsNational"  maxlength="10" />
+                        </div>
+                      </div>
+                        
+                              <div class="d-flex flex-row align-items-center mb-4">
+                        <i class="fas fa-user fa-lg me-3 fa-fw"></i>
+                        <div class="form-outline flex-fill mb-0">
+                          <asp:TextBox type="text" ID="fieldOfWork" visible ="false" class="form-control" runat="server"
+                            placeholder="fieldOfWork"  maxlength="10" />
+                        </div>
+                      </div>
 
                       <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
                         <asp:Button ID="btn_register" runat="server" Text="Register" onClick="register" style="font-size: 16pt;"

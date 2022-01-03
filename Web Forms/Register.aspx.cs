@@ -68,7 +68,6 @@ namespace PostGradSystem
             register.ExecuteNonQuery();
         }
 
-
         private static void registerExaminer(Dictionary<String, String> user_info)
         {
             SqlCommand register = new SqlCommand(
@@ -154,6 +153,8 @@ namespace PostGradSystem
             user_info.Add("password", password.Text);
             user_info.Add("faculty", faculty.Text);
             user_info.Add("type", usertypedroplist.SelectedValue);
+            user_info.Add("fieldOfWork", fieldOfWork.Text);
+            user_info.Add("isNational", isNationalBit.Text);
             user_info.Add("underGradID", underGradID.Text);
                         
             int user_id = getRegisteredUserID(user_info);
@@ -170,7 +171,9 @@ namespace PostGradSystem
                     registerSupervisor(user_info);
                     break;
                 case "Examiner":
+                   
                     registerExaminer(user_info);
+                  
                     break;
                 case "Admin":
                     registerAdmin(user_info);
@@ -186,8 +189,13 @@ namespace PostGradSystem
 
         protected void usertype_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if(usertypedroplist.SelectedValue == "GUCian") {
+            if (usertypedroplist.SelectedValue == "GUCian") {
                 underGradID.Visible = true;
+            } else if (usertypedroplist.SelectedValue == "Examiner")
+            {
+                isNationalBit.Visible = true;
+                fieldOfWork.Visible = true;
+
             }
             else {
                 underGradID.Visible = false;
