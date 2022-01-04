@@ -87,13 +87,31 @@ namespace PostGradSystem
         protected global::System.Web.UI.WebControls.TextBox underGradID;
 
         /// <summary>
-        /// isNationalBit control.
+        /// pnl_isNational control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox isNationalBit;
+        protected global::System.Web.UI.WebControls.Panel pnl_isNational;
+
+        /// <summary>
+        /// rdo_national control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RadioButton rdo_national;
+
+        /// <summary>
+        /// rdo_international control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RadioButton rdo_international;
 
         /// <summary>
         /// fieldOfWork control.

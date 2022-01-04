@@ -72,7 +72,7 @@
                             placeholder="Faculty" required="true" maxlength="10" />
                         </div>
                       </div>
-                        
+
 
                       <div class="d-flex flex-row align-items-center mb-4">
                         <i class="fas fa-user fa-lg me-3 fa-fw"></i>
@@ -84,36 +84,46 @@
                           <asp:ListItem>Non-GUCian</asp:ListItem>
                           <asp:ListItem>Supervisor</asp:ListItem>
                           <asp:ListItem>Examiner</asp:ListItem>
-                          <asp:ListItem>Admin</asp:ListItem>
                         </asp:DropDownList>
 
                         <asp:TextBox type="text" ID="underGradID" class="form-control" runat="server"
                           placeholder="Under Graduate ID" required="true" maxlength="50" visible="false" />
                       </div>
-                      
 
-                              <div class="d-flex flex-row align-items-center mb-4">
-                        <i class="fas fa-user fa-lg me-3 fa-fw"></i>
-                        <div class="form-outline flex-fill mb-0">
-                          <asp:TextBox type="text" ID="isNationalBit" visible ="false" class="form-control" runat="server"
-                            placeholder="IsNational"  maxlength="10" />
+
+                      <asp:Panel runat="server" id="pnl_isNational" visible="false">
+                        <div class="align-items-center mb-4">
+                          <i class="fas fa-user fa-lg me-3 fa-fw"></i>
+                          <i class="fas fa-user fa-lg me-3 fa-fw"></i>
+                          <i class="fas fa-user fa-lg me-3 fa-fw"></i>
+                          <div class="form-check form-check-inline">
+                            <asp:RadioButton ID="rdo_national" runat="server" Text="National" GroupName="national"
+                              Checked="true" />
+                          </div>
+
+                          <div class="form-check form-check-inline">
+                            <asp:RadioButton ID="rdo_international" runat="server" Text="International"
+                              GroupName="national" />
+                          </div>
                         </div>
-                      </div>
-                        
-                              <div class="d-flex flex-row align-items-center mb-4">
-                        <i class="fas fa-user fa-lg me-3 fa-fw"></i>
-                        <div class="form-outline flex-fill mb-0">
-                          <asp:TextBox type="text" ID="fieldOfWork" visible ="false" class="form-control" runat="server"
-                            placeholder="fieldOfWork"  maxlength="10" />
+
+                        <div class="d-flex flex-row align-items-center mb-4">
+                          <i class="fas fa-user fa-lg me-3 fa-fw"></i>
+                          <div class="form-outline flex-fill mb-0">
+                            <asp:TextBox type="text" ID="fieldOfWork" visible="false" class="form-control"
+                              runat="server" placeholder="fieldOfWork" maxlength="10" />
+                          </div>
                         </div>
-                      </div>
+                      </asp:Panel>
+
+
 
                       <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
-                        <asp:Button ID="btn_register" runat="server" Text="Register" onClick="register" style="font-size: 16pt;"
-                          class="btn btn-primary btn-lg" />
-                          <i class="fas fa-user fa-lg me-3 fa-fw"></i>
-                          <i class="fas fa-user fa-lg me-3 fa-fw"></i>
-                          <a class="btn btn-warning" href="Login.aspx" role="button" style="font-size: 16pt;">Login</a>
+                        <asp:Button ID="btn_register" runat="server" Text="Register" onClick="register"
+                          style="font-size: 16pt;" class="btn btn-primary btn-lg" />
+                        <i class="fas fa-user fa-lg me-3 fa-fw"></i>
+                        <i class="fas fa-user fa-lg me-3 fa-fw"></i>
+                        <a class="btn btn-warning" href="Login.aspx" role="button" style="font-size: 16pt;">Login</a>
                       </div>
 
                     </form>
